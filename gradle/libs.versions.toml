@@ -14,6 +14,9 @@ firebaseAuth = "23.2.0"
 credentials = "1.5.0"
 credentialsPlayServicesAuth = "1.5.0"
 googleid = "1.1.1"
+composeBom = "2024.05.00"
+composeCompiler = "2.0.0"
+uiToolingPreviewAndroid = "1.8.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -28,6 +31,13 @@ firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version
 androidx-credentials = { group = "androidx.credentials", name = "credentials", version.ref = "credentials" }
 androidx-credentials-play-services-auth = { group = "androidx.credentials", name = "credentials-play-services-auth", version.ref = "credentialsPlayServicesAuth" }
 googleid = { group = "com.google.android.libraries.identity.googleid", name = "googleid", version.ref = "googleid" }
+compose-ui = { group = "androidx.compose.ui", name = "ui" }
+compose-material3 = { group = "androidx.compose.material3", name = "material3" }
+compose-foundation = { group = "androidx.compose.foundation", name = "foundation" }
+compose-activity = { group = "androidx.activity", name = "activity-compose", version = "1.10.1" }
+compose-navigation = { group = "androidx.navigation", name = "navigation-compose", version = "2.9.0" }
+androidx-ui-tooling-preview-android = { group = "androidx.compose.ui", name = "ui-tooling-preview-android", version.ref = "uiToolingPreviewAndroid" }
+compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version = "1.6.4" } # oppure compatibile con la tua BOM
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
