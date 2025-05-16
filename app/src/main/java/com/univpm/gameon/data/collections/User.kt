@@ -8,5 +8,6 @@ data class User(
     val email: String = "",
     val codiceFiscale: String = "",
     val password: String = "",
-    val ruolo: UserRuolo = UserRuolo.Giocatore
+    val ruolo: UserRuolo = UserRuolo.Giocatore,
+    val preferiti: List<String>  = listOf()
 )
