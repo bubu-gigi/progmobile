@@ -21,6 +21,7 @@ room-version = "2.6.1"
 annotations = "23.0.0"
 composeNavigation = "2.8.0-alpha08"
 serialization = "1.6.3"
+firebaseFirestore = "25.1.4"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -44,6 +45,7 @@ androidx-ui-tooling-preview-android = { group = "androidx.compose.ui", name = "u
 compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version = "1.6.4" } # oppure compatibile con la tua BOM
 navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "composeNavigation" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization"}
+firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore", version.ref = "firebaseFirestore" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

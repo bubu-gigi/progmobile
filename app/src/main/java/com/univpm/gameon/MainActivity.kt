@@ -12,17 +12,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import com.univpm.gameon.ui.BookingDetailScreen
+import com.univpm.gameon.viewmodels.UserViewModel
 import kotlinx.serialization.Serializable
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
             val navController = rememberNavController()
             NavHost(
@@ -46,20 +50,36 @@ class MainActivity : ComponentActivity() {
                 }
                 composable<ScreenB> {
                     val args = it.toRoute<ScreenB>()
+                    val userViewModel: UserViewModel = viewModel()
+
                     Column (
                         modifier = Modifier.fillMaxSize(),
                         verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Text(text = "${args.name}, ${args.age} years old")
+
                         Button(onClick = {
-                            navController.navigate(ScreenC(
-                                items = listOf("Uno", "Due", "Tre")
-                            ))
+                            navController.navigate(ScreenC(items = listOf("Uno", "Due", "Tre")))
                         }) {
                             Text("Vai a ScreenC")
                         }
-                        Button(onClick = {navController.navigate(ScreenA)}) {
+
+                        Button(onClick = {
+                            userViewModel.createUser()
+                        }) {
+                            Text("Crea utente in Firestore")
+                        }
+
+                        Button(onClick = {
+                            userViewModel.loadUser("u123") // puoi usare id dinamico se vuoi
+                        }) {
+                            Text("Carica utente da Firestore")
+                        }
+
+                        Button(onClick = {
+                            navController.navigate(ScreenA)
+                        }) {
                             Text(text = "Home Button")
                         }
                     }
