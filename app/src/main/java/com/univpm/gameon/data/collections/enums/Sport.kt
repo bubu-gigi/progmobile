@@ -1,6 +1,6 @@
 package com.univpm.gameon.data.collections.enums
 
-enum class CampoTipologia {
+enum class Sport {
     CALCIO5,
     CALCIO8,
     TENNIS,

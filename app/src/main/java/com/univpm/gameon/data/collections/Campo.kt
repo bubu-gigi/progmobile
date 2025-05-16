@@ -1,11 +1,11 @@
 package com.univpm.gameon.data.collections
 
-import com.univpm.gameon.data.collections.enums.CampoTipologia
+import com.univpm.gameon.data.collections.enums.Sport
 import com.univpm.gameon.data.collections.enums.TipologiaTerreno
 
 data class Campo(
     val nomeCampo: String = "",
-    val tipologia: CampoTipologia,
+    val sport: Sport,
     val tipologiaTerreno: TipologiaTerreno = TipologiaTerreno.ERBA_SINTETICA,
     val prezzoOrario: Double = 0.0,
     val numeroGiocatori: Int = 0,
