@@ -3,7 +3,6 @@ package com.univpm.gameon.data.collections
 import com.univpm.gameon.data.collections.enums.Sport
 
 data class Struttura(
-    val adminId: String = "",
     val nome: String = "",
     val indirizzo: String = "",
     val latitudine: Double = 0.0,
