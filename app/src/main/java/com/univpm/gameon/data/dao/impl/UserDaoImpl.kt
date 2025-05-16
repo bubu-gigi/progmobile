@@ -13,7 +13,7 @@ class UserDaoImpl : UserDao {
     override suspend fun getUserById(id: String): User? {
         return try {
             val snapshot = usersCollection.document(id).get().await()
-            snapshot.toObject(User::class.java)?.copy(id = snapshot.id)
+            snapshot.toObject(User::class.java)
         } catch (e: Exception) {
             null
         }
@@ -21,7 +21,16 @@ class UserDaoImpl : UserDao {
 
     override suspend fun addUser(user: User): Boolean {
         return try {
-            usersCollection.document(user.id).set(user).await()
+            usersCollection.add(user).await()
+            true
+        } catch (e: Exception) {
+            false
+        }
+    }
+
+    override suspend fun updateUser(id: String, user: User): Boolean {
+        return try {
+            usersCollection.document(id).set(user).await()
             true
         } catch (e: Exception) {
             false

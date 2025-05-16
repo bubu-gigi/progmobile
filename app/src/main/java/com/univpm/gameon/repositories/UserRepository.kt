@@ -13,6 +13,10 @@ class UserRepository(private val userDao: UserDao) {
         return userDao.addUser(user)
     }
 
+    suspend fun updateUser(id: String, user: User): Boolean {
+        return userDao.updateUser(id, user)
+    }
+
     suspend fun removeUser(id: String): Boolean {
         return userDao.deleteUser(id)
     }
