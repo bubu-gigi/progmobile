@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.google.gms.google.services)
+    alias(libs.plugins.kotlin.serialization)
     id("org.jetbrains.kotlin.plugin.compose")
 }
 
@@ -41,6 +42,18 @@ android {
     }
 }
 
+configurations.all {
+    resolutionStrategy {
+        force("org.jetbrains:annotations:23.0.0")
+        eachDependency {
+            if (requested.group == "com.intellij" && requested.name == "annotations") {
+                useTarget("org.jetbrains:annotations:23.0.0")
+            }
+        }
+    }
+}
+
+
 dependencies {
 
     implementation(libs.androidx.core.ktx)
@@ -63,4 +76,5 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     debugImplementation(libs.compose.ui.tooling)
     implementation(platform("androidx.compose:compose-bom:${libs.versions.composeBom.get()}"))
+    implementation("org.jetbrains:annotations:${libs.versions.annotations.get()}")
 }
