@@ -4,6 +4,8 @@ plugins {
     alias(libs.plugins.google.gms.google.services)
     alias(libs.plugins.kotlin.serialization)
     id("org.jetbrains.kotlin.plugin.compose")
+    alias(libs.plugins.hiltAndroid)
+    id("kotlin-kapt")
 }
 
 android {
@@ -72,6 +74,9 @@ dependencies {
     implementation(libs.compose.navigation)
     implementation(libs.androidx.ui.tooling.preview.android)
     implementation(libs.firebase.firestore)
+    implementation(libs.hilt.android)
+    implementation(libs.hilt.navigation.compose)
+    kapt(libs.hilt.compiler)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

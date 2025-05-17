@@ -5,7 +5,7 @@ import com.univpm.gameon.data.dao.interfaces.UserDao
 
 class UserRepository(private val userDao: UserDao) {
 
-    suspend fun getUser(id: String): User? {
+    suspend fun getUserById(id: String): User? {
         return userDao.getUserById(id)
     }
 

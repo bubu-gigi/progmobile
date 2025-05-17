@@ -9,11 +9,21 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.univpm.gameon.core.RegisterScreenRoute
+import com.univpm.gameon.viewmodels.LoginViewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
 fun LoginScreen(navController: NavController) {
+    val loginViewModel: LoginViewModel = hiltViewModel()
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+
+    LaunchedEffect(loginViewModel.destination.value) {
+        loginViewModel.destination.value?.let {
+            navController.navigate(it)
+            loginViewModel.destination.value = null
+        }
+    }
 
     Column(
         modifier = Modifier.fillMaxSize().padding(16.dp),
@@ -39,7 +49,9 @@ fun LoginScreen(navController: NavController) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Button(onClick = { /* handle login */ }) {
+        Button(onClick = {
+            loginViewModel.login(email, password)
+        }) {
             Text("Login")
         }
 

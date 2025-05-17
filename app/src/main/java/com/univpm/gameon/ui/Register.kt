@@ -7,17 +7,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.univpm.gameon.data.collections.enums.UserRuolo
+import com.univpm.gameon.core.LoginScreenRoute
+import com.univpm.gameon.data.collections.User
+import com.univpm.gameon.viewmodels.RegisterViewModel
 
 @Composable
 fun RegisterScreen(navController: NavController) {
+    val registerViewModel: RegisterViewModel = viewModel()
+
     var name by remember { mutableStateOf("") }
     var cognome by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var codiceFiscale by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    var ruolo by remember { mutableStateOf(UserRuolo.Giocatore) }
 
     Column(
         modifier = Modifier
@@ -66,9 +70,24 @@ fun RegisterScreen(navController: NavController) {
         Spacer(modifier = Modifier.height(16.dp))
 
         Button(onClick = {
-            // TODO: handleRegister(User(...))
+            val user = User(
+                name = name,
+                cognome = cognome,
+                email = email,
+                codiceFiscale = codiceFiscale,
+                password = password
+            )
+            registerViewModel.registerUser(user)
         }) {
             Text("Registrati")
+        }
+
+        registerViewModel.registrationState.value?.let {
+            if (it == "SUCCESS") {
+                navController.navigate(LoginScreenRoute)
+            } else {
+                Text("Errore: $it", color = MaterialTheme.colorScheme.error)
+            }
         }
     }
 }
