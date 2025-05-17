@@ -6,9 +6,11 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.univpm.gameon.core.LoginScreenRoute
 import com.univpm.gameon.data.collections.User
 import com.univpm.gameon.viewmodels.RegisterViewModel
@@ -91,3 +93,98 @@ fun RegisterScreen(navController: NavController) {
         }
     }
 }
+
+
+@Composable
+fun RegisterScreenContent(
+    name: String,
+    cognome: String,
+    email: String,
+    codiceFiscale: String,
+    password: String,
+    onNameChange: (String) -> Unit,
+    onCognomeChange: (String) -> Unit,
+    onEmailChange: (String) -> Unit,
+    onCodiceFiscaleChange: (String) -> Unit,
+    onPasswordChange: (String) -> Unit,
+    onRegisterClick: () -> Unit,
+    errorMessage: String? = null
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text("Registrazione", style = MaterialTheme.typography.headlineMedium)
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        OutlinedTextField(
+            value = name,
+            onValueChange = onNameChange,
+            label = { Text("Nome") }
+        )
+
+        OutlinedTextField(
+            value = cognome,
+            onValueChange = onCognomeChange,
+            label = { Text("Cognome") }
+        )
+
+        OutlinedTextField(
+            value = email,
+            onValueChange = onEmailChange,
+            label = { Text("Email") }
+        )
+
+        OutlinedTextField(
+            value = codiceFiscale,
+            onValueChange = onCodiceFiscaleChange,
+            label = { Text("Codice Fiscale") }
+        )
+
+        OutlinedTextField(
+            value = password,
+            onValueChange = onPasswordChange,
+            label = { Text("Password") },
+            visualTransformation = PasswordVisualTransformation()
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Button(onClick = onRegisterClick) {
+            Text("Registrati")
+        }
+
+        errorMessage?.let {
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = it,
+                color = MaterialTheme.colorScheme.error,
+                style = MaterialTheme.typography.bodyMedium
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun RegisterScreenContentPreview() {
+    RegisterScreenContent(
+        name = "Mario",
+        cognome = "Rossi",
+        email = "mario.rossi@example.com",
+        codiceFiscale = "MRARSS99A01H501Z",
+        password = "password123",
+        onNameChange = {},
+        onCognomeChange = {},
+        onEmailChange = {},
+        onCodiceFiscaleChange = {},
+        onPasswordChange = {},
+        onRegisterClick = {},
+        errorMessage = "Email già registrata"
+    )
+}
+
