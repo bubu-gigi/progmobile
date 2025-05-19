@@ -59,22 +59,13 @@ class UserDaoImpl : UserDao {
         }
     }
 
-    override suspend fun deleteUser(email: String): Boolean {
+    override suspend fun deleteUser(id: String): Boolean {
         return try {
-            val snapshot = usersCollection
-                .whereEqualTo("email", email)
-                .limit(1)
-                .get()
-                .await()
-            if (!snapshot.isEmpty) {
-                val docId = snapshot.documents[0].id
-                usersCollection.document(docId).delete().await()
-                true
-            } else {
-                false
-            }
+            usersCollection.document(id).delete().await()
+            true
         } catch (e: Exception) {
             false
         }
     }
+
 }

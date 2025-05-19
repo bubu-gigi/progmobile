@@ -14,9 +14,9 @@ import com.univpm.gameon.viewmodels.AuthViewModel
 
 @Composable
 fun EditProfileScreen(navController: NavController) {
-    val viewModel: AuthViewModel = hiltViewModel()
+    val authViewModel: AuthViewModel = hiltViewModel()
 
-    val currentUser by viewModel.currentUser
+    val currentUser by authViewModel.currentUser
 
     var userId by rememberSaveable { mutableStateOf("") }
     var name by rememberSaveable { mutableStateOf("") }
@@ -25,7 +25,7 @@ fun EditProfileScreen(navController: NavController) {
     var codiceFiscale by rememberSaveable { mutableStateOf("") }
     var password by rememberSaveable { mutableStateOf("") }
 
-    LaunchedEffect(Unit) { viewModel.loadCurrentUser() }
+    LaunchedEffect(Unit) { authViewModel.loadCurrentUser() }
 
     LaunchedEffect(currentUser) {
         currentUser?.let {
@@ -54,12 +54,12 @@ fun EditProfileScreen(navController: NavController) {
         onActionClick = {
             val updatedUser = User(userId, name, cognome, email, codiceFiscale, password)
             Log.d("AuthViewModel", "Id ${updatedUser}")
-            viewModel.updateProfile(userId, updatedUser)
+            authViewModel.updateProfile(userId, updatedUser)
         },
-        errorMessage = viewModel.authState.value?.takeIf { it.startsWith("FAILED") }
+        errorMessage = authViewModel.authState.value?.takeIf { it.startsWith("FAILED") }
     )
 
-    if (viewModel.authState.value == "UPDATED") {
+    if (authViewModel.authState.value == "UPDATED") {
         LaunchedEffect(Unit) {
             navController.popBackStack()
         }

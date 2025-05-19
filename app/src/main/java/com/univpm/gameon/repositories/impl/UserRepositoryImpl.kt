@@ -20,11 +20,11 @@ class UserRepositoryImpl(private val userDao: UserDao) : UserRepository {
     }
 
     override suspend fun updateUser(id: String, user: User): Boolean {
-        Log.d("AuthViewModel", "Id3 ${user}")
         return userDao.updateUser(id, user)
     }
 
-    override suspend fun removeUser(email: String): Boolean {
-        return userDao.deleteUser(email)
+    override suspend fun removeUser(id: String): Boolean {
+        Log.d("UserRepositoryImpl", "Id $id")
+        return userDao.deleteUser(id)
     }
 }

@@ -42,11 +42,10 @@ class AuthViewModel @Inject constructor(
             try {
                 Log.d("RegisterScreen", "Email: '$email' Password: '$password'")
                 auth.signInWithEmailAndPassword(email, password).await()
-                println("DOPO FB")
                 val user = userRepository.getUserByEmail(email)
-                println(user)
                 UserSessionManager.isLoggedIn = true
                 UserSessionManager.userRole = user?.ruolo
+                UserSessionManager.userId = user?.id
                 Log.d("AuthViewModel", "Login riuscito per ${user?.email}")
                 Log.d("AuthViewModel", "Id ${user?.id}")
                 Log.d("AuthViewModel", "Ruolo utente: ${user?.ruolo}")
@@ -83,24 +82,25 @@ class AuthViewModel @Inject constructor(
         destination.value = LoginScreenRoute
     }
 
-    fun deleteAccount() {
-        viewModelScope.launch {
-            try {
-                userRepository.removeUser(auth.currentUser?.email ?: "")
-                auth.currentUser?.delete()?.await()
-                logout()
-            } catch (e: Exception) {
-                authState.value = "FAILED: ${e.message}"
-            }
-        }
-    }
-
     fun updateProfile(id: String, updatedUser: User) {
         viewModelScope.launch {
             try {
                 Log.d("AuthViewModel", "Id ${updatedUser}")
                 userRepository.updateUser(id, updatedUser)
                 authState.value = "UPDATED"
+            } catch (e: Exception) {
+                authState.value = "FAILED: ${e.message}"
+            }
+        }
+    }
+
+    fun deleteAccount() {
+        viewModelScope.launch {
+            try {
+                Log.d("AuthViewModel", "Current user ${UserSessionManager.userId}")
+                userRepository.removeUser(UserSessionManager.userId ?: "")
+                auth.currentUser?.delete()?.await()
+                logout()
             } catch (e: Exception) {
                 authState.value = "FAILED: ${e.message}"
             }
