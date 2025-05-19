@@ -10,8 +10,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.univpm.gameon.core.LoginScreenRoute
+import com.univpm.gameon.core.checkFieldLength
+import com.univpm.gameon.core.validateCodiceFiscale
+import com.univpm.gameon.core.validateEmail
+import com.univpm.gameon.core.validatePassword
 import com.univpm.gameon.data.collections.User
 import com.univpm.gameon.viewmodels.RegisterViewModel
 
@@ -24,6 +27,12 @@ fun RegisterScreen(navController: NavController) {
     var email by remember { mutableStateOf("") }
     var codiceFiscale by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+
+    var nameError by remember { mutableStateOf<String?>(null) }
+    var cognomeError by remember { mutableStateOf<String?>(null) }
+    var emailError by remember { mutableStateOf<String?>(null) }
+    var cfError by remember { mutableStateOf<String?>(null) }
+    var passwordError by remember { mutableStateOf<String?>(null) }
 
     Column(
         modifier = Modifier
@@ -41,24 +50,36 @@ fun RegisterScreen(navController: NavController) {
             onValueChange = { name = it },
             label = { Text("Nome") }
         )
+        nameError?.let {
+            Text(it, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall)
+        }
 
         OutlinedTextField(
             value = cognome,
             onValueChange = { cognome = it },
             label = { Text("Cognome") }
         )
+        cognomeError?.let {
+            Text(it, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall)
+        }
 
         OutlinedTextField(
             value = email,
             onValueChange = { email = it },
             label = { Text("Email") }
         )
+        emailError?.let {
+            Text(it, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall)
+        }
 
         OutlinedTextField(
             value = codiceFiscale,
             onValueChange = { codiceFiscale = it },
             label = { Text("Codice Fiscale") }
         )
+        cfError?.let {
+            Text(it, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall)
+        }
 
         OutlinedTextField(
             value = password,
@@ -66,20 +87,32 @@ fun RegisterScreen(navController: NavController) {
             label = { Text("Password") },
             visualTransformation = PasswordVisualTransformation()
         )
-
-        Spacer(modifier = Modifier.height(8.dp))
+        passwordError?.let {
+            Text(it, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall)
+        }
 
         Spacer(modifier = Modifier.height(16.dp))
 
         Button(onClick = {
-            val user = User(
-                name = name,
-                cognome = cognome,
-                email = email,
-                codiceFiscale = codiceFiscale,
-                password = password
-            )
-            registerViewModel.registerUser(user)
+            // Reset errori
+            nameError = checkFieldLength(name, 2, "Nome")
+            cognomeError = checkFieldLength(cognome, 2, "Cognome")
+            emailError = validateEmail(email)
+            cfError = validateCodiceFiscale(codiceFiscale)
+            passwordError = validatePassword(password)
+
+            val hasErrors = listOf(nameError, cognomeError, emailError, cfError, passwordError).any { it != null }
+
+            if (!hasErrors) {
+                val user = User(
+                    name = name,
+                    cognome = cognome,
+                    email = email,
+                    codiceFiscale = codiceFiscale,
+                    password = password
+                )
+                registerViewModel.registerUser(user)
+            }
         }) {
             Text("Registrati")
         }

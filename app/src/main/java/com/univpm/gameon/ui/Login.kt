@@ -12,13 +12,18 @@ import androidx.navigation.NavController
 import com.univpm.gameon.core.RegisterScreenRoute
 import com.univpm.gameon.viewmodels.LoginViewModel
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.compose.rememberNavController
+import com.univpm.gameon.core.validateEmail
+import com.univpm.gameon.core.validatePassword
 
 @Composable
 fun LoginScreen(navController: NavController) {
     val loginViewModel: LoginViewModel = hiltViewModel()
+
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+
+    var emailError by remember { mutableStateOf<String?>(null) }
+    var passwordError by remember { mutableStateOf<String?>(null) }
 
     LaunchedEffect(loginViewModel.destination.value) {
         loginViewModel.destination.value?.let {
@@ -41,6 +46,9 @@ fun LoginScreen(navController: NavController) {
             onValueChange = { email = it },
             label = { Text("Email") }
         )
+        emailError?.let {
+            Text(text = it, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall)
+        }
 
         OutlinedTextField(
             value = password,
@@ -48,11 +56,22 @@ fun LoginScreen(navController: NavController) {
             label = { Text("Password") },
             visualTransformation = PasswordVisualTransformation()
         )
+        passwordError?.let {
+            Text(text = it, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall)
+        }
 
         Spacer(modifier = Modifier.height(16.dp))
 
         Button(onClick = {
-            loginViewModel.login(email, password)
+            val emailValidation = validateEmail(email)
+            val passwordValidation = validatePassword(password)
+
+            emailError = emailValidation
+            passwordError = passwordValidation
+
+            if (emailValidation == null && passwordValidation == null) {
+                loginViewModel.login(email, password)
+            }
         }) {
             Text("Login")
         }
