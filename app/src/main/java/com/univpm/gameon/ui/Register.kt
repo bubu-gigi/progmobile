@@ -50,7 +50,7 @@ fun RegisterScreen(navController: NavController) {
             val hasErrors = listOf(nameError, cognomeError, emailError, cfError, passwordError).any { it != null }
 
             if (!hasErrors) {
-                val user = User(name, cognome, email, codiceFiscale, password)
+                val user = User("", name, cognome, email, codiceFiscale, password)
                 authViewModel.register(user)
             }
         },

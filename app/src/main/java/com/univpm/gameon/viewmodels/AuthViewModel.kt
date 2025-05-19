@@ -40,6 +40,7 @@ class AuthViewModel @Inject constructor(
     fun login(email: String, password: String) {
         viewModelScope.launch {
             try {
+                Log.d("RegisterScreen", "Email: '$email' Password: '$password'")
                 auth.signInWithEmailAndPassword(email, password).await()
                 println("DOPO FB")
                 val user = userRepository.getUserByEmail(email)
@@ -47,6 +48,7 @@ class AuthViewModel @Inject constructor(
                 UserSessionManager.isLoggedIn = true
                 UserSessionManager.userRole = user?.ruolo
                 Log.d("AuthViewModel", "Login riuscito per ${user?.email}")
+                Log.d("AuthViewModel", "Id ${user?.id}")
                 Log.d("AuthViewModel", "Ruolo utente: ${user?.ruolo}")
                 Log.d("AuthViewModel", "Destinazione: ${destination.value}")
                 destination.value = when (user?.ruolo) {
@@ -65,9 +67,8 @@ class AuthViewModel @Inject constructor(
     fun register(user: User) {
         viewModelScope.launch {
             try {
-                val result = auth.createUserWithEmailAndPassword(user.email, user.password).await()
-                val uid = result.user?.uid ?: throw Exception("UID non disponibile")
-                userRepository.saveUser(user.copy()) // salva su Firestore
+                auth.createUserWithEmailAndPassword(user.email, user.password).await()
+                userRepository.saveUser(user.copy())
                 authState.value = "SUCCESS"
             } catch (e: Exception) {
                 authState.value = "FAILED: ${e.message}"
@@ -94,11 +95,11 @@ class AuthViewModel @Inject constructor(
         }
     }
 
-    fun updateProfile(updatedUser: User) {
+    fun updateProfile(id: String, updatedUser: User) {
         viewModelScope.launch {
             try {
-                val uid = auth.currentUser?.uid ?: return@launch
-                userRepository.updateUser(uid, updatedUser)
+                Log.d("AuthViewModel", "Id ${updatedUser}")
+                userRepository.updateUser(id, updatedUser)
                 authState.value = "UPDATED"
             } catch (e: Exception) {
                 authState.value = "FAILED: ${e.message}"

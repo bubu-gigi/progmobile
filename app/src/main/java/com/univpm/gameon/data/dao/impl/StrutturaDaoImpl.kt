@@ -21,7 +21,9 @@ class StrutturaDaoImpl : StrutturaDao {
 
     override suspend fun addStruttura(struttura: Struttura): Boolean {
         return try {
-            struttureCollection.add(struttura).await()
+            val docRef = struttureCollection.document()
+            val userWithId = struttura.copy(id = docRef.id)
+            docRef.set(userWithId).await()
             true
         } catch (e: Exception) {
             false

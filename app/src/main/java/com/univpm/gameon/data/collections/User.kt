@@ -3,6 +3,7 @@ package com.univpm.gameon.data.collections
 import com.univpm.gameon.data.collections.enums.UserRuolo
 
 data class User(
+    val id: String = "",
     val name: String = "",
     val cognome: String = "",
     val email: String = "",

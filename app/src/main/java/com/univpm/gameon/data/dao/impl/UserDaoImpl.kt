@@ -1,5 +1,6 @@
 package com.univpm.gameon.data.dao.impl
 
+import android.util.Log
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.univpm.gameon.data.collections.User
@@ -38,7 +39,9 @@ class UserDaoImpl : UserDao {
 
     override suspend fun addUser(user: User): Boolean {
         return try {
-            usersCollection.add(user).await()
+            val docRef = usersCollection.document()
+            val userWithId = user.copy(id = docRef.id)
+            docRef.set(userWithId).await()
             true
         } catch (e: Exception) {
             false
@@ -47,6 +50,8 @@ class UserDaoImpl : UserDao {
 
     override suspend fun updateUser(id: String, user: User): Boolean {
         return try {
+            Log.d("AuthViewModel", "Id4 ${user.id}")
+            Log.d("AuthViewModel", "Id4 ${user}")
             usersCollection.document(id).set(user).await()
             true
         } catch (e: Exception) {

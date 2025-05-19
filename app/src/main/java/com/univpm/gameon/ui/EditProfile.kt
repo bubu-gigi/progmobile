@@ -1,5 +1,6 @@
 package com.univpm.gameon.ui
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -16,6 +17,8 @@ fun EditProfileScreen(navController: NavController) {
     val viewModel: AuthViewModel = hiltViewModel()
 
     val currentUser by viewModel.currentUser
+
+    var userId by rememberSaveable { mutableStateOf("") }
     var name by rememberSaveable { mutableStateOf("") }
     var cognome by rememberSaveable { mutableStateOf("") }
     var email by rememberSaveable { mutableStateOf("") }
@@ -26,6 +29,7 @@ fun EditProfileScreen(navController: NavController) {
 
     LaunchedEffect(currentUser) {
         currentUser?.let {
+            userId = it.id
             name = it.name
             cognome = it.cognome
             email = it.email
@@ -48,8 +52,9 @@ fun EditProfileScreen(navController: NavController) {
         onPasswordChange = { password = it },
         actionButtonText = "Salva Modifiche",
         onActionClick = {
-            val updatedUser = User(name, cognome, email, codiceFiscale, password)
-            viewModel.updateProfile(updatedUser)
+            val updatedUser = User(userId, name, cognome, email, codiceFiscale, password)
+            Log.d("AuthViewModel", "Id ${updatedUser}")
+            viewModel.updateProfile(userId, updatedUser)
         },
         errorMessage = viewModel.authState.value?.takeIf { it.startsWith("FAILED") }
     )

@@ -33,7 +33,9 @@ class CampoDaoImpl : CampoDao {
 
     override suspend fun addCampo(campo: Campo): Boolean {
         return try {
-            campiCollection.add(campo).await()
+            val docRef = campiCollection.document()
+            val userWithId = campo.copy(id = docRef.id)
+            docRef.set(userWithId).await()
             true
         } catch (e: Exception) {
             false

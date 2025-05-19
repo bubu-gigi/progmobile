@@ -1,5 +1,6 @@
 package com.univpm.gameon.repositories.impl
 
+import android.util.Log
 import com.univpm.gameon.data.collections.User
 import com.univpm.gameon.data.dao.interfaces.UserDao
 import com.univpm.gameon.repositories.UserRepository
@@ -19,6 +20,7 @@ class UserRepositoryImpl(private val userDao: UserDao) : UserRepository {
     }
 
     override suspend fun updateUser(id: String, user: User): Boolean {
+        Log.d("AuthViewModel", "Id3 ${user}")
         return userDao.updateUser(id, user)
     }
 

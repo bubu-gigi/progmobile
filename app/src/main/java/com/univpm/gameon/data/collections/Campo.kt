@@ -4,6 +4,7 @@ import com.univpm.gameon.data.collections.enums.Sport
 import com.univpm.gameon.data.collections.enums.TipologiaTerreno
 
 data class Campo(
+    val id: String = "",
     val nomeCampo: String = "",
     val sport: Sport,
     val tipologiaTerreno: TipologiaTerreno = TipologiaTerreno.ERBA_SINTETICA,

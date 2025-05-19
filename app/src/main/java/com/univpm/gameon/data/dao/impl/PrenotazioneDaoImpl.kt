@@ -45,7 +45,9 @@ class PrenotazioneDaoImpl : PrenotazioneDao {
 
     override suspend fun addPrenotazione(prenotazione: Prenotazione): Boolean {
         return try {
-            prenotazioniCollection.add(prenotazione).await()
+            val docRef = prenotazioniCollection.document()
+            val userWithId = prenotazione.copy(id = docRef.id)
+            docRef.set(userWithId).await()
             true
         } catch (e: Exception) {
             false

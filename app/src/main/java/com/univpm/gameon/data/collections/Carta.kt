@@ -3,6 +3,7 @@ package com.univpm.gameon.data.collections
 import com.univpm.gameon.data.collections.enums.CardProvider
 
 data class Carta(
+    val id: String = "",
     val userId: String = "",
     val cardHolderName: String = "",
     val cardNumber: String = "",
