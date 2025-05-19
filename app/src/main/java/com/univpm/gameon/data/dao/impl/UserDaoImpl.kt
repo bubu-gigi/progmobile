@@ -19,6 +19,23 @@ class UserDaoImpl : UserDao {
         }
     }
 
+    override suspend fun getUserByEmail(email: String): User? {
+        return try {
+            val snapshot = usersCollection
+                .whereEqualTo("email", email)
+                .limit(1)
+                .get()
+                .await()
+            if (!snapshot.isEmpty) {
+                snapshot.documents[0].toObject(User::class.java)
+            } else {
+                null
+            }
+        } catch (e: Exception) {
+            null
+        }
+    }
+
     override suspend fun addUser(user: User): Boolean {
         return try {
             usersCollection.add(user).await()
@@ -37,10 +54,20 @@ class UserDaoImpl : UserDao {
         }
     }
 
-    override suspend fun deleteUser(id: String): Boolean {
+    override suspend fun deleteUser(email: String): Boolean {
         return try {
-            usersCollection.document(id).delete().await()
-            true
+            val snapshot = usersCollection
+                .whereEqualTo("email", email)
+                .limit(1)
+                .get()
+                .await()
+            if (!snapshot.isEmpty) {
+                val docId = snapshot.documents[0].id
+                usersCollection.document(docId).delete().await()
+                true
+            } else {
+                false
+            }
         } catch (e: Exception) {
             false
         }

@@ -8,7 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.univpm.gameon.core.LoginScreenRoute
 import com.univpm.gameon.core.checkFieldLength
@@ -16,11 +16,11 @@ import com.univpm.gameon.core.validateCodiceFiscale
 import com.univpm.gameon.core.validateEmail
 import com.univpm.gameon.core.validatePassword
 import com.univpm.gameon.data.collections.User
-import com.univpm.gameon.viewmodels.RegisterViewModel
+import com.univpm.gameon.viewmodels.AuthViewModel
 
 @Composable
 fun RegisterScreen(navController: NavController) {
-    val registerViewModel: RegisterViewModel = viewModel()
+    val authViewModel: AuthViewModel = hiltViewModel()
 
     var name by remember { mutableStateOf("") }
     var cognome by remember { mutableStateOf("") }
@@ -111,13 +111,13 @@ fun RegisterScreen(navController: NavController) {
                     codiceFiscale = codiceFiscale,
                     password = password
                 )
-                registerViewModel.registerUser(user)
+                authViewModel.register(user)
             }
         }) {
             Text("Registrati")
         }
 
-        registerViewModel.registrationState.value?.let {
+        authViewModel.authState.value?.let {
             if (it == "SUCCESS") {
                 navController.navigate(LoginScreenRoute)
             } else {

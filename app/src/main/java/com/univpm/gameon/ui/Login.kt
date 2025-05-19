@@ -8,16 +8,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.univpm.gameon.core.RegisterScreenRoute
-import com.univpm.gameon.viewmodels.LoginViewModel
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.univpm.gameon.core.validateEmail
 import com.univpm.gameon.core.validatePassword
+import com.univpm.gameon.viewmodels.AuthViewModel
 
 @Composable
 fun LoginScreen(navController: NavController) {
-    val loginViewModel: LoginViewModel = hiltViewModel()
+    val authViewModel: AuthViewModel = hiltViewModel()
 
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -25,10 +25,10 @@ fun LoginScreen(navController: NavController) {
     var emailError by remember { mutableStateOf<String?>(null) }
     var passwordError by remember { mutableStateOf<String?>(null) }
 
-    LaunchedEffect(loginViewModel.destination.value) {
-        loginViewModel.destination.value?.let {
+    LaunchedEffect(authViewModel.destination.value) {
+        authViewModel.destination.value?.let {
             navController.navigate(it)
-            loginViewModel.destination.value = null
+            authViewModel.destination.value = null
         }
     }
 
@@ -70,7 +70,7 @@ fun LoginScreen(navController: NavController) {
             passwordError = passwordValidation
 
             if (emailValidation == null && passwordValidation == null) {
-                loginViewModel.login(email, password)
+                authViewModel.login(email, password)
             }
         }) {
             Text("Login")

@@ -10,6 +10,10 @@ class UserRepositoryImpl(private val userDao: UserDao) : UserRepository {
         return userDao.getUserById(id)
     }
 
+    override suspend fun getUserByEmail(email: String): User? {
+        return userDao.getUserByEmail(email)
+    }
+
     override suspend fun saveUser(user: User): Boolean {
         return userDao.addUser(user)
     }
@@ -18,7 +22,7 @@ class UserRepositoryImpl(private val userDao: UserDao) : UserRepository {
         return userDao.updateUser(id, user)
     }
 
-    override suspend fun removeUser(id: String): Boolean {
-        return userDao.deleteUser(id)
+    override suspend fun removeUser(email: String): Boolean {
+        return userDao.deleteUser(email)
     }
 }
