@@ -36,11 +36,11 @@ fun AppNavHost() {
         }
 
         composable<GiocatoreHomeScreenRoute> {
-            GiocatoreHomeScreen()
+            GiocatoreHomeScreen(navController)
         }
 
         composable<AdminHomeScreenRoute> {
-            AdminHomeScreen()
+            AdminHomeScreen(navController)
         }
     }
 }

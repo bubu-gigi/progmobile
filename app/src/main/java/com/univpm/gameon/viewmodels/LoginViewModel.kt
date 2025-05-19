@@ -8,6 +8,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.univpm.gameon.core.AdminHomeScreenRoute
 import com.univpm.gameon.core.GiocatoreHomeScreenRoute
 import com.univpm.gameon.core.LoginScreenRoute
+import com.univpm.gameon.core.UserSessionManager
 import com.univpm.gameon.data.collections.enums.UserRuolo
 import com.univpm.gameon.repositories.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -32,6 +33,9 @@ class LoginViewModel @Inject constructor(
                 val uid = auth.currentUser?.uid ?: throw Exception("UID non disponibile")
 
                 val user = userRepository.getUserById(uid)
+
+                UserSessionManager.isLoggedIn = true
+                UserSessionManager.userRole = user?.ruolo
 
                 destination.value = when (user?.ruolo) {
                     UserRuolo.Admin -> AdminHomeScreenRoute
