@@ -5,6 +5,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.univpm.gameon.ui.AdminHomeScreen
+import com.univpm.gameon.ui.EditProfileScreen
 import com.univpm.gameon.ui.GiocatoreHomeScreen
 import com.univpm.gameon.ui.LoginScreen
 import com.univpm.gameon.ui.RegisterScreen
@@ -21,6 +22,9 @@ object GiocatoreHomeScreenRoute
 
 @Serializable
 object AdminHomeScreenRoute
+
+@Serializable
+object EditProfileScreenRoute
 
 @Composable
 fun AppNavHost() {
@@ -41,6 +45,10 @@ fun AppNavHost() {
 
         composable<AdminHomeScreenRoute> {
             AdminHomeScreen(navController)
+        }
+
+        composable<EditProfileScreenRoute> {
+            EditProfileScreen(navController)
         }
     }
 }

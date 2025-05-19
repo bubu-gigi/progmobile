@@ -9,6 +9,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.univpm.gameon.core.EditProfileScreenRoute
 import com.univpm.gameon.core.checkAccess
 import com.univpm.gameon.core.logout
 
@@ -26,6 +27,12 @@ fun GiocatoreHomeScreen(navController: NavController) {
 
         Button(onClick = { logout(navController) }) {
             Text("Logout")
+        }
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        Button(onClick = { navController.navigate(EditProfileScreenRoute) }) {
+            Text("Modifica Profilo")
         }
     }
 }

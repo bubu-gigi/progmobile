@@ -1,5 +1,6 @@
 package com.univpm.gameon.viewmodels
 
+import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -27,18 +28,33 @@ class AuthViewModel @Inject constructor(
     var authState: MutableState<String?> = mutableStateOf(null)
     val destination: MutableState<Any?> = mutableStateOf(null)
 
+    val currentUser: MutableState<User?> = mutableStateOf(null)
+
+    fun loadCurrentUser() {
+        viewModelScope.launch {
+            val email = auth.currentUser?.email ?: return@launch
+            currentUser.value = userRepository.getUserByEmail(email)
+        }
+    }
+
     fun login(email: String, password: String) {
         viewModelScope.launch {
             try {
                 auth.signInWithEmailAndPassword(email, password).await()
+                println("DOPO FB")
                 val user = userRepository.getUserByEmail(email)
+                println(user)
                 UserSessionManager.isLoggedIn = true
                 UserSessionManager.userRole = user?.ruolo
+                Log.d("AuthViewModel", "Login riuscito per ${user?.email}")
+                Log.d("AuthViewModel", "Ruolo utente: ${user?.ruolo}")
+                Log.d("AuthViewModel", "Destinazione: ${destination.value}")
                 destination.value = when (user?.ruolo) {
                     UserRuolo.Admin -> AdminHomeScreenRoute
                     UserRuolo.Giocatore -> GiocatoreHomeScreenRoute
                     else -> LoginScreenRoute
                 }
+                println(destination.value)
                 authState.value = "SUCCESS"
             } catch (e: Exception) {
                 authState.value = "FAILED: ${e.message}"
