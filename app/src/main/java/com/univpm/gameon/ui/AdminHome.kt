@@ -3,6 +3,8 @@ package com.univpm.gameon.ui
 import android.R.attr.fontStyle
 import android.graphics.fonts.FontStyle
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.material3.*
@@ -18,9 +20,11 @@ import com.univpm.gameon.core.checkAccess
 import com.univpm.gameon.core.logout
 import com.univpm.gameon.data.collections.enums.UserRuolo
 import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -78,44 +82,134 @@ fun AdminHomeScreen(navController: NavController) {
 
 @Composable
 fun AdminHomeContent(onLogout: () -> Unit) {
-    Column(
+    Box(
         modifier = Modifier
             .fillMaxSize()
-            .outerBorder(color = Color.Blue, strokeWidth = 9.dp, cornerRadius = 0.dp)
-            .padding(16.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        // SFONDO IMMAGINE
         Image(
-            painter = painterResource(id = R.drawable.ok),
-            contentDescription = "Immagine di accesso",
-            modifier = Modifier
-                .size(150.dp)
-                .outerBorder(color = Color.Blue, strokeWidth = 165.dp, cornerRadius = 0.dp),
+            painter = painterResource(id = R.drawable.sfondo),
+            contentDescription = "Sfondo",
+            modifier = Modifier.fillMaxSize(),
             contentScale = ContentScale.Crop
         )
 
-        Spacer(modifier = Modifier.height(100.dp))
-        Text("Benvenuto, Admin!",
-            style = MaterialTheme.typography.headlineMedium.copy(
-                color = Color.Blue,
-                fontWeight = FontWeight.Bold,
-                fontSize = 28.sp,       // puoi cambiare la dimensione
-                letterSpacing = 2.sp    // spaziatura tra le lettere
-            ))
+        // CONTENUTO SOPRA LO SFONDO
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .outerBorder(color = Color(0xFFC67C00), strokeWidth = 9.dp, cornerRadius = 0.dp)
+                .padding(16.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                "GameON!",
+                style = MaterialTheme.typography.headlineMedium.copy(
+                    color = Color.Black,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 28.sp,
+                    letterSpacing = 2.sp
+                )
+            )
 
-        Spacer(modifier = Modifier.height(80.dp))
+            Spacer(modifier = Modifier.height(50.dp))
 
-        Button(
-            onClick = onLogout,
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Color.Red, // rosso
-                contentColor = Color.White           // colore del testo
-        )) {
-            Text("Logout")
+            Image(
+                painter = painterResource(id = R.drawable.ok),
+                contentDescription = "Immagine di accesso",
+                modifier = Modifier
+                    .size(150.dp),
+                contentScale = ContentScale.Fit
+            )
+
+            Spacer(modifier = Modifier.height(50.dp))
+
+            Text(
+                "Benvenuto, Admin!",
+                style = MaterialTheme.typography.headlineMedium.copy(
+                    color = Color.Black,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 28.sp,
+                    letterSpacing = 2.sp
+                )
+            )
+
+            Spacer(modifier = Modifier.height(50.dp))
+
+            Button(
+                onClick = { /* Azione quando il bottone viene premuto */ },
+                modifier = Modifier
+                    .padding(8.dp)
+                    .size(width = 190.dp, height = 50.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFFC67C00),
+                    contentColor = Color.White
+                )
+            ) {
+                Text(text = "Gestione Account")
+            }
+
+            Button(
+                onClick = { /* Azione quando il bottone viene premuto */ },
+                modifier = Modifier
+                    .padding(8.dp)
+                    .size(width = 190.dp, height = 50.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFFC67C00),
+                    contentColor = Color.White
+                )
+            ) {
+                Text(text = "Gestione Prenotazioni")
+            }
+
+            Button(
+                onClick = { /* Azione quando il bottone viene premuto */ },
+                modifier = Modifier
+                    .padding(8.dp)
+                    .size(width = 190.dp, height = 50.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFFC67C00),
+                    contentColor = Color.White
+                )
+            ) {
+                Text(text = "Visualizza Messaggi")
+            }
+
+            Spacer(modifier = Modifier.height(50.dp))
+
+
+
+
+            Box(
+                modifier = Modifier
+                    .padding(16.dp)
+                    .shadow(
+                        elevation = 10.dp,
+                        shape = MaterialTheme.shapes.medium,
+                        ambientColor = Color.Black,
+                        spotColor = Color.Gray
+                    )
+                    .background(
+                        brush = Brush.verticalGradient(
+                            colors = listOf(Color(0xFFF44336), Color(0xFFb71c1c)) // gradiente rosso scuro
+                        ),
+                        shape = MaterialTheme.shapes.medium
+                    )
+                    .clickable(onClick = onLogout)
+                    .padding(vertical = 15.dp, horizontal = 32.dp)
+            ) {
+                Text(
+                    text = "Logout",
+                    color = Color.White,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            }
         }
     }
 }
+
 
 @Preview(showBackground = true)
 @Composable
