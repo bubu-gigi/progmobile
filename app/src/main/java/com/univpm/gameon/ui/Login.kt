@@ -6,6 +6,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.toLowerCase
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -14,6 +15,7 @@ import com.univpm.gameon.core.RegisterScreenRoute
 import com.univpm.gameon.core.validateEmail
 import com.univpm.gameon.core.validatePassword
 import com.univpm.gameon.viewmodels.AuthViewModel
+import java.util.Locale
 
 @Composable
 fun LoginScreen(navController: NavController) {
@@ -63,14 +65,14 @@ fun LoginScreen(navController: NavController) {
         Spacer(modifier = Modifier.height(16.dp))
 
         Button(onClick = {
-            val emailValidation = validateEmail(email)
+            val emailValidation = null
             val passwordValidation = validatePassword(password)
 
             emailError = emailValidation
             passwordError = passwordValidation
 
             if (emailValidation == null && passwordValidation == null) {
-                authViewModel.login(email, password)
+                authViewModel.login(email.trim().toLowerCase(), password.trim())
             }
         }) {
             Text("Login")

@@ -85,6 +85,8 @@ class AuthViewModel @Inject constructor(
     fun updateProfile(id: String, updatedUser: User) {
         viewModelScope.launch {
             try {
+                auth.currentUser?.verifyBeforeUpdateEmail(updatedUser.email)?.await()
+                auth.currentUser?.updatePassword(updatedUser.password)?.await()
                 Log.d("AuthViewModel", "Id ${updatedUser}")
                 userRepository.updateUser(id, updatedUser)
                 authState.value = "UPDATED"
