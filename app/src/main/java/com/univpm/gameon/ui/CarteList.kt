@@ -1,6 +1,5 @@
 package com.univpm.gameon.ui
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -11,7 +10,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.univpm.gameon.core.UserSessionManager
-import com.univpm.gameon.core.DettaglioCartaScreenRoute
 import com.univpm.gameon.core.NuovaCartaScreenRoute
 import com.univpm.gameon.data.collections.Carta
 import com.univpm.gameon.viewmodels.CarteViewModel
@@ -52,8 +50,10 @@ fun CarteListScreen(navController: NavController) {
             items(carte) { carta ->
                 CartaItem(
                     carta = carta,
-                    onClick = {
-                        navController.navigate(DettaglioCartaScreenRoute(carta.id))
+                    onDelete = {
+                        userId?.let { uid ->
+                            carteViewModel.eliminaCarta(carta.id, uid)
+                        }
                     }
                 )
             }
@@ -74,18 +74,35 @@ fun CarteListScreen(navController: NavController) {
 }
 
 @Composable
-fun CartaItem(carta: Carta, onClick: () -> Unit) {
+fun CartaItem(carta: Carta, onDelete: () -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 4.dp)
-            .clickable(onClick = onClick),
+            .padding(vertical = 4.dp),
         elevation = CardDefaults.cardElevation(4.dp)
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            Text(text = carta.cardHolderName, style = MaterialTheme.typography.titleMedium)
-            Text(text = "**** **** **** ${carta.cardNumber.takeLast(4)}")
-            Text(text = "${carta.expirationMonth}/${carta.expirationYear}")
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Column(modifier = Modifier.weight(1f)) {
+                Text(text = carta.cardHolderName, style = MaterialTheme.typography.titleMedium)
+                Text(text = "**** **** **** ${carta.cardNumber.takeLast(4)}")
+                Text(text = "${carta.expirationMonth}/${carta.expirationYear}")
+            }
+
+            Button(
+                onClick = onDelete,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.error,
+                    contentColor = MaterialTheme.colorScheme.onError
+                ),
+                modifier = Modifier.padding(start = 16.dp)
+            ) {
+                Text("Elimina")
+            }
         }
     }
 }
