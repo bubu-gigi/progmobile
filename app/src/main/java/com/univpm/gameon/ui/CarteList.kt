@@ -1,15 +1,23 @@
 package com.univpm.gameon.ui
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.univpm.gameon.R
 import com.univpm.gameon.core.UserSessionManager
 import com.univpm.gameon.core.NuovaCartaScreenRoute
 import com.univpm.gameon.data.collections.Carta
@@ -17,6 +25,7 @@ import com.univpm.gameon.viewmodels.CarteViewModel
 
 @Composable
 fun CarteListScreen(navController: NavController) {
+
     val carteViewModel: CarteViewModel = hiltViewModel()
     val userId = UserSessionManager.userId
 
@@ -114,14 +123,28 @@ fun CarteListContent(
     errore: String?,
     onDelete: (String) -> Unit,
     onAdd: () -> Unit
-) {
+) { Box(
+    modifier = Modifier
+        .fillMaxSize()
+) {// SFONDO IMMAGINE
+    Image(
+        painter = painterResource(id = R.drawable.sfondo),
+        contentDescription = "Sfondo",
+        modifier = Modifier.fillMaxSize(),
+        contentScale = ContentScale.Crop
+    )
     Column(modifier = Modifier
         .fillMaxSize()
         .padding(16.dp)) {
 
         Text(
             text = "Le tue carte",
-            style = MaterialTheme.typography.headlineSmall
+            style = MaterialTheme.typography.headlineSmall.copy(
+                color = Color.Black,
+                fontWeight = FontWeight.Bold,
+                fontSize = 28.sp,
+                letterSpacing = 2.sp
+            )
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -146,11 +169,17 @@ fun CarteListContent(
 
         Button(
             onClick = onAdd,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth(),
+                    colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFFC67C00),
+            contentColor = Color.White
+        )
         ) {
             Text("Inserisci nuova carta")
         }
     }
+}
 }
 
 @Preview(showBackground = true)
