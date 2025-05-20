@@ -1,6 +1,7 @@
 package com.univpm.gameon.ui
 
 import androidx.compose.runtime.*
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.univpm.gameon.core.LoginScreenRoute
@@ -63,4 +64,66 @@ fun RegisterScreen(navController: NavController) {
             navController.navigate(LoginScreenRoute)
         }
     }
+}
+
+@Composable
+fun RegisterFormContent(
+    name: String,
+    cognome: String,
+    email: String,
+    codiceFiscale: String,
+    password: String,
+    nameError: String?,
+    cognomeError: String?,
+    emailError: String?,
+    cfError: String?,
+    passwordError: String?,
+    onNameChange: (String) -> Unit,
+    onCognomeChange: (String) -> Unit,
+    onEmailChange: (String) -> Unit,
+    onCodiceFiscaleChange: (String) -> Unit,
+    onPasswordChange: (String) -> Unit,
+    onRegisterClick: () -> Unit,
+    errorMessage: String?
+) {
+    RegisterEditProfileForm(
+        title = "Registrazione",
+        name = name,
+        cognome = cognome,
+        email = email,
+        codiceFiscale = codiceFiscale,
+        password = password,
+        onNameChange = onNameChange,
+        onCognomeChange = onCognomeChange,
+        onEmailChange = onEmailChange,
+        onCodiceFiscaleChange = onCodiceFiscaleChange,
+        onPasswordChange = onPasswordChange,
+        actionButtonText = "Registrati",
+        onActionClick = onRegisterClick,
+        errorMessage = errorMessage
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun RegisterFormContentPreview() {
+    RegisterFormContent(
+        name = "Mario",
+        cognome = "Rossi",
+        email = "mario.rossi@email.com",
+        codiceFiscale = "RSSMRA80A01H501U",
+        password = "password123",
+        nameError = null,
+        cognomeError = null,
+        emailError = null,
+        cfError = "Codice fiscale non valido",
+        passwordError = null,
+        onNameChange = {},
+        onCognomeChange = {},
+        onEmailChange = {},
+        onCodiceFiscaleChange = {},
+        onPasswordChange = {},
+        onRegisterClick = {},
+        errorMessage = null
+    )
 }

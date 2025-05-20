@@ -10,7 +10,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.univpm.gameon.core.CarteListScreenRoute
 import com.univpm.gameon.core.EditProfileScreenRoute
 import com.univpm.gameon.core.checkAccess
@@ -66,9 +65,56 @@ fun GiocatoreHomeScreen(navController: NavController) {
     }
 }
 
+@Composable
+fun GiocatoreHomeContent(
+    onLogout: () -> Unit,
+    onEditProfile: () -> Unit,
+    onGestioneCarte: () -> Unit,
+    onDeleteAccount: () -> Unit
+) {
+    Column(
+        modifier = Modifier.fillMaxSize().padding(16.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text("Benvenuto, Giocatore!", style = MaterialTheme.typography.headlineMedium)
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        Button(onClick = onLogout) {
+            Text("Logout")
+        }
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        Button(onClick = onEditProfile) {
+            Text("Modifica Profilo")
+        }
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        Button(onClick = onGestioneCarte) {
+            Text("Gestione Carte")
+        }
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        Button(
+            onClick = onDeleteAccount,
+            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
+        ) {
+            Text("Elimina Account", color = MaterialTheme.colorScheme.onError)
+        }
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
-fun GiocatoreHomeScreenPreview() {
-    val fakeNav = rememberNavController()
-    GiocatoreHomeScreen(fakeNav)
+fun GiocatoreHomeContentPreview() {
+    GiocatoreHomeContent(
+        onLogout = {},
+        onEditProfile = {},
+        onGestioneCarte = {},
+        onDeleteAccount = {}
+    )
 }

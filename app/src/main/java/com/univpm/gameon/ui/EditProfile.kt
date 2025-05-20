@@ -7,6 +7,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.univpm.gameon.data.collections.User
@@ -64,4 +65,56 @@ fun EditProfileScreen(navController: NavController) {
             navController.popBackStack()
         }
     }
+}
+
+@Composable
+fun EditProfileFormContent(
+    name: String,
+    cognome: String,
+    email: String,
+    codiceFiscale: String,
+    password: String,
+    onNameChange: (String) -> Unit,
+    onCognomeChange: (String) -> Unit,
+    onEmailChange: (String) -> Unit,
+    onCodiceFiscaleChange: (String) -> Unit,
+    onPasswordChange: (String) -> Unit,
+    onSave: () -> Unit,
+    errorMessage: String?
+) {
+    RegisterEditProfileForm(
+        title = "Modifica Profilo",
+        name = name,
+        cognome = cognome,
+        email = email,
+        codiceFiscale = codiceFiscale,
+        password = password,
+        onNameChange = onNameChange,
+        onCognomeChange = onCognomeChange,
+        onEmailChange = onEmailChange,
+        onCodiceFiscaleChange = onCodiceFiscaleChange,
+        onPasswordChange = onPasswordChange,
+        actionButtonText = "Salva Modifiche",
+        onActionClick = onSave,
+        errorMessage = errorMessage
+    )
+}
+
+@Composable
+@Preview(showBackground = true)
+fun EditProfileFormContentPreview() {
+    EditProfileFormContent(
+        name = "Mario",
+        cognome = "Rossi",
+        email = "mario.rossi@email.it",
+        codiceFiscale = "RSSMRA80A01H501U",
+        password = "password123",
+        onNameChange = {},
+        onCognomeChange = {},
+        onEmailChange = {},
+        onCodiceFiscaleChange = {},
+        onPasswordChange = {},
+        onSave = {},
+        errorMessage = null
+    )
 }

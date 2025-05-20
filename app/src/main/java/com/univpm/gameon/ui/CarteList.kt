@@ -6,6 +6,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -106,3 +107,73 @@ fun CartaItem(carta: Carta, onDelete: () -> Unit) {
         }
     }
 }
+
+@Composable
+fun CarteListContent(
+    carte: List<Carta>,
+    errore: String?,
+    onDelete: (String) -> Unit,
+    onAdd: () -> Unit
+) {
+    Column(modifier = Modifier
+        .fillMaxSize()
+        .padding(16.dp)) {
+
+        Text(
+            text = "Le tue carte",
+            style = MaterialTheme.typography.headlineSmall
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        errore?.let {
+            Text(
+                text = it,
+                color = MaterialTheme.colorScheme.error
+            )
+        }
+
+        LazyColumn {
+            items(carte) { carta ->
+                CartaItem(
+                    carta = carta,
+                    onDelete = { onDelete(carta.id) }
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        Button(
+            onClick = onAdd,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text("Inserisci nuova carta")
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun CarteListContentPreview() {
+    val dummyCards = listOf(
+        Carta(
+            id = "1",
+            userId = "u1",
+            cardHolderName = "Mario Rossi",
+            cardNumber = "1111222233334444",
+            expirationMonth = 12,
+            expirationYear = 2026,
+            cvv = "123"
+        )
+    )
+
+    CarteListContent(
+        carte = dummyCards,
+        errore = null,
+        onDelete = {},
+        onAdd = {}
+    )
+}
+
+
