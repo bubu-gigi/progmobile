@@ -10,6 +10,7 @@ fun checkAccess(navController: NavController, requiredRole: UserRuolo? = null) {
     }
 }
 
+//viewmodel?
 fun logout(navController: NavController) {
     FirebaseAuth.getInstance().signOut()
     UserSessionManager.isLoggedIn = false

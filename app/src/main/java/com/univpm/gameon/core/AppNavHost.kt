@@ -5,9 +5,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.univpm.gameon.ui.AdminHomeScreen
+import com.univpm.gameon.ui.CarteListScreen
+import com.univpm.gameon.ui.DettaglioCartaScreen
 import com.univpm.gameon.ui.EditProfileScreen
 import com.univpm.gameon.ui.GiocatoreHomeScreen
 import com.univpm.gameon.ui.LoginScreen
+import com.univpm.gameon.ui.NuovaCartaScreen
 import com.univpm.gameon.ui.RegisterScreen
 import kotlinx.serialization.Serializable
 
@@ -25,6 +28,15 @@ object AdminHomeScreenRoute
 
 @Serializable
 object EditProfileScreenRoute
+
+@Serializable
+object CarteListScreenRoute
+
+@Serializable
+object NuovaCartaScreenRoute
+
+@Serializable
+data class DettaglioCartaScreenRoute(val cartaId: String)
 
 @Composable
 fun AppNavHost() {
@@ -49,6 +61,19 @@ fun AppNavHost() {
 
         composable<EditProfileScreenRoute> {
             EditProfileScreen(navController)
+        }
+
+        composable<CarteListScreenRoute> {
+            CarteListScreen(navController)
+        }
+
+        composable<NuovaCartaScreenRoute> {
+            NuovaCartaScreen(navController)
+        }
+
+        composable<DettaglioCartaScreenRoute> { backStackEntry ->
+            val cartaId = backStackEntry.arguments?.getString("cartaId") ?: return@composable
+            DettaglioCartaScreen(navController = navController, cartaId = cartaId)
         }
     }
 }
