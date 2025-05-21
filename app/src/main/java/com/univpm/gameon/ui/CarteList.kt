@@ -128,7 +128,7 @@ fun CarteListContent(
         .fillMaxSize()
 ) {// SFONDO IMMAGINE
     Image(
-        painter = painterResource(id = R.drawable.sfondo),
+        painter = painterResource(id = R.drawable.sfondobase),
         contentDescription = "Sfondo",
         modifier = Modifier.fillMaxSize(),
         contentScale = ContentScale.Crop
@@ -136,7 +136,7 @@ fun CarteListContent(
     Column(modifier = Modifier
         .fillMaxSize()
         .padding(16.dp)) {
-
+        Spacer(modifier = Modifier.height(190.dp))
         Text(
             text = "Le tue carte",
             style = MaterialTheme.typography.headlineSmall.copy(

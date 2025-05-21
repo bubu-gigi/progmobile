@@ -1,66 +1,36 @@
 package com.univpm.gameon.ui
 
-import android.R.attr.fontStyle
-import android.graphics.fonts.FontStyle
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import com.univpm.gameon.core.checkAccess
-import com.univpm.gameon.core.logout
-import com.univpm.gameon.data.collections.enums.UserRuolo
-import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.geometry.CornerRadius
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import com.univpm.gameon.core.checkAccess
+import com.univpm.gameon.core.logout
+import com.univpm.gameon.data.collections.enums.UserRuolo
 import com.univpm.gameon.R
-
-fun Modifier.outerBorder(
-        color: Color, //Colore della cornice
-        strokeWidth: Dp, //Spessore della cornice
-        cornerRadius: Dp = 0.dp // Raggio di curvatura degli angoli (default è 0)
-    ): Modifier = this.then(
-    Modifier.drawBehind {
-        val strokeWidthPx = strokeWidth.toPx()
-        val halfStroke = strokeWidthPx / 2f
-
-        val width = size.width
-        val height = size.height
-
-        drawRoundRect(
-            color = color,
-            topLeft = Offset(halfStroke, halfStroke),
-            size = Size(width - strokeWidthPx, height - strokeWidthPx),
-            style = Stroke(width = strokeWidthPx),
-            cornerRadius = CornerRadius(cornerRadius.toPx(), cornerRadius.toPx())
-        )
-    }
-)
 
 @Composable
 fun AdminHomeScreen(navController: NavController) {
     checkAccess(navController, UserRuolo.Admin)
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .outerBorder(color = Color.Blue, strokeWidth = 4.dp, cornerRadius = 0.dp)
+        modifier = Modifier.fillMaxSize()
     ) {
         Column(
             modifier = Modifier
@@ -83,12 +53,11 @@ fun AdminHomeScreen(navController: NavController) {
 @Composable
 fun AdminHomeContent(onLogout: () -> Unit) {
     Box(
-        modifier = Modifier
-            .fillMaxSize()
+        modifier = Modifier.fillMaxSize()
     ) {
         // SFONDO IMMAGINE
         Image(
-            painter = painterResource(id = R.drawable.sfondo),
+            painter = painterResource(id = R.drawable.sfondobase),
             contentDescription = "Sfondo",
             modifier = Modifier.fillMaxSize(),
             contentScale = ContentScale.Crop
@@ -98,54 +67,36 @@ fun AdminHomeContent(onLogout: () -> Unit) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .outerBorder(color = Color(0xFFC67C00), strokeWidth = 9.dp, cornerRadius = 0.dp)
-                .padding(16.dp),
+                .padding(16.dp), // Rimosso il modificatore outerBorder
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(
-                "GameON!",
-                style = MaterialTheme.typography.headlineMedium.copy(
-                    color = Color.Black,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 28.sp,
-                    letterSpacing = 2.sp
-                )
-            )
 
-            Spacer(modifier = Modifier.height(50.dp))
+            Spacer(modifier = Modifier.height(470.dp))
 
-            Image(
-                painter = painterResource(id = R.drawable.ok),
-                contentDescription = "Immagine di accesso",
-                modifier = Modifier
-                    .size(150.dp),
-                contentScale = ContentScale.Fit
-            )
-
-            Spacer(modifier = Modifier.height(50.dp))
 
             Text(
                 "Benvenuto, Admin!",
                 style = MaterialTheme.typography.headlineMedium.copy(
-                    color = Color.Black,
+                    color = Color.White,
                     fontWeight = FontWeight.Bold,
                     fontSize = 28.sp,
                     letterSpacing = 2.sp
                 )
             )
 
-            Spacer(modifier = Modifier.height(50.dp))
+            Spacer(modifier = Modifier.height(20.dp))
 
             Button(
                 onClick = { /* Azione quando il bottone viene premuto */ },
                 modifier = Modifier
                     .padding(8.dp)
-                    .size(width = 190.dp, height = 50.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFFC67C00),
-                    contentColor = Color.White
-                )
+                    .size(width = 190.dp, height = 50.dp)
+                    .border(BorderStroke(2.dp, Color(0xFFE36BE0)), shape = RoundedCornerShape(120.dp)), // Bordo con angoli arrotondati
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color(232323), // Corretto il colore in formato esadecimale
+                contentColor = Color.White
+            )
             ) {
                 Text(text = "Gestione Account")
             }
@@ -154,11 +105,12 @@ fun AdminHomeContent(onLogout: () -> Unit) {
                 onClick = { /* Azione quando il bottone viene premuto */ },
                 modifier = Modifier
                     .padding(8.dp)
-                    .size(width = 190.dp, height = 50.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFFC67C00),
-                    contentColor = Color.White
-                )
+                    .size(width = 190.dp, height = 50.dp)
+                    .border(BorderStroke(2.dp, Color(0xFFE36BE0)), shape = RoundedCornerShape(120.dp)), // Bordo con angoli arrotondati
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color(232323), // Corretto il colore in formato esadecimale
+                contentColor = Color.White
+            )
             ) {
                 Text(text = "Gestione Prenotazioni")
             }
@@ -167,34 +119,26 @@ fun AdminHomeContent(onLogout: () -> Unit) {
                 onClick = { /* Azione quando il bottone viene premuto */ },
                 modifier = Modifier
                     .padding(8.dp)
-                    .size(width = 190.dp, height = 50.dp),
+                    .size(width = 190.dp, height = 50.dp)
+                    .border(BorderStroke(2.dp, Color(0xFFE36BE0)), shape = RoundedCornerShape(120.dp)), // Bordo con angoli arrotondati
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFFC67C00),
+                    containerColor = Color(232323), // Corretto il colore in formato esadecimale
                     contentColor = Color.White
                 )
             ) {
                 Text(text = "Visualizza Messaggi")
             }
 
-            Spacer(modifier = Modifier.height(50.dp))
 
-
-
+            Spacer(modifier = Modifier.height(10.dp))
 
             Box(
                 modifier = Modifier
                     .padding(16.dp)
-                    .shadow(
-                        elevation = 10.dp,
-                        shape = MaterialTheme.shapes.medium,
-                        ambientColor = Color.Black,
-                        spotColor = Color.Gray
-                    )
+                    .border(BorderStroke(2.dp, Color(0xFFE36BE0)), shape = RoundedCornerShape(12.dp)) // Aggiunto il bordo con angoli arrotondati
                     .background(
-                        brush = Brush.verticalGradient(
-                            colors = listOf(Color(0xFFF44336), Color(0xFFb71c1c)) // gradiente rosso scuro
-                        ),
-                        shape = MaterialTheme.shapes.medium
+                        color = Color(232323),
+                        shape = RoundedCornerShape(12.dp) // Assicurati che il background abbia la stessa forma
                     )
                     .clickable(onClick = onLogout)
                     .padding(vertical = 15.dp, horizontal = 32.dp)
@@ -206,9 +150,10 @@ fun AdminHomeContent(onLogout: () -> Unit) {
                     fontWeight = FontWeight.Bold
                 )
             }
+
+        }
         }
     }
-}
 
 
 @Preview(showBackground = true)
