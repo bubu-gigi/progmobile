@@ -2,6 +2,7 @@ package com.univpm.gameon.ui
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -27,6 +28,7 @@ import com.univpm.gameon.core.UserSessionManager
 import com.univpm.gameon.core.NuovaCartaScreenRoute
 import com.univpm.gameon.data.collections.Carta
 import com.univpm.gameon.viewmodels.CarteViewModel
+import androidx.compose.ui.text.TextStyle
 
 
 @Composable
@@ -48,10 +50,9 @@ fun CarteListScreen(navController: NavController) {
         .fillMaxSize()
         .padding(16.dp)) {
 
-        Text(
-            text = "Le tue carte",
-            style = MaterialTheme.typography.headlineSmall
-        )
+
+        Text("Le tue carte")
+
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -111,13 +112,19 @@ fun CartaItem(carta: Carta, onDelete: () -> Unit) {
 
             Button(
                 onClick = onDelete,
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.error,
-                    contentColor = MaterialTheme.colorScheme.onError
-                ),
-                modifier = Modifier.padding(start = 16.dp)
+                modifier = Modifier
+                    .padding(18.dp)
+                    .border(BorderStroke(2.dp, Color(0xFFCFFF5E)), shape = RoundedCornerShape(12.dp))
+                    .background(
+                        color = Color(0xFF6136FF),
+                        shape = RoundedCornerShape(12.dp)
+                    )
             ) {
-                Text("Elimina")
+                Text(
+                    text = "Elimina",
+                    color = Color(0xFFCFFF5E),
+                    fontSize = 18.sp
+                )
             }
         }
     }
@@ -144,12 +151,11 @@ fun CarteListContent(
         .padding(16.dp)) {
         Spacer(modifier = Modifier.height(190.dp))
         Text(
-            text = "Le tue carte",
+            text = "Le tue carte:",
             style = MaterialTheme.typography.headlineSmall.copy(
                 color = Color.White,
-                fontWeight = FontWeight.Bold,
-                fontSize = 28.sp,
-                letterSpacing = 2.sp
+                fontSize = 30.sp,
+                fontFamily = futuraBookFontFamily
             )
         )
 
@@ -213,12 +219,39 @@ fun CarteListContentPreview() {
         )
     )
 
-    CarteListContent(
-        carte = dummyCards,
-        errore = null,
-        onDelete = {},
-        onAdd = {}
-    )
+    // Applica il MaterialTheme e imposta futuraBookFontFamily per tutti gli stili
+    MaterialTheme(
+        typography = Typography(
+            displayLarge = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 57.sp),
+            displayMedium = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 45.sp),
+            displaySmall = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 36.sp),
+
+            headlineLarge = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 32.sp),
+            headlineMedium = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 28.sp),
+            headlineSmall = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 24.sp),
+
+            titleLarge = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 22.sp),
+            titleMedium = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 16.sp, fontWeight = FontWeight.Medium),
+            titleSmall = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 14.sp, fontWeight = FontWeight.Medium),
+
+            bodyLarge = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 16.sp),
+            bodyMedium = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 14.sp),
+            bodySmall = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 12.sp),
+
+            labelLarge = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 14.sp, fontWeight = FontWeight.Medium),
+            labelMedium = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 12.sp, fontWeight = FontWeight.Medium),
+            labelSmall = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 11.sp, fontWeight = FontWeight.Medium),
+        )
+    ) {
+        Surface { // La Surface assicura che il tema sia applicato al contenuto
+            CarteListContent(
+                carte = dummyCards,
+                errore = null,
+                onDelete = {},
+                onAdd = {}
+            )
+        }
+    }
 }
 
 
