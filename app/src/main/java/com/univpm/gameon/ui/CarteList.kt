@@ -1,9 +1,12 @@
 package com.univpm.gameon.ui
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.runtime.*
@@ -11,6 +14,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -22,6 +27,7 @@ import com.univpm.gameon.core.UserSessionManager
 import com.univpm.gameon.core.NuovaCartaScreenRoute
 import com.univpm.gameon.data.collections.Carta
 import com.univpm.gameon.viewmodels.CarteViewModel
+
 
 @Composable
 fun CarteListScreen(navController: NavController) {
@@ -128,7 +134,7 @@ fun CarteListContent(
         .fillMaxSize()
 ) {// SFONDO IMMAGINE
     Image(
-        painter = painterResource(id = R.drawable.sfondobase),
+        painter = painterResource(id = R.drawable.sfondocarta),
         contentDescription = "Sfondo",
         modifier = Modifier.fillMaxSize(),
         contentScale = ContentScale.Crop
@@ -140,7 +146,7 @@ fun CarteListContent(
         Text(
             text = "Le tue carte",
             style = MaterialTheme.typography.headlineSmall.copy(
-                color = Color.Black,
+                color = Color.White,
                 fontWeight = FontWeight.Bold,
                 fontSize = 28.sp,
                 letterSpacing = 2.sp
@@ -170,13 +176,23 @@ fun CarteListContent(
         Button(
             onClick = onAdd,
             modifier = Modifier
-                .fillMaxWidth(),
-                    colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFFC67C00),
-            contentColor = Color.White
+                .padding(8.dp)
+                .size(width = 500.dp, height = 50.dp)
+                .border(BorderStroke(2.dp, Color(0xFFE36BE0)), shape = RoundedCornerShape(120.dp)),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color(232323),
+                contentColor = Color.White
         )
+
+
+
         ) {
-            Text("Inserisci nuova carta")
+            Text(
+                text = "Inserisci nuova carta",
+                color = Color.White,
+                fontSize = 20.sp,
+                fontFamily = futuraBookFontFamily
+            )
         }
     }
 }
