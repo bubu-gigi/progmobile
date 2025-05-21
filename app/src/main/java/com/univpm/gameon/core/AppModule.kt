@@ -1,29 +1,9 @@
 package com.univpm.gameon.core
 
-import com.univpm.gameon.data.dao.impl.CampoDaoImpl
-import com.univpm.gameon.data.dao.impl.CartaDaoImpl
-import com.univpm.gameon.data.dao.impl.PrenotazioneDaoImpl
-import com.univpm.gameon.data.dao.impl.RecensioneDaoImpl
-import com.univpm.gameon.data.dao.impl.StrutturaDaoImpl
-import com.univpm.gameon.data.dao.impl.UserDaoImpl
-import com.univpm.gameon.data.dao.interfaces.CampoDao
-import com.univpm.gameon.data.dao.interfaces.CartaDao
-import com.univpm.gameon.data.dao.interfaces.PrenotazioneDao
-import com.univpm.gameon.data.dao.interfaces.RecensioneDao
-import com.univpm.gameon.data.dao.interfaces.StrutturaDao
-import com.univpm.gameon.data.dao.interfaces.UserDao
-import com.univpm.gameon.repositories.CampoRepository
-import com.univpm.gameon.repositories.CartaRepository
-import com.univpm.gameon.repositories.PrenotazioneRepository
-import com.univpm.gameon.repositories.RecensioneRepository
-import com.univpm.gameon.repositories.StrutturaRepository
-import com.univpm.gameon.repositories.UserRepository
-import com.univpm.gameon.repositories.impl.CampoRepositoryImpl
-import com.univpm.gameon.repositories.impl.CartaRepositoryImpl
-import com.univpm.gameon.repositories.impl.PrenotazioneRepositoryImpl
-import com.univpm.gameon.repositories.impl.RecensioneRepositoryImpl
-import com.univpm.gameon.repositories.impl.StrutturaRepositoryImpl
-import com.univpm.gameon.repositories.impl.UserRepositoryImpl
+import com.univpm.gameon.data.dao.impl.*
+import com.univpm.gameon.data.dao.interfaces.*
+import com.univpm.gameon.repositories.*
+import com.univpm.gameon.repositories.impl.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -36,39 +16,35 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideUserDao(): UserDao {
-        return UserDaoImpl()
-    }
+    fun provideUserDao(): UserDao = UserDaoImpl()
 
     @Provides
     @Singleton
-    fun provideCampoDao(): CampoDao {
-        return CampoDaoImpl()
-    }
+    fun provideCampoDao(): CampoDao = CampoDaoImpl()
 
     @Provides
     @Singleton
-    fun provideCartaDao(): CartaDao {
-        return CartaDaoImpl()
-    }
+    fun provideCartaDao(): CartaDao = CartaDaoImpl()
 
     @Provides
     @Singleton
-    fun providePrenotazioneDao(): PrenotazioneDao {
-        return PrenotazioneDaoImpl()
-    }
+    fun providePrenotazioneDao(): PrenotazioneDao = PrenotazioneDaoImpl()
 
     @Provides
     @Singleton
-    fun provideRecensioneDao(): RecensioneDao {
-        return RecensioneDaoImpl()
-    }
+    fun provideRecensioneDao(): RecensioneDao = RecensioneDaoImpl()
 
     @Provides
     @Singleton
-    fun provideStrutturaDao(): StrutturaDao {
-        return StrutturaDaoImpl()
-    }
+    fun provideStrutturaDao(): StrutturaDao = StrutturaDaoImpl()
+
+    @Provides
+    @Singleton
+    fun provideConversazioneDao(): ConversazioneDao = ConversazioneDaoImpl()
+
+    @Provides
+    @Singleton
+    fun provideMessageDao(): MessaggioDao = MessaggioDaoImpl()
 
     @Provides
     @Singleton
@@ -84,14 +60,26 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun providePrenotazioneRepository(prenotazioneDao: PrenotazioneDao): PrenotazioneRepository = PrenotazioneRepositoryImpl(prenotazioneDao)
+    fun providePrenotazioneRepository(prenotazioneDao: PrenotazioneDao): PrenotazioneRepository =
+        PrenotazioneRepositoryImpl(prenotazioneDao)
 
     @Provides
     @Singleton
-    fun provideRecensioneRepository(recensioneDao: RecensioneDao): RecensioneRepository = RecensioneRepositoryImpl(recensioneDao)
+    fun provideRecensioneRepository(recensioneDao: RecensioneDao): RecensioneRepository =
+        RecensioneRepositoryImpl(recensioneDao)
 
     @Provides
     @Singleton
-    fun provideStrutturaRepository(strutturaDao: StrutturaDao): StrutturaRepository = StrutturaRepositoryImpl(strutturaDao)
+    fun provideStrutturaRepository(strutturaDao: StrutturaDao): StrutturaRepository =
+        StrutturaRepositoryImpl(strutturaDao)
 
+    @Provides
+    @Singleton
+    fun provideConversazioneRepository(conversazioneDao: ConversazioneDao): ConversazioneRepository =
+        ConversazioneRepositoryImpl(conversazioneDao)
+
+    @Provides
+    @Singleton
+    fun provideMessaggioRepository(messageDao: MessaggioDao): MessaggioRepository =
+        MessaggioRepositoryImpl(messageDao)
 }
