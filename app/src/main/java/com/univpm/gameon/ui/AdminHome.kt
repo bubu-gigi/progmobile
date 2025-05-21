@@ -34,6 +34,7 @@ val futuraBookFontFamily = FontFamily(
 val lemonMilkFontFamily= FontFamily(
     Font(R.font.lemon_milk_bold)
 )
+
 @Composable
 fun AdminHomeScreen(navController: NavController) {
     checkAccess(navController, UserRuolo.Admin)

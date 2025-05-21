@@ -107,6 +107,7 @@ fun RegisterEditProfileContent(
             Text(actionButtonText)
         }
 
+
         errorMessage?.let {
             Spacer(modifier = Modifier.height(8.dp))
             Text(text = it, color = MaterialTheme.colorScheme.error)
