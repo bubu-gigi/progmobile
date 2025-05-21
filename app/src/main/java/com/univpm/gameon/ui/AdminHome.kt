@@ -15,6 +15,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -26,6 +28,12 @@ import com.univpm.gameon.core.logout
 import com.univpm.gameon.data.collections.enums.UserRuolo
 import com.univpm.gameon.R
 
+val futuraBookFontFamily = FontFamily(
+    Font(R.font.futura_book_font)
+)
+val lemonMilkFontFamily= FontFamily(
+    Font(R.font.lemon_milk_bold)
+)
 @Composable
 fun AdminHomeScreen(navController: NavController) {
     checkAccess(navController, UserRuolo.Admin)
@@ -76,14 +84,16 @@ fun AdminHomeContent(onLogout: () -> Unit) {
 
 
             Text(
-                "Benvenuto, Admin!",
+                "BENVENUTO!",
                 style = MaterialTheme.typography.headlineMedium.copy(
                     color = Color.White,
-                    fontWeight = FontWeight.Bold,
+                    fontFamily = lemonMilkFontFamily,
                     fontSize = 28.sp,
-                    letterSpacing = 2.sp
+                    letterSpacing = 2.sp,
+                    fontWeight = FontWeight.Bold
                 )
             )
+
 
             Spacer(modifier = Modifier.height(20.dp))
 
@@ -98,7 +108,11 @@ fun AdminHomeContent(onLogout: () -> Unit) {
                 contentColor = Color.White
             )
             ) {
-                Text(text = "Gestione Account")
+                Text(
+                    text = "Gestione Account",
+                    color = Color.White,
+                    fontSize = 14.sp,
+                    fontFamily = futuraBookFontFamily)
             }
 
             Button(
@@ -112,7 +126,11 @@ fun AdminHomeContent(onLogout: () -> Unit) {
                 contentColor = Color.White
             )
             ) {
-                Text(text = "Gestione Prenotazioni")
+                Text(
+                    text = "Gestione Prenotazioni",
+                    color = Color.White,
+                    fontSize = 14.sp,
+                    fontFamily = futuraBookFontFamily)
             }
 
             Button(
@@ -126,7 +144,11 @@ fun AdminHomeContent(onLogout: () -> Unit) {
                     contentColor = Color.White
                 )
             ) {
-                Text(text = "Visualizza Messaggi")
+                Text(
+                    text = "Visualizza Messaggi",
+                    color = Color.White,
+                    fontSize = 14.sp,
+                    fontFamily = futuraBookFontFamily)
             }
 
 
@@ -147,7 +169,7 @@ fun AdminHomeContent(onLogout: () -> Unit) {
                     text = "Logout",
                     color = Color.White,
                     fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold
+                    fontFamily = futuraBookFontFamily
                 )
             }
 
