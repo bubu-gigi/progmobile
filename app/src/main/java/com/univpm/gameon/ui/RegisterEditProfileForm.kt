@@ -1,21 +1,16 @@
 package com.univpm.gameon.ui
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import androidx.compose.foundation.shape.RoundedCornerShape
 
 @Composable
 fun RegisterEditProfileForm(
@@ -32,8 +27,12 @@ fun RegisterEditProfileForm(
     onPasswordChange: (String) -> Unit,
     onActionClick: () -> Unit,
     actionButtonText: String,
-    errorMessage: String? = null
+    errorMessage: String? = null,
+    fontSize: TextUnit,
+    color: Color
 ) {
+    val borderColor = Color(0xFFE36BE0)
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -44,16 +43,91 @@ fun RegisterEditProfileForm(
         Text(title, style = MaterialTheme.typography.headlineMedium)
         Spacer(modifier = Modifier.height(16.dp))
 
-        OutlinedTextField(value = name, onValueChange = onNameChange, label = { Text("Nome") })
-        OutlinedTextField(value = cognome, onValueChange = onCognomeChange, label = { Text("Cognome") })
-        OutlinedTextField(value = email, onValueChange = onEmailChange, label = { Text("Email") })
-        OutlinedTextField(value = codiceFiscale, onValueChange = onCodiceFiscaleChange, label = { Text("Codice Fiscale") })
-        OutlinedTextField(value = password, onValueChange = onPasswordChange, label = { Text("Password") }, visualTransformation = PasswordVisualTransformation())
+        OutlinedTextField(
+            value = name,
+            onValueChange = onNameChange,
+            label = { Text("Nome") },
+            shape = RoundedCornerShape(12.dp),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = borderColor,
+                unfocusedBorderColor = borderColor,
+                focusedLabelColor = borderColor,
+                unfocusedLabelColor = borderColor,
+                cursorColor = borderColor
+            )
+        )
+
+        OutlinedTextField(
+            value = cognome,
+            onValueChange = onCognomeChange,
+            label = { Text("Cognome") },
+            shape = RoundedCornerShape(12.dp),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = borderColor,
+                unfocusedBorderColor = borderColor,
+                focusedLabelColor = borderColor,
+                unfocusedLabelColor = borderColor,
+                cursorColor = borderColor
+            )
+        )
+
+        OutlinedTextField(
+            value = email,
+            onValueChange = onEmailChange,
+            label = { Text("Email") },
+            shape = RoundedCornerShape(12.dp),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = borderColor,
+                unfocusedBorderColor = borderColor,
+                focusedLabelColor = borderColor,
+                unfocusedLabelColor = borderColor,
+                cursorColor = borderColor
+            )
+        )
+
+        OutlinedTextField(
+            value = codiceFiscale,
+            onValueChange = onCodiceFiscaleChange,
+            label = { Text("Codice Fiscale") },
+            shape = RoundedCornerShape(12.dp),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = borderColor,
+                unfocusedBorderColor = borderColor,
+                focusedLabelColor = borderColor,
+                unfocusedLabelColor = borderColor,
+                cursorColor = borderColor
+            )
+        )
+
+        OutlinedTextField(
+            value = password,
+            onValueChange = onPasswordChange,
+            label = { Text("Password") },
+            visualTransformation = PasswordVisualTransformation(),
+            shape = RoundedCornerShape(12.dp),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = borderColor,
+                unfocusedBorderColor = borderColor,
+                focusedLabelColor = borderColor,
+                unfocusedLabelColor = borderColor,
+                cursorColor = borderColor
+            )
+        )
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Button(onClick = onActionClick) {
-            Text(actionButtonText)
+        Button(
+            onClick = onActionClick,
+            modifier = Modifier
+                .padding(18.dp),
+            shape = RoundedCornerShape(12.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF6136FF))
+        ) {
+            Text(
+                text = "Salva Modifiche",
+                color = color,
+                fontSize = fontSize
+            )
         }
 
         errorMessage?.let {
@@ -80,49 +154,34 @@ fun RegisterEditProfileContent(
     actionButtonText: String,
     errorMessage: String? = null
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(title, style = MaterialTheme.typography.headlineMedium)
-        Spacer(modifier = Modifier.height(16.dp))
-
-        OutlinedTextField(value = name, onValueChange = onNameChange, label = { Text("Nome") })
-        OutlinedTextField(value = cognome, onValueChange = onCognomeChange, label = { Text("Cognome") })
-        OutlinedTextField(value = email, onValueChange = onEmailChange, label = { Text("Email") })
-        OutlinedTextField(value = codiceFiscale, onValueChange = onCodiceFiscaleChange, label = { Text("Codice Fiscale") })
-        OutlinedTextField(
-            value = password,
-            onValueChange = onPasswordChange,
-            label = { Text("Password") },
-            visualTransformation = PasswordVisualTransformation()
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Button(onClick = onActionClick) {
-            Text(actionButtonText)
-        }
-
-
-        errorMessage?.let {
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(text = it, color = MaterialTheme.colorScheme.error)
-        }
-    }
+    RegisterEditProfileForm(
+        title = title,
+        name = name,
+        cognome = cognome,
+        email = email,
+        codiceFiscale = codiceFiscale,
+        password = password,
+        onNameChange = onNameChange,
+        onCognomeChange = onCognomeChange,
+        onEmailChange = onEmailChange,
+        onCodiceFiscaleChange = onCodiceFiscaleChange,
+        onPasswordChange = onPasswordChange,
+        onActionClick = onActionClick,
+        actionButtonText = actionButtonText,
+        errorMessage = errorMessage,
+        fontSize = MaterialTheme.typography.bodyLarge.fontSize,
+        color = Color.White
+    )
 }
 
-@Composable
 @Preview(showBackground = true)
+@Composable
 fun RegisterEditProfileContentPreview() {
     RegisterEditProfileContent(
-        title = "Registrazione",
+        title = "Modifica Profilo",
         name = "Mario",
         cognome = "Rossi",
-        email = "mario.rossi@email.com",
+        email = "mario.rossi@email.it",
         codiceFiscale = "RSSMRA80A01H501U",
         password = "password123",
         onNameChange = {},
@@ -131,7 +190,8 @@ fun RegisterEditProfileContentPreview() {
         onCodiceFiscaleChange = {},
         onPasswordChange = {},
         onActionClick = {},
-        actionButtonText = "Registrati",
+        actionButtonText = "Salva Modifiche",
         errorMessage = null
     )
 }
+

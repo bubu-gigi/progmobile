@@ -9,15 +9,12 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
-import androidx.compose.material3.AlertDialogDefaults.containerColor
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -97,7 +94,7 @@ fun CartaItem(carta: Carta, onDelete: () -> Unit) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 4.dp)
-            .border(BorderStroke(2.dp, Color(0xFFCFFF5E)), shape = RoundedCornerShape(12.dp)),
+            .border(BorderStroke(3.dp, Color(0xFFE36BE0)), shape = RoundedCornerShape(12.dp)),
         elevation = CardDefaults.cardElevation(4.dp),
         colors = CardDefaults.cardColors(containerColor = Color(0xFFD3D3D3))
     ) {

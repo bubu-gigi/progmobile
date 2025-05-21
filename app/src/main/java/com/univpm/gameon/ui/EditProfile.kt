@@ -18,15 +18,15 @@ import androidx.navigation.NavController
 import com.univpm.gameon.R
 import com.univpm.gameon.data.collections.User
 import com.univpm.gameon.viewmodels.AuthViewModel
-import androidx.compose.ui.text.TextStyle
+
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Typography
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.graphics.Color
+
 
 @Composable
 fun EditProfileScreen(navController: NavController) {
@@ -97,7 +97,6 @@ fun EditProfileFormContent(
 ) {
     MaterialTheme(
         typography = Typography(
-            // Ogni stile di testo ora include color = Color.White
             displayLarge = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 57.sp, color = Color.White),
             displayMedium = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 45.sp, color = Color.White),
             displaySmall = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 36.sp, color = Color.White),
@@ -138,16 +137,18 @@ fun EditProfileFormContent(
                 onEmailChange = onEmailChange,
                 onCodiceFiscaleChange = onCodiceFiscaleChange,
                 onPasswordChange = onPasswordChange,
-                actionButtonText = "Salva Modifiche",
+                actionButtonText = " ",
                 onActionClick = onSave,
-                errorMessage = errorMessage
+                errorMessage = errorMessage,
+                        color = Color(0xFFCFFF5E),
+                fontSize = 18.sp
             )
         }
     }
 }
 
-@Composable
 @Preview(showBackground = true)
+@Composable
 fun EditProfileFormContentPreview() {
     EditProfileFormContent(
         name = "Mario",
