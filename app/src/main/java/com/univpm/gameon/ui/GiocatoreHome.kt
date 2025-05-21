@@ -127,7 +127,10 @@ fun GiocatoreHomeContent(
                 onClick = onDeleteAccount,
                 colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
             ) {
-                Text("Elimina Account", color = MaterialTheme.colorScheme.onError)
+                Text("Elimina Account",
+                    color = MaterialTheme.colorScheme.onError,
+                    fontFamily = futuraBookFontFamily
+                )
             }
         }
     }
