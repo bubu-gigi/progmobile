@@ -157,9 +157,9 @@ fun AdminHomeContent(onLogout: () -> Unit) {
             Box(
                 modifier = Modifier
                     .padding(16.dp)
-                    .border(BorderStroke(2.dp, Color(0xFFE36BE0)), shape = RoundedCornerShape(12.dp)) // Aggiunto il bordo con angoli arrotondati
+                    .border(BorderStroke(2.dp, Color(0xFFCFFF5E)), shape = RoundedCornerShape(12.dp)) // Aggiunto il bordo con angoli arrotondati
                     .background(
-                        color = Color(232323),
+                        color = Color(0xFF6136FF),
                         shape = RoundedCornerShape(12.dp) // Assicurati che il background abbia la stessa forma
                     )
                     .clickable(onClick = onLogout)
@@ -167,7 +167,7 @@ fun AdminHomeContent(onLogout: () -> Unit) {
             ) {
                 Text(
                     text = "Logout",
-                    color = Color.White,
+                    color = Color(0xFFCFFF5E),
                     fontSize = 18.sp,
                     fontFamily = futuraBookFontFamily
                 )
