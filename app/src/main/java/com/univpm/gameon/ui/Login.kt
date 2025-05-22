@@ -1,6 +1,9 @@
 package com.univpm.gameon.ui
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -18,6 +21,7 @@ import com.univpm.gameon.core.RegisterScreenRoute
 import com.univpm.gameon.core.validatePassword
 import com.univpm.gameon.viewmodels.AuthViewModel
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -187,8 +191,22 @@ fun LoginContent(
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                Button(onClick = onLoginClick) {
-                    Text("Login")
+                Button(
+                    onClick = onLoginClick,
+                    modifier = Modifier
+                        .padding(18.dp)
+                        .border(BorderStroke(2.dp, Color(0xFFCFFF5E)), shape = RoundedCornerShape(12.dp))
+                        .background(
+                            color = Color(0xFF6136FF),
+                            shape = RoundedCornerShape(12.dp)
+                        )
+                ) {
+                    Text(
+                        text = "Login",
+                        color = Color(0xFFCFFF5E),
+                        fontSize = 18.sp
+                    )
+
                 }
 
                 Spacer(modifier = Modifier.height(8.dp))
