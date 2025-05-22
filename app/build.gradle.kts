@@ -76,6 +76,8 @@ dependencies {
     implementation(libs.firebase.firestore)
     implementation(libs.hilt.android)
     implementation(libs.hilt.navigation.compose)
+implementation("com.google.maps.android:maps-compose:4.2.0")
+implementation("com.google.android.gms:play-services-maps:18.2.0")
     kapt(libs.hilt.compiler)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

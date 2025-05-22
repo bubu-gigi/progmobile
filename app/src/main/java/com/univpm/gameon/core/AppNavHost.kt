@@ -6,6 +6,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.univpm.gameon.ui.AdminHomeScreen
 import com.univpm.gameon.ui.CarteListScreen
+import com.univpm.gameon.ui.ChatListScreen
 import com.univpm.gameon.ui.EditProfileScreen
 import com.univpm.gameon.ui.GiocatoreHomeScreen
 import com.univpm.gameon.ui.LoginScreen
@@ -33,6 +34,9 @@ object CarteListScreenRoute
 
 @Serializable
 object NuovaCartaScreenRoute
+
+@Serializable
+object ChatListScreenRoute
 
 @Composable
 fun AppNavHost() {
@@ -65,6 +69,10 @@ fun AppNavHost() {
 
         composable<NuovaCartaScreenRoute> {
             NuovaCartaScreen(navController)
+        }
+
+        composable<ChatListScreenRoute> {
+            ChatListScreen(navController)
         }
     }
 }

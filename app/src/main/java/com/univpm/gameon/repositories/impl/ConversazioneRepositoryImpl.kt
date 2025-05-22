@@ -6,11 +6,11 @@ import com.univpm.gameon.repositories.ConversazioneRepository
 
 class ConversazioneRepositoryImpl(private val dao: ConversazioneDao) : ConversazioneRepository {
 
-    override suspend fun getConversazioniByPlayerId(giocatoreId: String): List<Conversazione> {
+    override suspend fun getConversazioniByGiocatoreId(giocatoreId: String): List<Conversazione> {
         return dao.getConversazioniByGiocatoreId(giocatoreId)
     }
 
-    override suspend fun getConversazioniByStructureId(strutturaId: String): List<Conversazione> {
+    override suspend fun getConversazioniByStrutturaId(strutturaId: String): List<Conversazione> {
         return dao.getConversazioniByStrutturaId(strutturaId)
     }
 

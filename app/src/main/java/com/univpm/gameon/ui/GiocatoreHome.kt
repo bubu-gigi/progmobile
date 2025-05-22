@@ -20,6 +20,7 @@ import com.univpm.gameon.core.checkAccess
 import com.univpm.gameon.core.logout
 import com.univpm.gameon.viewmodels.AuthViewModel
 import com.univpm.gameon.R
+import com.univpm.gameon.core.ChatListScreenRoute
 
 @Composable
 fun GiocatoreHomeScreen(navController: NavController) {
@@ -57,6 +58,12 @@ fun GiocatoreHomeScreen(navController: NavController) {
 
         Button(onClick = { navController.navigate(CarteListScreenRoute) }) {
             Text("Gestione Carte")
+        }
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        Button(onClick = { navController.navigate(ChatListScreenRoute) }) {
+            Text("Contatta Strutture")
         }
 
         Spacer(modifier = Modifier.height(24.dp))
@@ -119,6 +126,12 @@ fun GiocatoreHomeContent(
 
             Button(onClick = onGestioneCarte) {
                 Text("Gestione Carte")
+            }
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            Button(onClick = onGestioneCarte) {
+                Text("Contatta Strutture")
             }
 
             Spacer(modifier = Modifier.height(24.dp))
