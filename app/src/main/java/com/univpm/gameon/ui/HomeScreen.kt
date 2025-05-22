@@ -48,7 +48,7 @@ fun HomeScreen(
             Button(
                 onClick = onAccediClick,
                 modifier = Modifier
-                    .padding(8.dp)
+                    .padding(20.dp)
                     .size(width = 190.dp, height = 50.dp)
                     .border(BorderStroke(2.dp, Color(0xFFE36BE0)), shape = RoundedCornerShape(120.dp)),
                 colors = ButtonDefaults.buttonColors(
