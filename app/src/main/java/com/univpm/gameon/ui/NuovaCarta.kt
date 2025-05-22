@@ -2,7 +2,6 @@ package com.univpm.gameon.ui
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -82,7 +81,7 @@ fun DropdownMenuProviderSelector(current: CardProvider, onSelected: (CardProvide
             modifier = Modifier
                 .fillMaxWidth()
                 .clickable { expanded = true },
-            textStyle = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 16.sp),
+            textStyle = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 16.sp, color = Color.White),
             colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = Color(0xFFE36BE0),
                 unfocusedBorderColor = Color(0xFFE36BE0),
@@ -94,7 +93,7 @@ fun DropdownMenuProviderSelector(current: CardProvider, onSelected: (CardProvide
         DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
             CardProvider.entries.forEach { provider ->
                 DropdownMenuItem(
-                    text = { Text(provider.name, fontFamily = futuraBookFontFamily, color = Color.White) },
+                    text = { Text(provider.name, fontFamily = futuraBookFontFamily, color = Color.Black) },
                     onClick = {
                         onSelected(provider)
                         expanded = false
@@ -104,7 +103,6 @@ fun DropdownMenuProviderSelector(current: CardProvider, onSelected: (CardProvide
         }
     }
 }
-
 
 @Composable
 fun NuovaCartaContent(
@@ -137,7 +135,7 @@ fun NuovaCartaContent(
             .padding(18.dp)) {
             Spacer(modifier = Modifier.height(210.dp))
             Text(
-                text = "Inserisci nuova carta",
+                text = "Inserisci nuova carta:",
                 style = MaterialTheme.typography.headlineSmall.copy(
                     color = Color.White,
                     fontSize = 23.sp,
@@ -152,12 +150,13 @@ fun NuovaCartaContent(
                 onValueChange = onHolderNameChange,
                 label = { Text("Intestatario", fontFamily = futuraBookFontFamily, color = Color.White) },
                 modifier = Modifier.fillMaxWidth(),
-                textStyle = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 16.sp),
+                textStyle = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 16.sp, color = Color.White),
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = Color(0xFFE36BE0),
                     unfocusedBorderColor = Color(0xFFE36BE0),
                     focusedLabelColor = Color(0xFFE36BE0),
-                    unfocusedLabelColor = Color(0xFFE36BE0)
+                    unfocusedLabelColor = Color(0xFFE36BE0),
+                    cursorColor = Color.White
                 )
             )
             Spacer(Modifier.height(8.dp))
@@ -167,12 +166,13 @@ fun NuovaCartaContent(
                 onValueChange = onCardNumberChange,
                 label = { Text("Numero carta", fontFamily = futuraBookFontFamily, color = Color.White) },
                 modifier = Modifier.fillMaxWidth(),
-                textStyle = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 16.sp),
+                textStyle = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 16.sp, color = Color.White),
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = Color(0xFFE36BE0),
                     unfocusedBorderColor = Color(0xFFE36BE0),
                     focusedLabelColor = Color(0xFFE36BE0),
-                    unfocusedLabelColor = Color(0xFFE36BE0)
+                    unfocusedLabelColor = Color(0xFFE36BE0),
+                    cursorColor = Color.White
                 )
             )
             Spacer(Modifier.height(8.dp))
@@ -182,12 +182,13 @@ fun NuovaCartaContent(
                 onValueChange = onCvvChange,
                 label = { Text("CVV", fontFamily = futuraBookFontFamily, color = Color.White) },
                 modifier = Modifier.fillMaxWidth(),
-                textStyle = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 16.sp),
+                textStyle = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 16.sp, color = Color.White),
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = Color(0xFFE36BE0),
                     unfocusedBorderColor = Color(0xFFE36BE0),
                     focusedLabelColor = Color(0xFFE36BE0),
-                    unfocusedLabelColor = Color(0xFFE36BE0)
+                    unfocusedLabelColor = Color(0xFFE36BE0),
+                    cursorColor = Color.White
                 )
             )
             Spacer(Modifier.height(8.dp))
@@ -198,12 +199,13 @@ fun NuovaCartaContent(
                     onValueChange = onMonthChange,
                     label = { Text("Mese", fontFamily = futuraBookFontFamily, color = Color.White) },
                     modifier = Modifier.weight(1f),
-                    textStyle = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 16.sp),
+                    textStyle = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 16.sp, color = Color.White),
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedBorderColor = Color(0xFFE36BE0),
                         unfocusedBorderColor = Color(0xFFE36BE0),
                         focusedLabelColor = Color(0xFFE36BE0),
-                        unfocusedLabelColor = Color(0xFFE36BE0)
+                        unfocusedLabelColor = Color(0xFFE36BE0),
+                        cursorColor = Color.White
                     )
                 )
                 OutlinedTextField(
@@ -211,12 +213,13 @@ fun NuovaCartaContent(
                     onValueChange = onYearChange,
                     label = { Text("Anno", fontFamily = futuraBookFontFamily, color = Color.White) },
                     modifier = Modifier.weight(1f),
-                    textStyle = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 16.sp),
+                    textStyle = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 16.sp, color = Color.White),
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedBorderColor = Color(0xFFE36BE0),
                         unfocusedBorderColor = Color(0xFFE36BE0),
                         focusedLabelColor = Color(0xFFE36BE0),
-                        unfocusedLabelColor = Color(0xFFE36BE0)
+                        unfocusedLabelColor = Color(0xFFE36BE0),
+                        cursorColor = Color.White
                     )
                 )
             }
@@ -232,15 +235,14 @@ fun NuovaCartaContent(
                 modifier = Modifier
                     .padding(8.dp)
                     .size(width = 500.dp, height = 50.dp)
-                    .border(BorderStroke(2.dp, Color(0xFFCFFF5E)), shape = RoundedCornerShape(120.dp))
-                    .background(
-                        color = Color(0xFF6136FF),
-                        shape = RoundedCornerShape(12.dp)
-                    )
+                    .border(BorderStroke(2.dp, Color(0xFFCFFF5E)), shape = RoundedCornerShape(120.dp)), // Bordo verde chiaro e molto arrotondato
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF6136FF), // Sfondo viola
+                    contentColor = Color(0xFFCFFF5E) // Testo verde chiaro
+                )
             ) {
                 Text(
                     text = "Salva carta",
-                    color = Color (0xFFCFFF5E),
                     fontSize = 20.sp,
                     fontFamily = futuraBookFontFamily
                 )
