@@ -145,6 +145,14 @@ fun LoginContent(
                 OutlinedTextField(
                     value = email,
                     onValueChange = onEmailChange,
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedBorderColor = Color(0xFFE36BE0),
+                        unfocusedBorderColor = Color(0xFFE36BE0),
+                        focusedLabelColor = Color(0xFFE36BE0),
+                        unfocusedLabelColor = Color(0xFFE36BE0),
+                        focusedTextColor = Color.White, // Colore del testo quando il campo è a fuoco
+                        unfocusedTextColor = Color.White // Colore del testo quando il campo non è a fuoco
+                    ),
                     label = {
                         Text(
                         text = "Email",
@@ -164,6 +172,14 @@ fun LoginContent(
                 OutlinedTextField(
                     value = password,
                     onValueChange = onPasswordChange,
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedBorderColor = Color(0xFFE36BE0),
+                        unfocusedBorderColor = Color(0xFFE36BE0),
+                        focusedLabelColor = Color(0xFFE36BE0),
+                        unfocusedLabelColor = Color(0xFFE36BE0),
+                        focusedTextColor = Color.White, // Colore del testo quando il campo è a fuoco
+                        unfocusedTextColor = Color.White // Colore del testo quando il campo non è a fuoco
+                    ),
                     label = { Text(
                         text = "Password",
                         color = Color.White,
