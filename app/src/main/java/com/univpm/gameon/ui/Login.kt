@@ -28,12 +28,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.material3.Typography
+
 
 
 
@@ -121,31 +119,8 @@ fun LoginContent(
     onLoginClick: () -> Unit,
     onRegisterClick: () -> Unit
 ){
-    MaterialTheme(
-            typography = Typography(
-                displayLarge = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 57.sp, color = Color.White),
-                displayMedium = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 45.sp, color = Color.White),
-                displaySmall = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 36.sp, color = Color.White),
 
-                headlineLarge = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 32.sp, color = Color.White),
-                headlineMedium = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 28.sp, color = Color.White),
-                headlineSmall = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 24.sp, color = Color.White),
-
-                titleLarge = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 22.sp, color = Color.White),
-                titleMedium = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 16.sp, fontWeight = FontWeight.Medium, color = Color.White),
-                titleSmall = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 14.sp, fontWeight = FontWeight.Medium, color = Color.White),
-
-                bodyLarge = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 16.sp, color = Color.White),
-                bodyMedium = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 14.sp, color = Color.White),
-                bodySmall = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 12.sp, color = Color.White),
-
-                labelLarge = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 14.sp, fontWeight = FontWeight.Medium, color = Color.White),
-                labelMedium = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 12.sp, fontWeight = FontWeight.Medium, color = Color.White),
-                labelSmall = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 11.sp, fontWeight = FontWeight.Medium, color = Color.White),
-            )
-        ) {
-        Surface(modifier = Modifier.fillMaxSize()) {
-            Image(
+    Image(
                 painter = painterResource(id = R.drawable.sfondocarta),
                 contentDescription = "Sfondo",
                 modifier = Modifier.fillMaxSize(),
@@ -158,14 +133,25 @@ fun LoginContent(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text("Login", style = MaterialTheme.typography.headlineMedium)
+                Text(text = "Login",
+                    color = Color.White,
+                    fontSize = 23.sp,
+                    fontWeight = FontWeight.Bold,
+                    fontFamily = lemonMilkFontFamily,
+                    style = MaterialTheme.typography.headlineMedium)
 
                 Spacer(modifier = Modifier.height(16.dp))
 
                 OutlinedTextField(
                     value = email,
                     onValueChange = onEmailChange,
-                    label = { Text("Email") }
+                    label = {
+                        Text(
+                        text = "Email",
+                        color = Color.White,
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Bold,
+                        fontFamily = futuraBookFontFamily) }
                 )
                 emailError?.let {
                     Text(
@@ -178,18 +164,26 @@ fun LoginContent(
                 OutlinedTextField(
                     value = password,
                     onValueChange = onPasswordChange,
-                    label = { Text("Password") },
+                    label = { Text(
+                        text = "Password",
+                        color = Color.White,
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Bold,
+                        fontFamily = futuraBookFontFamily) },
                     visualTransformation = PasswordVisualTransformation()
                 )
                 passwordError?.let {
                     Text(
                         text = it,
-                        color = MaterialTheme.colorScheme.error,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 12.sp,
+                        fontFamily = futuraBookFontFamily,
+                        color = Color(0xFFCFFF5E),
                         style = MaterialTheme.typography.bodySmall
                     )
                 }
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(40.dp))
 
                 Button(
                     onClick = onLoginClick,
@@ -216,8 +210,8 @@ fun LoginContent(
                 }
             }
         }
-    }
-}
+
+
 @Preview(showBackground = true)
 @Composable
 fun LoginContentPreview() {
