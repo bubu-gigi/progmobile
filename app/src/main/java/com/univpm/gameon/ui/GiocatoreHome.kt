@@ -231,12 +231,12 @@ fun GiocatoreHomeContent(
 
                     Row(
                         modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceEvenly
+                        horizontalArrangement = Arrangement.SpaceBetween // Cambiato per ridurre lo spazio
                     ) {
                         Box(
                             modifier = Modifier
                                 .weight(1f)
-                                .padding(16.dp)
+                                .padding(8.dp) // Ridotto il padding orizzontale
                                 .border(BorderStroke(2.dp, Color(0xFFCFFF5E)), shape = RoundedCornerShape(12.dp))
                                 .background(
                                     color = Color(0xFF6136FF),
@@ -259,7 +259,7 @@ fun GiocatoreHomeContent(
                         Box(
                             modifier = Modifier
                                 .weight(1f)
-                                .padding(16.dp)
+                                .padding(8.dp) // Ridotto il padding orizzontale
                                 .border(BorderStroke(2.dp, Color(0xFFCFFF5E)), shape = RoundedCornerShape(12.dp))
                                 .background(
                                     color = Color(0xFF6136FF),
@@ -279,6 +279,7 @@ fun GiocatoreHomeContent(
                             )
                         }
                     }
+
 
         }
     }
