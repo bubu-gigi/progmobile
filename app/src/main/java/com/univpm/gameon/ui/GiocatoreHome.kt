@@ -1,17 +1,25 @@
 package com.univpm.gameon.ui
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.content.MediaType.Companion.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.univpm.gameon.core.CarteListScreenRoute
@@ -103,45 +111,116 @@ fun GiocatoreHomeContent(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp),
+                .padding(8.dp),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Spacer(modifier = Modifier.height(390.dp))
-            Text("Benvenuto, Giocatore!", style = MaterialTheme.typography.headlineMedium)
+            Spacer(modifier = Modifier.height(465.dp))
+            Text(
+                "BENVENUTO!",
+                style = MaterialTheme.typography.headlineMedium.copy(
+                    color = Color.White,
+                    fontFamily = lemonMilkFontFamily,
+                    fontSize = 25.sp,
+                    letterSpacing = 2.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            )
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(25.dp))
 
-            Button(onClick = onLogout) {
-                Text("Logout")
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Button(
+                    onClick = { onLogout },
+                    modifier = Modifier
+                        .padding(7.dp)
+                        .size(width = 165.dp, height = 50.dp)
+                        .border(
+                            BorderStroke(2.dp, Color(0xFFE36BE0)),
+                            shape = RoundedCornerShape(120.dp)
+                        ), // Bordo con angoli arrotondati
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(232323), // Corretto il colore in formato esadecimale
+                        contentColor = Color.White
+                    )
+                ) {
+                    Text("Logout")
+                }
+
+                Button(
+                    onClick = { onEditProfile },
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .size(width = 165.dp, height = 50.dp)
+                        .border(
+                            BorderStroke(2.dp, Color(0xFFE36BE0)),
+                            shape = RoundedCornerShape(120.dp)
+                        ), // Bordo con angoli arrotondati
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(232323), // Corretto il colore in formato esadecimale
+                        contentColor = Color.White
+                    )
+                ) {
+                    Text("Modifica Profilo")
+                }
             }
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(10.dp))
 
-            Button(onClick = onEditProfile) {
-                Text("Modifica Profilo")
+            Row(verticalAlignment = Alignment.CenterVertically) {
+
+                Button(
+                    onClick = { onGestioneCarte },
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .size(width = 165.dp, height = 50.dp)
+                        .border(
+                            BorderStroke(2.dp, Color(0xFFE36BE0)),
+                            shape = RoundedCornerShape(120.dp)
+                        ), // Bordo con angoli arrotondati
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(232323), // Corretto il colore in formato esadecimale
+                        contentColor = Color.White
+                    )
+                ) {
+                    Text("Gestione Carte")
+                }
+
+                Button(
+                    onClick = { onGestioneCarte },
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .size(width = 165.dp, height = 50.dp)
+                        .border(
+                            BorderStroke(2.dp, Color(0xFFE36BE0)),
+                            shape = RoundedCornerShape(120.dp)
+                        ), // Bordo con angoli arrotondati
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(232323), // Corretto il colore in formato esadecimale
+                        contentColor = Color.White
+                    )
+                ) {
+                    Text("Contatta Strutture")
+                }
+
             }
+            Spacer(modifier = Modifier.height(25.dp))
 
-            Spacer(modifier = Modifier.height(24.dp))
-
-            Button(onClick = onGestioneCarte) {
-                Text("Gestione Carte")
-            }
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            Button(onClick = onGestioneCarte) {
-                Text("Contatta Strutture")
-            }
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            Button(
-                onClick = onDeleteAccount,
-                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
+            Box(
+                modifier = Modifier
+                    .padding(16.dp)
+                    .border(BorderStroke(2.dp, Color(0xFFCFFF5E)), shape = RoundedCornerShape(12.dp)) // Aggiunto il bordo con angoli arrotondati
+                    .background(
+                        color = Color(0xFF6136FF),
+                        shape = RoundedCornerShape(12.dp) // Assicurati che il background abbia la stessa forma
+                    )
+                    .clickable(onClick = onDeleteAccount)
+                    .padding(vertical = 15.dp, horizontal = 32.dp)
             ) {
-                Text("Elimina Account",
-                    color = MaterialTheme.colorScheme.onError,
+                Text(
+                    text = "Elimina Account",
+                    color = Color(0xFFCFFF5E),
+                    fontSize = 18.sp,
                     fontFamily = futuraBookFontFamily
                 )
             }
