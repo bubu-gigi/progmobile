@@ -212,6 +212,7 @@ fun AdminHomeContent(onLogout: () -> Unit) {
                     text = "Gestione Account",
                     color = Color.White,
                     fontSize = 14.sp,
+                    fontWeight = FontWeight.Bold,
                     fontFamily = futuraBookFontFamily)
             }
 
@@ -229,6 +230,7 @@ fun AdminHomeContent(onLogout: () -> Unit) {
                 Text(
                     text = "Gestione Prenotazioni",
                     color = Color.White,
+                    fontWeight = FontWeight.Bold,
                     fontSize = 14.sp,
                     fontFamily = futuraBookFontFamily)
             }
@@ -248,6 +250,7 @@ fun AdminHomeContent(onLogout: () -> Unit) {
                     text = "Visualizza Messaggi",
                     color = Color.White,
                     fontSize = 14.sp,
+                    fontWeight = FontWeight.Bold,
                     fontFamily = futuraBookFontFamily)
             }
 
@@ -269,7 +272,9 @@ fun AdminHomeContent(onLogout: () -> Unit) {
                     text = "Logout",
                     color = Color(0xFFCFFF5E),
                     fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
                     fontFamily = futuraBookFontFamily
+
                 )
             }
 

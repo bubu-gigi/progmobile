@@ -7,6 +7,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.content.MediaType.Companion.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -148,7 +149,11 @@ fun GiocatoreHomeContent(
                         contentColor = Color.White
                     )
                 ) {
-                    Text(text = "Gestione Prenotazioni", fontSize = 13.sp)
+                    Text(text = "Gestione Prenotazioni",
+                        color = Color.White,
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Bold,
+                        fontFamily = futuraBookFontFamily)
                 }
 
                 Button(
@@ -165,7 +170,11 @@ fun GiocatoreHomeContent(
                         contentColor = Color.White
                     )
                 ) {
-                    Text("Modifica Profilo")
+                    Text(text = "Modifica Profilo",
+                        color = Color.White,
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Bold,
+                        fontFamily = futuraBookFontFamily)
                 }
             }
 
@@ -189,7 +198,11 @@ fun GiocatoreHomeContent(
                         contentColor = Color.White
                     )
                 ) {
-                    Text("Gestione Carte")
+                    Text(text = "Gestione Carte",
+                        color = Color.White,
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Bold,
+                        fontFamily = futuraBookFontFamily)
                 }
 
                 Button(
@@ -206,7 +219,11 @@ fun GiocatoreHomeContent(
                         contentColor = Color.White
                     )
                 ) {
-                    Text("Contatta Strutture")
+                    Text(text = "Gestione Strutture",
+                        color = Color.White,
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Bold,
+                        fontFamily = futuraBookFontFamily)
                 }
             }
 
@@ -233,6 +250,7 @@ fun GiocatoreHomeContent(
                                 color = Color(0xFFCFFF5E),
                                 fontSize = 18.sp,
                                 fontFamily = futuraBookFontFamily,
+                                fontWeight = FontWeight.Bold,
                                 modifier = Modifier.fillMaxWidth(),
                                 textAlign = TextAlign.Center
                             )
@@ -254,6 +272,7 @@ fun GiocatoreHomeContent(
                                 text = "Logout",
                                 color = Color(0xFFCFFF5E),
                                 fontSize = 18.sp,
+                                fontWeight = FontWeight.Bold,
                                 fontFamily = futuraBookFontFamily,
                                 modifier = Modifier.fillMaxWidth(),
                                 textAlign = TextAlign.Center
