@@ -17,6 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -129,12 +130,15 @@ fun GiocatoreHomeContent(
 
             Spacer(modifier = Modifier.height(25.dp))
 
-            Row(verticalAlignment = Alignment.CenterVertically) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
                 Button(
-                    onClick = { onLogout },
+                    onClick = { onLogout() },
                     modifier = Modifier
                         .padding(7.dp)
-                        .size(width = 165.dp, height = 50.dp)
+                        .size(width = 183.dp, height = 50.dp)
                         .border(
                             BorderStroke(2.dp, Color(0xFFE36BE0)),
                             shape = RoundedCornerShape(120.dp)
@@ -144,14 +148,14 @@ fun GiocatoreHomeContent(
                         contentColor = Color.White
                     )
                 ) {
-                    Text("Logout")
+                    Text(text = "Gestione Prenotazioni", fontSize = 13.sp)
                 }
 
                 Button(
-                    onClick = { onEditProfile },
+                    onClick = { onEditProfile() },
                     modifier = Modifier
                         .padding(8.dp)
-                        .size(width = 165.dp, height = 50.dp)
+                        .size(width = 183.dp, height = 50.dp)
                         .border(
                             BorderStroke(2.dp, Color(0xFFE36BE0)),
                             shape = RoundedCornerShape(120.dp)
@@ -167,13 +171,15 @@ fun GiocatoreHomeContent(
 
             Spacer(modifier = Modifier.height(10.dp))
 
-            Row(verticalAlignment = Alignment.CenterVertically) {
-
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
                 Button(
-                    onClick = { onGestioneCarte },
+                    onClick = { onGestioneCarte() },
                     modifier = Modifier
                         .padding(8.dp)
-                        .size(width = 165.dp, height = 50.dp)
+                        .size(width = 183.dp, height = 50.dp)
                         .border(
                             BorderStroke(2.dp, Color(0xFFE36BE0)),
                             shape = RoundedCornerShape(120.dp)
@@ -187,10 +193,10 @@ fun GiocatoreHomeContent(
                 }
 
                 Button(
-                    onClick = { onGestioneCarte },
+                    onClick = { /* Azione quando il bottone viene premuto */ },
                     modifier = Modifier
                         .padding(8.dp)
-                        .size(width = 165.dp, height = 50.dp)
+                        .size(width = 183.dp, height = 50.dp)
                         .border(
                             BorderStroke(2.dp, Color(0xFFE36BE0)),
                             shape = RoundedCornerShape(120.dp)
@@ -202,32 +208,62 @@ fun GiocatoreHomeContent(
                 ) {
                     Text("Contatta Strutture")
                 }
-
             }
+
             Spacer(modifier = Modifier.height(25.dp))
 
-            Box(
-                modifier = Modifier
-                    .padding(16.dp)
-                    .border(BorderStroke(2.dp, Color(0xFFCFFF5E)), shape = RoundedCornerShape(12.dp)) // Aggiunto il bordo con angoli arrotondati
-                    .background(
-                        color = Color(0xFF6136FF),
-                        shape = RoundedCornerShape(12.dp) // Assicurati che il background abbia la stessa forma
-                    )
-                    .clickable(onClick = onDeleteAccount)
-                    .padding(vertical = 15.dp, horizontal = 32.dp)
-            ) {
-                Text(
-                    text = "Elimina Account",
-                    color = Color(0xFFCFFF5E),
-                    fontSize = 18.sp,
-                    fontFamily = futuraBookFontFamily
-                )
-            }
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceEvenly
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .weight(1f)
+                                .padding(16.dp)
+                                .border(BorderStroke(2.dp, Color(0xFFCFFF5E)), shape = RoundedCornerShape(12.dp))
+                                .background(
+                                    color = Color(0xFF6136FF),
+                                    shape = RoundedCornerShape(12.dp)
+                                )
+                                .clickable(onClick = onDeleteAccount)
+                                .padding(vertical = 15.dp)
+                        ) {
+                            Text(
+                                text = "Elimina Account",
+                                color = Color(0xFFCFFF5E),
+                                fontSize = 18.sp,
+                                fontFamily = futuraBookFontFamily,
+                                modifier = Modifier.fillMaxWidth(),
+                                textAlign = TextAlign.Center
+                            )
+                        }
+
+                        Box(
+                            modifier = Modifier
+                                .weight(1f)
+                                .padding(16.dp)
+                                .border(BorderStroke(2.dp, Color(0xFFCFFF5E)), shape = RoundedCornerShape(12.dp))
+                                .background(
+                                    color = Color(0xFF6136FF),
+                                    shape = RoundedCornerShape(12.dp)
+                                )
+                                .clickable(onClick = onLogout)
+                                .padding(vertical = 15.dp)
+                        ) {
+                            Text(
+                                text = "Logout",
+                                color = Color(0xFFCFFF5E),
+                                fontSize = 18.sp,
+                                fontFamily = futuraBookFontFamily,
+                                modifier = Modifier.fillMaxWidth(),
+                                textAlign = TextAlign.Center
+                            )
+                        }
+                    }
+
         }
     }
 }
-
 
 @Preview(showBackground = true)
 @Composable
