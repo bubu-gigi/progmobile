@@ -1,18 +1,31 @@
 package com.univpm.gameon.ui
 
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.univpm.gameon.R
 import com.univpm.gameon.core.UserSessionManager
 import com.univpm.gameon.data.collections.Carta
 import com.univpm.gameon.data.collections.enums.CardProvider
 import com.univpm.gameon.viewmodels.CarteViewModel
+import androidx.compose.ui.text.TextStyle
+
 
 @Composable
 fun NuovaCartaScreen(navController: NavController) {
@@ -26,58 +39,20 @@ fun NuovaCartaScreen(navController: NavController) {
     var year by remember { mutableStateOf("") }
     var provider by remember { mutableStateOf(CardProvider.VISA) }
 
-    Column(modifier = Modifier
-        .fillMaxSize()
-        .padding(16.dp)) {
-
-        Text("Inserisci nuova carta", style = MaterialTheme.typography.headlineSmall)
-        Spacer(Modifier.height(16.dp))
-
-        OutlinedTextField(
-            value = holderName,
-            onValueChange = { holderName = it },
-            label = { Text("Intestatario") },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        OutlinedTextField(
-            value = cardNumber,
-            onValueChange = { cardNumber = it },
-            label = { Text("Numero carta") },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        OutlinedTextField(
-            value = cvv,
-            onValueChange = { cvv = it },
-            label = { Text("CVV") },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            OutlinedTextField(
-                value = month,
-                onValueChange = { month = it },
-                label = { Text("Mese") },
-                modifier = Modifier.weight(1f)
-            )
-            OutlinedTextField(
-                value = year,
-                onValueChange = { year = it },
-                label = { Text("Anno") },
-                modifier = Modifier.weight(1f)
-            )
-        }
-
-        Spacer(Modifier.height(8.dp))
-
-        DropdownMenuProviderSelector(provider) { selected ->
-            provider = selected
-        }
-
-        Spacer(Modifier.height(24.dp))
-
-        Button(onClick = {
+    NuovaCartaContent(
+        holderName = holderName,
+        cardNumber = cardNumber,
+        cvv = cvv,
+        month = month,
+        year = year,
+        provider = provider,
+        onHolderNameChange = { holderName = it },
+        onCardNumberChange = { cardNumber = it },
+        onCvvChange = { cvv = it },
+        onMonthChange = { month = it },
+        onYearChange = { year = it },
+        onProviderSelected = { selected -> provider = selected },
+        onSaveClick = {
             val carta = Carta(
                 id = System.currentTimeMillis().toString(),
                 userId = userId,
@@ -90,10 +65,8 @@ fun NuovaCartaScreen(navController: NavController) {
             )
             viewModel.salvaCarta(carta)
             navController.popBackStack()
-        }, modifier = Modifier.fillMaxWidth()) {
-            Text("Salva carta")
         }
-    }
+    )
 }
 
 @Composable
@@ -104,15 +77,24 @@ fun DropdownMenuProviderSelector(current: CardProvider, onSelected: (CardProvide
         OutlinedTextField(
             value = current.name,
             onValueChange = {},
-            label = { Text("Circuito") },
+            label = { Text("Circuito", fontFamily = futuraBookFontFamily, color = Color.White) },
             readOnly = true,
-            modifier = Modifier.fillMaxWidth().clickable { expanded = true }
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable { expanded = true },
+            textStyle = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 16.sp),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = Color(0xFFE36BE0),
+                unfocusedBorderColor = Color(0xFFE36BE0),
+                focusedLabelColor = Color(0xFFE36BE0),
+                unfocusedLabelColor = Color(0xFFE36BE0)
+            )
         )
 
         DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
             CardProvider.entries.forEach { provider ->
                 DropdownMenuItem(
-                    text = { Text(provider.name) },
+                    text = { Text(provider.name, fontFamily = futuraBookFontFamily, color = Color.White) },
                     onClick = {
                         onSelected(provider)
                         expanded = false
@@ -122,6 +104,7 @@ fun DropdownMenuProviderSelector(current: CardProvider, onSelected: (CardProvide
         }
     }
 }
+
 
 @Composable
 fun NuovaCartaContent(
@@ -139,60 +122,129 @@ fun NuovaCartaContent(
     onProviderSelected: (CardProvider) -> Unit,
     onSaveClick: () -> Unit
 ) {
-    Column(modifier = Modifier
-        .fillMaxSize()
-        .padding(16.dp)) {
-
-        Text("Inserisci nuova carta", style = MaterialTheme.typography.headlineSmall)
-        Spacer(Modifier.height(16.dp))
-
-        OutlinedTextField(
-            value = holderName,
-            onValueChange = onHolderNameChange,
-            label = { Text("Intestatario") },
-            modifier = Modifier.fillMaxWidth()
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
+        Image(
+            painter = painterResource(id = R.drawable.sfondocarta),
+            contentDescription = "Sfondo",
+            modifier = Modifier.fillMaxSize(),
+            contentScale = ContentScale.Crop
         )
-
-        OutlinedTextField(
-            value = cardNumber,
-            onValueChange = onCardNumberChange,
-            label = { Text("Numero carta") },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        OutlinedTextField(
-            value = cvv,
-            onValueChange = onCvvChange,
-            label = { Text("CVV") },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            OutlinedTextField(
-                value = month,
-                onValueChange = onMonthChange,
-                label = { Text("Mese") },
-                modifier = Modifier.weight(1f)
+        Column(modifier = Modifier
+            .fillMaxSize()
+            .padding(18.dp)) {
+            Spacer(modifier = Modifier.height(210.dp))
+            Text(
+                text = "Inserisci nuova carta",
+                style = MaterialTheme.typography.headlineSmall.copy(
+                    color = Color.White,
+                    fontSize = 23.sp,
+                    fontFamily = lemonMilkFontFamily
+                )
             )
+
+            Spacer(Modifier.height(16.dp))
+
             OutlinedTextField(
-                value = year,
-                onValueChange = onYearChange,
-                label = { Text("Anno") },
-                modifier = Modifier.weight(1f)
+                value = holderName,
+                onValueChange = onHolderNameChange,
+                label = { Text("Intestatario", fontFamily = futuraBookFontFamily, color = Color.White) },
+                modifier = Modifier.fillMaxWidth(),
+                textStyle = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 16.sp),
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedBorderColor = Color(0xFFE36BE0),
+                    unfocusedBorderColor = Color(0xFFE36BE0),
+                    focusedLabelColor = Color(0xFFE36BE0),
+                    unfocusedLabelColor = Color(0xFFE36BE0)
+                )
             )
-        }
+            Spacer(Modifier.height(8.dp))
 
-        Spacer(Modifier.height(8.dp))
+            OutlinedTextField(
+                value = cardNumber,
+                onValueChange = onCardNumberChange,
+                label = { Text("Numero carta", fontFamily = futuraBookFontFamily, color = Color.White) },
+                modifier = Modifier.fillMaxWidth(),
+                textStyle = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 16.sp),
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedBorderColor = Color(0xFFE36BE0),
+                    unfocusedBorderColor = Color(0xFFE36BE0),
+                    focusedLabelColor = Color(0xFFE36BE0),
+                    unfocusedLabelColor = Color(0xFFE36BE0)
+                )
+            )
+            Spacer(Modifier.height(8.dp))
 
-        DropdownMenuProviderSelector(current = provider, onSelected = onProviderSelected)
+            OutlinedTextField(
+                value = cvv,
+                onValueChange = onCvvChange,
+                label = { Text("CVV", fontFamily = futuraBookFontFamily, color = Color.White) },
+                modifier = Modifier.fillMaxWidth(),
+                textStyle = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 16.sp),
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedBorderColor = Color(0xFFE36BE0),
+                    unfocusedBorderColor = Color(0xFFE36BE0),
+                    focusedLabelColor = Color(0xFFE36BE0),
+                    unfocusedLabelColor = Color(0xFFE36BE0)
+                )
+            )
+            Spacer(Modifier.height(8.dp))
 
-        Spacer(Modifier.height(24.dp))
+            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                OutlinedTextField(
+                    value = month,
+                    onValueChange = onMonthChange,
+                    label = { Text("Mese", fontFamily = futuraBookFontFamily, color = Color.White) },
+                    modifier = Modifier.weight(1f),
+                    textStyle = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 16.sp),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedBorderColor = Color(0xFFE36BE0),
+                        unfocusedBorderColor = Color(0xFFE36BE0),
+                        focusedLabelColor = Color(0xFFE36BE0),
+                        unfocusedLabelColor = Color(0xFFE36BE0)
+                    )
+                )
+                OutlinedTextField(
+                    value = year,
+                    onValueChange = onYearChange,
+                    label = { Text("Anno", fontFamily = futuraBookFontFamily, color = Color.White) },
+                    modifier = Modifier.weight(1f),
+                    textStyle = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 16.sp),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedBorderColor = Color(0xFFE36BE0),
+                        unfocusedBorderColor = Color(0xFFE36BE0),
+                        focusedLabelColor = Color(0xFFE36BE0),
+                        unfocusedLabelColor = Color(0xFFE36BE0)
+                    )
+                )
+            }
 
-        Button(
-            onClick = onSaveClick,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text("Salva carta")
+            Spacer(Modifier.height(8.dp))
+
+            DropdownMenuProviderSelector(current = provider, onSelected = onProviderSelected)
+
+            Spacer(Modifier.height(24.dp))
+
+            Button(
+                onClick = onSaveClick,
+                modifier = Modifier
+                    .padding(8.dp)
+                    .size(width = 500.dp, height = 50.dp)
+                    .border(BorderStroke(2.dp, Color(0xFFCFFF5E)), shape = RoundedCornerShape(120.dp))
+                    .background(
+                        color = Color(0xFF6136FF),
+                        shape = RoundedCornerShape(12.dp)
+                    )
+            ) {
+                Text(
+                    text = "Salva carta",
+                    color = Color (0xFFCFFF5E),
+                    fontSize = 20.sp,
+                    fontFamily = futuraBookFontFamily
+                )
+            }
         }
     }
 }
@@ -200,19 +252,45 @@ fun NuovaCartaContent(
 @Preview(showBackground = true)
 @Composable
 fun NuovaCartaContentPreview() {
-    NuovaCartaContent(
-        holderName = "Mario Rossi",
-        cardNumber = "1234123412341234",
-        cvv = "123",
-        month = "12",
-        year = "2026",
-        provider = CardProvider.VISA,
-        onHolderNameChange = {},
-        onCardNumberChange = {},
-        onCvvChange = {},
-        onMonthChange = {},
-        onYearChange = {},
-        onProviderSelected = {},
-        onSaveClick = {}
-    )
+    MaterialTheme(
+        typography = Typography(
+            displayLarge = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 57.sp, color = Color.White),
+            displayMedium = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 45.sp, color = Color.White),
+            displaySmall = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 36.sp, color = Color.White),
+
+            headlineLarge = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 32.sp, color = Color.White),
+            headlineMedium = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 28.sp, color = Color.White),
+            headlineSmall = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 24.sp, color = Color.White),
+
+            titleLarge = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 22.sp, color = Color.White),
+            titleMedium = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 16.sp, fontWeight = FontWeight.Medium, color = Color.White),
+            titleSmall = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 14.sp, fontWeight = FontWeight.Medium, color = Color.White),
+
+            bodyLarge = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 16.sp, color = Color.White),
+            bodyMedium = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 14.sp, color = Color.White),
+            bodySmall = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 12.sp, color = Color.White),
+
+            labelLarge = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 14.sp, fontWeight = FontWeight.Medium, color = Color.White),
+            labelMedium = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 12.sp, fontWeight = FontWeight.Medium, color = Color.White),
+            labelSmall = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 11.sp, fontWeight = FontWeight.Medium, color = Color.White),
+        )
+    ) {
+        Surface {
+            NuovaCartaContent(
+                holderName = "Mario Rossi",
+                cardNumber = "1234123412341234",
+                cvv = "123",
+                month = "12",
+                year = "2026",
+                provider = CardProvider.VISA,
+                onHolderNameChange = {},
+                onCardNumberChange = {},
+                onCvvChange = {},
+                onMonthChange = {},
+                onYearChange = {},
+                onProviderSelected = {},
+                onSaveClick = {}
+            )
+        }
+    }
 }

@@ -148,14 +148,14 @@ fun CarteListContent(
     )
     Column(modifier = Modifier
         .fillMaxSize()
-        .padding(16.dp)) {
-        Spacer(modifier = Modifier.height(190.dp))
+        .padding(18.dp)) {
+        Spacer(modifier = Modifier.height(210.dp))
         Text(
             text = "Le tue carte:",
             style = MaterialTheme.typography.headlineSmall.copy(
                 color = Color.White,
-                fontSize = 30.sp,
-                fontFamily = futuraBookFontFamily
+                fontSize = 23.sp,
+                fontFamily = lemonMilkFontFamily
             )
         )
 
