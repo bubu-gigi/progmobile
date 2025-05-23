@@ -1,6 +1,10 @@
 package com.univpm.gameon.ui
 
 import android.util.Log
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -13,8 +17,17 @@ import com.univpm.gameon.core.UserSessionManager
 import com.univpm.gameon.data.collections.Conversazione
 import com.univpm.gameon.viewmodels.ChatListViewModel
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.univpm.gameon.R
+
 
 @Composable
 fun ChatListScreen(
@@ -30,49 +43,87 @@ fun ChatListScreen(
         }
     }
 
-    Column(modifier = Modifier
-        .fillMaxSize()
-        .padding(16.dp)
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
     ) {
-        Text(
-            text = "Le tue conversazioni",
-            style = MaterialTheme.typography.headlineSmall,
-            modifier = Modifier.padding(bottom = 16.dp)
+        Image(
+            painter = painterResource(id = R.drawable.sfondocarta),
+            contentDescription = "Sfondo",
+            modifier = Modifier.fillMaxSize(),
+            contentScale = ContentScale.Crop
         )
+        Column(modifier = Modifier
+            .fillMaxSize()
+            .padding(18.dp)
+        ) {
+            Spacer(modifier = Modifier.height(210.dp))
+            Text(
+                text = "Le tue conversazioni:",
+                style = MaterialTheme.typography.headlineSmall.copy(
+                    color = Color.White,
+                    fontSize = 23.sp,
+                    fontFamily = lemonMilkFontFamily
+                )
+            )
 
-        LazyColumn(modifier = Modifier.weight(1f)) {
-            items(conversazioni) { conv ->
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 8.dp)
-                        .clickable { },
-                    elevation = CardDefaults.cardElevation(4.dp)
-                ) {
-                    Column(modifier = Modifier.padding(16.dp)) {
-                        Text("Struttura: ${conv.strutturaId}")
-                        Text("Ultimo messaggio: ${conv.ultimoMessaggio}")
+            Spacer(modifier = Modifier.height(16.dp))
+
+            LazyColumn(modifier = Modifier.weight(1f)) {
+                items(conversazioni) { conv ->
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 20.dp)
+                            .border(BorderStroke(3.dp, Color(0xFFE36BE0)), shape = RoundedCornerShape(12.dp))
+                            .clickable {
+                                //TODO: Implement navigation to chat details
+                            },
+                        elevation = CardDefaults.cardElevation(4.dp),
+                        colors = CardDefaults.cardColors(containerColor = Color(0xFFD3D3D3))
+                    ) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(30.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text(
+                                    text = "Struttura: ${conv.strutturaId}",
+                                    style = MaterialTheme.typography.titleMedium,
+                                    color = Color.Black
+                                )
+                                Text(
+                                    text = "Ultimo messaggio: ${conv.ultimoMessaggio}",
+                                    color = Color.Black
+                                )
+                            }
+                        }
                     }
                 }
             }
-        }
 
-        MappaStruttureConFiltri(
-            strutture = struttureMock,
-            onStrutturaSelezionata = { struttura ->
-                Log.d("SELEZIONATA", "Hai cliccato su: ${struttura.nome}")
+            Spacer(modifier = Modifier.height(40.dp))
+
+            Button(
+                onClick = { }, //TODO: Implement navigation to start new chat
+                modifier = Modifier
+                    .padding(8.dp)
+                    .size(width = 500.dp, height = 50.dp)
+                    .border(BorderStroke(2.dp, Color(0xFFE36BE0)), shape = RoundedCornerShape(120.dp)),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF232323),
+                    contentColor = Color.White
+                )
+            ) {
+                Text(
+                    text = "Inizia nuova conversazione",
+                    color = Color.White,
+                    fontSize = 20.sp,
+                    fontFamily = futuraBookFontFamily
+                )
             }
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Button(
-            onClick = { },
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(50.dp)
-        ) {
-            Text("Inizia nuova conversazione")
         }
     }
 }
@@ -85,41 +136,111 @@ fun ChatListScreenPreviewSimple() {
         Conversazione(strutturaId = "Struttura B", giocatoreId = "User1", ultimoMessaggio = "A domani")
     )
 
-    Column(modifier = Modifier
-        .fillMaxSize()
-        .padding(16.dp)
-    ) {
-        Text(
-            text = "Le tue conversazioni",
-            style = MaterialTheme.typography.headlineSmall,
-            modifier = Modifier.padding(bottom = 16.dp)
-        )
+    MaterialTheme(
+        typography = Typography(
+            displayLarge = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 57.sp),
+            displayMedium = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 45.sp),
+            displaySmall = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 36.sp),
 
-        LazyColumn(modifier = Modifier.weight(1f)) {
-            items(conversazioni) { conv ->
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 8.dp),
-                    elevation = CardDefaults.cardElevation(4.dp)
+            headlineLarge = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 32.sp),
+            headlineMedium = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 28.sp),
+            headlineSmall = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 24.sp),
+
+            titleLarge = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 22.sp),
+            titleMedium = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 16.sp, fontWeight = FontWeight.Medium),
+            titleSmall = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 14.sp, fontWeight = FontWeight.Medium),
+
+            bodyLarge = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 16.sp),
+            bodyMedium = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 14.sp),
+            bodySmall = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 12.sp),
+
+            labelLarge = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 14.sp, fontWeight = FontWeight.Medium),
+            labelMedium = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 12.sp, fontWeight = FontWeight.Medium),
+            labelSmall = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 11.sp, fontWeight = FontWeight.Medium),
+        )
+    ) {
+        Surface {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.sfondocarta),
+                    contentDescription = "Sfondo",
+                    modifier = Modifier.fillMaxSize(),
+                    contentScale = ContentScale.Crop
+                )
+                Column(modifier = Modifier
+                    .fillMaxSize()
+                    .padding(18.dp)
                 ) {
-                    Column(modifier = Modifier.padding(16.dp)) {
-                        Text("Struttura: ${conv.strutturaId}")
-                        Text("Ultimo messaggio: ${conv.ultimoMessaggio}")
+                    Spacer(modifier = Modifier.height(210.dp))
+                    Text(
+                        text = "Le tue conversazioni:",
+                        style = MaterialTheme.typography.headlineSmall.copy(
+                            color = Color.White,
+                            fontSize = 23.sp,
+                            fontFamily = lemonMilkFontFamily
+                        )
+                    )
+
+                    Spacer(modifier = Modifier.height(20.dp))
+
+                    LazyColumn(modifier = Modifier.weight(1f)) {
+                        items(conversazioni) { conv ->
+                            Card(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(vertical = 8.dp)
+                                    .border(BorderStroke(3.dp, Color(0xFFE36BE0)), shape = RoundedCornerShape(12.dp)),
+                                elevation = CardDefaults.cardElevation(4.dp),
+                                colors = CardDefaults.cardColors(containerColor = Color(0xFFD3D3D3))
+                            ) {
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(16.dp),
+                                    horizontalArrangement = Arrangement.SpaceBetween
+                                ) {
+                                    Column(modifier = Modifier.weight(1f)) {
+                                        Text(
+                                            text = "Struttura: ${conv.strutturaId}",
+                                            style = MaterialTheme.typography.titleMedium,
+                                            color = Color.Black
+                                        )
+                                        Text(
+                                            text = "Ultimo messaggio: ${conv.ultimoMessaggio}",
+                                            color = Color.Black
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(24.dp))
+
+                    Button(
+                        onClick = { },
+                        modifier = Modifier
+                            .padding(8.dp)
+                            .size(width = 500.dp, height = 50.dp)
+                            .border(BorderStroke(2.dp, Color(0xFFCFFF5E)), shape = RoundedCornerShape(120.dp)),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color(0xFF6136FF),
+                            contentColor = Color.White
+                        )
+                    ) {
+                        Text(
+                            text = "Inizia nuova conversazione",
+                            color = Color(0xFFCFFF5E),
+                            fontSize = 18.sp,
+                            fontFamily = futuraBookFontFamily,
+                            fontWeight = FontWeight.Bold
+                        )
                     }
                 }
             }
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Button(
-            onClick = { },
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(50.dp)
-        ) {
-            Text("Inizia nuova conversazione")
         }
     }
 }
