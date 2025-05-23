@@ -57,6 +57,8 @@ import com.univpm.gameon.data.collections.Struttura
 import com.univpm.gameon.data.collections.enums.Sport
 import com.univpm.gameon.data.collections.enums.TipologiaTerreno
 import com.google.android.gms.maps.model.LatLng
+import androidx.compose.foundation.background
+
 
 @Composable
 fun StrutturaFormScreen(
