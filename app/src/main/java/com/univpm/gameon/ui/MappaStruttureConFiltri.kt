@@ -31,59 +31,6 @@ import com.google.maps.android.compose.rememberCameraPositionState
 import com.univpm.gameon.data.collections.Struttura
 import com.univpm.gameon.data.collections.enums.Sport
 
-val struttureMock = listOf(
-    Struttura(
-        id = "1",
-        nome = "Centro Calcio Roma",
-        citta = "Roma",
-        indirizzo = "Via Roma 10",
-        latitudine = 41.9028,
-        longitudine = 12.4964,
-        sportPraticabili = listOf(Sport.CALCIO5, Sport.CALCIO8)
-    ),
-    Struttura(
-        id = "2",
-        nome = "Tennis Club Milano",
-        citta = "Milano",
-        indirizzo = "Viale Lombardia 22",
-        latitudine = 45.4642,
-        longitudine = 9.19,
-        sportPraticabili = listOf(Sport.TENNIS, Sport.TENNISDOPPIO)
-    ),
-    Struttura(
-        id = "3",
-        nome = "Padel Arena Napoli",
-        citta = "Napoli",
-        indirizzo = "Via Napoli 35",
-        latitudine = 40.8522,
-        longitudine = 14.2681,
-        sportPraticabili = listOf(Sport.PADEL, Sport.PADELDOPPIO)
-    ),
-    Struttura(
-        id = "4",
-        nome = "Beach Volley Center",
-        citta = "Bari",
-        indirizzo = "Lungomare Bari",
-        latitudine = 41.1171,
-        longitudine = 16.8719,
-        sportPraticabili = listOf(Sport.BEACHVOLLEY)
-    ),
-    Struttura(
-        id = "5",
-        nome = "MultiSport Torino",
-        citta = "Torino",
-        indirizzo = "Corso Torino 99",
-        latitudine = 45.0703,
-        longitudine = 7.6869,
-        sportPraticabili = listOf(
-            Sport.CALCIO5,
-            Sport.TENNIS,
-            Sport.PADEL,
-            Sport.BEACHVOLLEY
-        )
-    )
-)
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MappaStruttureConFiltri(
