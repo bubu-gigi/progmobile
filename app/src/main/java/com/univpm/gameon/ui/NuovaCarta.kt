@@ -137,7 +137,7 @@ fun NuovaCartaContent(
             .padding(18.dp)) {
             Spacer(modifier = Modifier.height(210.dp))
             Text(
-                text = "Inserisci nuova carta",
+                text = "Inserisci nuova carta:",
                 style = MaterialTheme.typography.headlineSmall.copy(
                     color = Color.White,
                     fontSize = 23.sp,
