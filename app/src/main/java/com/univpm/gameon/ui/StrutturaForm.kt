@@ -367,7 +367,7 @@ fun CampoFormDialog(onCampoAdded: (Campo) -> Unit) {
             modifier = Modifier.fillMaxWidth()
         ) {
             Image(
-                painter = painterResource(id = R.drawable.sfondocarta), // Immagine di sfondo
+                painter = painterResource(id = R.drawable.sfondogrigio), // Immagine di sfondo
                 contentDescription = "Sfondo dialog",
                 modifier = Modifier.matchParentSize(),
                 contentScale = ContentScale.Crop
