@@ -32,10 +32,6 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 
-
-
-
-
 @Composable
 fun LoginScreen(navController: NavController) {
     val authViewModel: AuthViewModel = hiltViewModel()
@@ -53,59 +49,28 @@ fun LoginScreen(navController: NavController) {
         }
     }
 
-    Column(
-        modifier = Modifier.fillMaxSize().padding(16.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text("Login", style = MaterialTheme.typography.headlineMedium)
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        OutlinedTextField(
-            value = email,
-            onValueChange = { email = it },
-            label = { Text("Email") }
-        )
-        emailError?.let {
-            Text(text = it, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall)
-        }
-
-        OutlinedTextField(
-            value = password,
-            onValueChange = { password = it },
-            label = { Text("Password") },
-            visualTransformation = PasswordVisualTransformation()
-        )
-        passwordError?.let {
-            Text(text = it, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall)
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Button(onClick = {
-            val emailValidation = null
+    LoginContent(
+        email = email,
+        password = password,
+        emailError = emailError,
+        passwordError = passwordError,
+        onEmailChange = { email = it },
+        onPasswordChange = { password = it },
+        onLoginClick = {
+            val emailValidation = null // Puoi aggiungere validateEmail() se vuoi
             val passwordValidation = validatePassword(password)
 
             emailError = emailValidation
             passwordError = passwordValidation
 
             if (emailValidation == null && passwordValidation == null) {
-                authViewModel.login(email.trim().toLowerCase(), password.trim())
+                authViewModel.login(email.trim().lowercase(), password.trim())
             }
-        }) {
-            Text("Login")
-        }
-
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        TextButton(onClick = {
+        },
+        onRegisterClick = {
             navController.navigate(RegisterScreenRoute)
-        }) {
-            Text("Non hai un account? Registrati")
         }
-    }
+    )
 }
 
 @Composable

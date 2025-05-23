@@ -47,19 +47,23 @@ fun RegisterScreen(navController: NavController) {
     var cfError by remember { mutableStateOf<String?>(null) }
     var passwordError by remember { mutableStateOf<String?>(null) }
 
-    RegisterEditProfileForm(
-        title = "Registrazione",
+    RegisterFormContent(
         name = name,
         cognome = cognome,
         email = email,
         codiceFiscale = codiceFiscale,
         password = password,
+        nameError = nameError,
+        cognomeError = cognomeError,
+        emailError = emailError,
+        cfError = cfError,
+        passwordError = passwordError,
         onNameChange = { name = it },
         onCognomeChange = { cognome = it },
         onEmailChange = { email = it },
         onCodiceFiscaleChange = { codiceFiscale = it },
         onPasswordChange = { password = it },
-        onActionClick = {
+        onRegisterClick = {
             nameError = checkFieldLength(name, 2, "Nome")
             cognomeError = checkFieldLength(cognome, 2, "Cognome")
             emailError = validateEmail(email)
@@ -69,15 +73,24 @@ fun RegisterScreen(navController: NavController) {
             val hasErrors = listOf(nameError, cognomeError, emailError, cfError, passwordError).any { it != null }
 
             if (!hasErrors) {
-                val user = User("", name, cognome, email, codiceFiscale, password)
+                val user = User(
+                    id = "",
+                    name = name,
+                    cognome = cognome,
+                    email = email,
+                    codiceFiscale = codiceFiscale,
+                    password = password
+                )
                 authViewModel.register(user)
             }
         },
-        actionButtonText = "Registrati",
-        errorMessage = listOfNotNull(nameError, cognomeError, emailError, cfError, passwordError).firstOrNull()
-            ?: authViewModel.authState.value?.takeIf { it.startsWith("FAILED") },
-        fontSize = 18.sp,
-        color = Color(0xFFCFFF5E)
+        errorMessage = listOfNotNull(
+            nameError,
+            cognomeError,
+            emailError,
+            cfError,
+            passwordError
+        ).firstOrNull() ?: authViewModel.authState.value?.takeIf { it.startsWith("FAILED") }
     )
 
     if (authViewModel.authState.value == "SUCCESS") {
@@ -86,6 +99,7 @@ fun RegisterScreen(navController: NavController) {
         }
     }
 }
+
 
 @Composable
 fun RegisterFormContent(

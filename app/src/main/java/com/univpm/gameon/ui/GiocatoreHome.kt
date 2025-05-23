@@ -5,7 +5,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.content.MediaType.Companion.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -45,53 +44,22 @@ fun GiocatoreHomeScreen(navController: NavController) {
         }
     }
 
-    Column(
-        modifier = Modifier.fillMaxSize().padding(16.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text("Benvenuto, Giocatore!", style = MaterialTheme.typography.headlineMedium)
-
-        Spacer(modifier = Modifier.height(24.dp))
-
-        Button(onClick = { logout(navController) }) {
-            Text("Logout")
-        }
-
-        Spacer(modifier = Modifier.height(24.dp))
-
-        Button(onClick = { navController.navigate(EditProfileScreenRoute) }) {
-            Text("Modifica Profilo")
-        }
-
-        Spacer(modifier = Modifier.height(24.dp))
-
-        Button(onClick = { navController.navigate(CarteListScreenRoute) }) {
-            Text("Gestione Carte")
-        }
-
-        Spacer(modifier = Modifier.height(24.dp))
-
-        Button(onClick = { navController.navigate(ChatListScreenRoute) }) {
-            Text("Contatta Strutture")
-        }
-
-        Spacer(modifier = Modifier.height(24.dp))
-
-        Button(
-            onClick = { authViewModel.deleteAccount() },
-            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
-        ) {
-            Text("Elimina Account", color = MaterialTheme.colorScheme.onError)
-        }
-    }
+    GiocatoreHomeContent(
+        onLogout = { logout(navController) },
+        onEditProfile = { navController.navigate(EditProfileScreenRoute) },
+        onGestioneCarte = { navController.navigate(CarteListScreenRoute) },
+        onContattaStrutture = { navController.navigate(ChatListScreenRoute) },
+        onDeleteAccount = { authViewModel.deleteAccount() }
+    )
 }
+
 
 @Composable
 fun GiocatoreHomeContent(
     onLogout: () -> Unit,
     onEditProfile: () -> Unit,
     onGestioneCarte: () -> Unit,
+    onContattaStrutture: () -> Unit,
     onDeleteAccount: () -> Unit
 ) {
     // Sostituisci "background_image" con il nome esatto dell'immagine nella cartella drawable
@@ -206,7 +174,7 @@ fun GiocatoreHomeContent(
                 }
 
                 Button(
-                    onClick = { /* Azione quando il bottone viene premuto */ },
+                    onClick = { onContattaStrutture() },
                     modifier = Modifier
                         .padding(8.dp)
                         .size(width = 183.dp, height = 50.dp)
@@ -219,7 +187,7 @@ fun GiocatoreHomeContent(
                         contentColor = Color.White
                     )
                 ) {
-                    Text(text = "Gestione Strutture",
+                    Text(text = "Contatta Strutture",
                         color = Color.White,
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Bold,
@@ -292,6 +260,7 @@ fun GiocatoreHomeContentPreview() {
         onLogout = {},
         onEditProfile = {},
         onGestioneCarte = {},
+        onContattaStrutture = {},
         onDeleteAccount = {}
     )
 }
