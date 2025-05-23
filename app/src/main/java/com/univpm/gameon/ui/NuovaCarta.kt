@@ -2,6 +2,7 @@ package com.univpm.gameon.ui
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -24,6 +25,7 @@ import com.univpm.gameon.data.collections.Carta
 import com.univpm.gameon.data.collections.enums.CardProvider
 import com.univpm.gameon.viewmodels.CarteViewModel
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
 
 
 @Composable
@@ -135,7 +137,7 @@ fun NuovaCartaContent(
             .padding(18.dp)) {
             Spacer(modifier = Modifier.height(210.dp))
             Text(
-                text = "Inserisci nuova carta:",
+                text = "Inserisci nuova carta",
                 style = MaterialTheme.typography.headlineSmall.copy(
                     color = Color.White,
                     fontSize = 23.sp,
