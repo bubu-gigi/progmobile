@@ -5,6 +5,9 @@ import com.univpm.gameon.data.dao.interfaces.StrutturaDao
 import com.univpm.gameon.repositories.StrutturaRepository
 
 class StrutturaRepositoryImpl(private val strutturaDao: StrutturaDao) : StrutturaRepository {
+    override suspend fun getStrutture(): List<Struttura> {
+        return strutturaDao.getStrutture()
+    }
 
     override suspend fun getStruttura(id: String): Struttura? {
         return strutturaDao.getStrutturaById(id)

@@ -10,6 +10,18 @@ class StrutturaDaoImpl : StrutturaDao {
     private val db = Firebase.firestore
     private val struttureCollection = db.collection("strutture")
 
+    override suspend fun getStrutture(): List<Struttura> {
+        return try {
+            val snapshot = db.collection("strutture")
+                .get()
+                .await()
+            snapshot.documents.mapNotNull { it.toObject(Struttura::class.java)?.copy(id = it.id)
+            }
+        } catch (e: Exception) {
+            emptyList()
+        }
+    }
+
     override suspend fun getStrutturaById(id: String): Struttura? {
         return try {
             val snapshot = struttureCollection.document(id).get().await()
