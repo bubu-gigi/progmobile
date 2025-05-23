@@ -191,7 +191,7 @@ fun StrutturaFormScreen(
                                 sport1.name.replace("_", " "),
                                 color = Color.White,
                                 fontFamily = futuraBookFontFamily,
-                                fontWeight = FontWeight.Normal
+                                fontWeight = FontWeight.Bold
                             )
                         }
 
@@ -215,7 +215,7 @@ fun StrutturaFormScreen(
                                     it.name.replace("_", " "),
                                     color = Color.White,
                                     fontFamily = futuraBookFontFamily,
-                                    fontWeight = FontWeight.Normal
+                                    fontWeight = FontWeight.Bold
                                 )
                             }
                         }
