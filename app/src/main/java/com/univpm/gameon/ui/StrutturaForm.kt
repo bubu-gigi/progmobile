@@ -162,9 +162,9 @@ fun StrutturaFormScreen(
 
                 val sportPairs = listOf(
                     Pair(Sport.CALCIO5, Sport.CALCIO8),
-                    Pair(Sport.TENNIS, Sport.TENNISDOPPIO),
-                    Pair(Sport.PADEL, Sport.PADELDOPPIO),
-                    Pair(Sport.BEACHVOLLEY, null)
+                    Pair(Sport.TENNIS, null),
+                    Pair(Sport.PADEL, null),
+                    Pair(Sport.BEACH_VOLLEY, null)
                 )
 
                 sportPairs.forEach { (sport1, sport2) ->

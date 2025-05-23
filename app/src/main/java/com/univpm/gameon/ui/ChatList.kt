@@ -27,6 +27,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.univpm.gameon.R
+import com.univpm.gameon.viewmodels.StruttureViewModel
 
 
 @Composable
@@ -34,13 +35,17 @@ fun ChatListScreen(
     navController: NavController
 ) {
     val viewModel: ChatListViewModel = hiltViewModel()
+    val struttureViewModel: StruttureViewModel = hiltViewModel()
+
     val conversazioni by viewModel.conversazioni.collectAsState()
+    val strutture by struttureViewModel.strutture.collectAsState()
 
     LaunchedEffect(Unit) {
         val userId = UserSessionManager.userId
         if (!userId.isNullOrBlank()) {
             viewModel.loadConversazioniForUser(userId)
         }
+        struttureViewModel.caricaStrutture()
     }
 
     Box(
@@ -103,6 +108,15 @@ fun ChatListScreen(
                     }
                 }
             }
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+            MappaStruttureConFiltri(
+                strutture = strutture,
+                onStrutturaSelezionata = { struttura ->
+                    Log.d("SELEZIONATA", "Hai cliccato su: ${struttura.nome}")
+                }
+            )
 
             Spacer(modifier = Modifier.height(40.dp))
 
