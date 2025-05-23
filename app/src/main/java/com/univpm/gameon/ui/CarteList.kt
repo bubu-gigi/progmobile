@@ -184,9 +184,9 @@ fun CarteListContent(
             modifier = Modifier
                 .padding(8.dp)
                 .size(width = 500.dp, height = 50.dp)
-                .border(BorderStroke(2.dp, Color(0xFFE36BE0)), shape = RoundedCornerShape(120.dp)),
+                .border(BorderStroke(2.dp, Color(0xFFCFFF5E)), shape = RoundedCornerShape(120.dp)),
             colors = ButtonDefaults.buttonColors(
-                containerColor = Color(232323),
+                containerColor = Color(0xFF6136FF),
                 contentColor = Color.White
         )
 
@@ -195,9 +195,10 @@ fun CarteListContent(
         ) {
             Text(
                 text = "Inserisci nuova carta",
-                color = Color.White,
-                fontSize = 20.sp,
-                fontFamily = futuraBookFontFamily
+                color = Color(0xFFCFFF5E),
+                fontSize = 18.sp,
+                fontFamily = futuraBookFontFamily,
+                fontWeight = FontWeight.Bold
             )
         }
     }
