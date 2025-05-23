@@ -4,9 +4,11 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import com.univpm.gameon.ui.AdminHomeScreen
 import com.univpm.gameon.ui.CarteListScreen
 import com.univpm.gameon.ui.ChatListScreen
+import com.univpm.gameon.ui.ChatScreen
 import com.univpm.gameon.ui.EditProfileScreen
 import com.univpm.gameon.ui.GiocatoreHomeScreen
 import com.univpm.gameon.ui.LoginScreen
@@ -37,6 +39,12 @@ object NuovaCartaScreenRoute
 
 @Serializable
 object ChatListScreenRoute
+
+@Serializable
+data class ChatScreenRoute(
+    val strutturaId: String,
+    val strutturaNome: String
+)
 
 @Composable
 fun AppNavHost() {
@@ -73,6 +81,11 @@ fun AppNavHost() {
 
         composable<ChatListScreenRoute> {
             ChatListScreen(navController)
+        }
+
+        composable<ChatScreenRoute> { entry ->
+            val args = entry.toRoute<ChatScreenRoute>()
+            ChatScreen(navController, args.strutturaId, args.strutturaNome)
         }
     }
 }
