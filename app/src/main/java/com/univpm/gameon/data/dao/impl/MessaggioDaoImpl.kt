@@ -22,16 +22,41 @@ class MessaggioDaoImpl : MessaggioDao {
     override suspend fun sendMessaggio(giocatoreId: String, strutturaId: String, messaggio: Messaggio): Boolean {
         val convoId = "conversation_${giocatoreId}_$strutturaId"
         return try {
+            val db = FirebaseFirestore.getInstance()
+
+            val strutturaDoc = db.collection("strutture")
+                .document(strutturaId)
+                .get()
+                .await()
+
+            val strutturaNome = strutturaDoc.getString("nome") ?: "Struttura"
+
             db.collection("messages")
                 .document(convoId)
                 .collection("messages")
                 .add(messaggio)
                 .await()
+
+            val conversazione = hashMapOf(
+                "giocatoreId" to giocatoreId,
+                "strutturaId" to strutturaId,
+                "strutturaNome" to strutturaNome,
+                "ultimoMessaggio" to messaggio.testo,
+                "ultimoTimestamp" to messaggio.timestamp
+            )
+
+            db.collection("conversazioni")
+                .document(convoId)
+                .set(conversazione)
+                .await()
+
             true
         } catch (e: Exception) {
             false
         }
     }
+
+
 
     override suspend fun deleteMessaggio(giocatoreId: String, strutturaId: String, messaggioId: String): Boolean {
         val convoId = "conversation_${giocatoreId}_$strutturaId"

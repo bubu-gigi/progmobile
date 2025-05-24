@@ -1,6 +1,5 @@
 package com.univpm.gameon.ui
 
-import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
@@ -30,7 +29,6 @@ import com.univpm.gameon.R
 import com.univpm.gameon.core.ChatScreenRoute
 import com.univpm.gameon.viewmodels.StruttureViewModel
 
-
 @Composable
 fun ChatListScreen(
     navController: NavController
@@ -49,21 +47,21 @@ fun ChatListScreen(
         struttureViewModel.caricaStrutture()
     }
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-    ) {
+    Box(modifier = Modifier.fillMaxSize()) {
         Image(
             painter = painterResource(id = R.drawable.sfondocarta),
             contentDescription = "Sfondo",
             modifier = Modifier.fillMaxSize(),
             contentScale = ContentScale.Crop
         )
-        Column(modifier = Modifier
-            .fillMaxSize()
-            .padding(18.dp)
+
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(18.dp)
         ) {
             Spacer(modifier = Modifier.height(210.dp))
+
             Text(
                 text = "Le tue conversazioni:",
                 style = MaterialTheme.typography.headlineSmall.copy(
@@ -77,6 +75,8 @@ fun ChatListScreen(
 
             LazyColumn(modifier = Modifier.weight(1f)) {
                 items(conversazioni) { conv ->
+                    val strutturaNome = strutture.find { it.id == conv.strutturaId }?.nome ?: conv.strutturaId
+
                     Card(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -85,22 +85,36 @@ fun ChatListScreen(
                         elevation = CardDefaults.cardElevation(4.dp),
                         colors = CardDefaults.cardColors(containerColor = Color(0xFFD3D3D3))
                     ) {
-                        Row(
+                        Box(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(30.dp),
-                            horizontalArrangement = Arrangement.SpaceBetween
+                                .clickable {
+                                    navController.navigate(
+                                        ChatScreenRoute(
+                                            strutturaId = conv.strutturaId,
+                                            strutturaNome = strutturaNome,
+                                            giocatoreId = conv.giocatoreId
+                                        )
+                                    )
+                                }
                         ) {
-                            Column(modifier = Modifier.weight(1f)) {
-                                Text(
-                                    text = "Struttura: ${conv.strutturaId}",
-                                    style = MaterialTheme.typography.titleMedium,
-                                    color = Color.Black
-                                )
-                                Text(
-                                    text = "Ultimo messaggio: ${conv.ultimoMessaggio}",
-                                    color = Color.Black
-                                )
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(30.dp),
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ) {
+                                Column(modifier = Modifier.weight(1f)) {
+                                    Text(
+                                        text = "Struttura: $strutturaNome",
+                                        style = MaterialTheme.typography.titleMedium,
+                                        color = Color.Black
+                                    )
+                                    Text(
+                                        text = "Ultimo messaggio: ${conv.ultimoMessaggio}",
+                                        color = Color.Black
+                                    )
+                                }
                             }
                         }
                     }
@@ -112,7 +126,13 @@ fun ChatListScreen(
             MappaStruttureConFiltri(
                 strutture = strutture,
                 onStrutturaSelezionata = { struttura ->
-                   navController.navigate(ChatScreenRoute(struttura.id, struttura.nome, null))
+                    navController.navigate(
+                        ChatScreenRoute(
+                            strutturaId = struttura.id,
+                            strutturaNome = struttura.nome,
+                            giocatoreId = null
+                        )
+                    )
                 },
                 height = 300.dp,
                 width = Dp.Unspecified
@@ -120,6 +140,7 @@ fun ChatListScreen(
         }
     }
 }
+
 
 @Preview(showBackground = true)
 @Composable

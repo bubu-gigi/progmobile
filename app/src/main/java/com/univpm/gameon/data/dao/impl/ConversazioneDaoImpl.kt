@@ -7,11 +7,15 @@ import kotlinx.coroutines.tasks.await
 
 class ConversazioneDaoImpl : ConversazioneDao {
     private val db = FirebaseFirestore.getInstance()
-    private val conversationsCollection = db.collection("messages")
+    private val conversationsCollection = db.collection("conversazioni")
 
     override suspend fun getConversazioni(): List<Conversazione> {
         val snapshot = conversationsCollection.get().await()
-        println(snapshot)
+        println("Trovati ${snapshot.size()} documenti")
+
+        snapshot.documents.forEach { doc ->
+            println("DOC ID: ${doc.id} => ${doc.data}")
+        }
         return snapshot.toObjects(Conversazione::class.java)
     }
 
@@ -20,6 +24,7 @@ class ConversazioneDaoImpl : ConversazioneDao {
             .whereEqualTo("giocatoreId", giocatoreId)
             .get()
             .await()
+        println(snapshot.toObjects(Conversazione::class.java))
         return snapshot.toObjects(Conversazione::class.java)
     }
 

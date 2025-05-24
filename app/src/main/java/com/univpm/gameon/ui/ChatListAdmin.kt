@@ -27,7 +27,6 @@ fun ChatListAdminScreen(
     navController: NavController
 ) {
     val viewModel: ChatListViewModel = hiltViewModel()
-
     val conversazioni by viewModel.conversazioni.collectAsState()
 
     LaunchedEffect(Unit) {
@@ -44,11 +43,14 @@ fun ChatListAdminScreen(
             modifier = Modifier.fillMaxSize(),
             contentScale = ContentScale.Crop
         )
-        Column(modifier = Modifier
-            .fillMaxSize()
-            .padding(18.dp)
+
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(18.dp)
         ) {
             Spacer(modifier = Modifier.height(210.dp))
+
             Text(
                 text = "Le tue conversazioni:",
                 style = MaterialTheme.typography.headlineSmall.copy(
@@ -66,29 +68,43 @@ fun ChatListAdminScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(vertical = 20.dp)
-                            .border(BorderStroke(3.dp, Color(0xFFE36BE0)), shape = RoundedCornerShape(12.dp))
-                            .clickable {
-                                navController.navigate(ChatScreenRoute(conv.strutturaId.toString(), "Struttura", conv.giocatoreId))
-                            },
+                            .border(
+                                BorderStroke(3.dp, Color(0xFFE36BE0)),
+                                shape = RoundedCornerShape(12.dp)
+                            ),
                         elevation = CardDefaults.cardElevation(4.dp),
                         colors = CardDefaults.cardColors(containerColor = Color(0xFFD3D3D3))
                     ) {
-                        Row(
+                        Box(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(30.dp),
-                            horizontalArrangement = Arrangement.SpaceBetween
+                                .clickable {
+                                    navController.navigate(
+                                        ChatScreenRoute(
+                                            conv.strutturaId,
+                                            conv.strutturaNome,
+                                            conv.giocatoreId
+                                        )
+                                    )
+                                }
                         ) {
-                            Column(modifier = Modifier.weight(1f)) {
-                                Text(
-                                    text = "Struttura: ${conv.strutturaId}",
-                                    style = MaterialTheme.typography.titleMedium,
-                                    color = Color.Black
-                                )
-                                Text(
-                                    text = "Ultimo messaggio: ${conv.ultimoMessaggio}",
-                                    color = Color.Black
-                                )
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(30.dp),
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ) {
+                                Column(modifier = Modifier.weight(1f)) {
+                                    Text(
+                                        text = "Struttura: ${conv.strutturaNome}",
+                                        style = MaterialTheme.typography.titleMedium,
+                                        color = Color.Black
+                                    )
+                                    Text(
+                                        text = "Ultimo messaggio: ${conv.ultimoMessaggio}",
+                                        color = Color.Black
+                                    )
+                                }
                             }
                         }
                     }
