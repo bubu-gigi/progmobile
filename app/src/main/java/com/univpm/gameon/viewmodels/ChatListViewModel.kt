@@ -24,4 +24,10 @@ class ChatListViewModel @Inject constructor(
         }
     }
 
+    fun caricaTutteLeConversazioni() {
+        viewModelScope.launch {
+            _conversazioni.value = conversazioneRepository.getConversazioni()
+        }
+    }
+
 }

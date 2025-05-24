@@ -9,6 +9,12 @@ class ConversazioneDaoImpl : ConversazioneDao {
     private val db = FirebaseFirestore.getInstance()
     private val conversationsCollection = db.collection("messages")
 
+    override suspend fun getConversazioni(): List<Conversazione> {
+        val snapshot = conversationsCollection.get().await()
+        println(snapshot)
+        return snapshot.toObjects(Conversazione::class.java)
+    }
+
     override suspend fun getConversazioniByGiocatoreId(giocatoreId: String): List<Conversazione> {
         val snapshot = conversationsCollection
             .whereEqualTo("giocatoreId", giocatoreId)

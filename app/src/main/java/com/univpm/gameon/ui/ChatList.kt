@@ -81,10 +81,7 @@ fun ChatListScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(vertical = 20.dp)
-                            .border(BorderStroke(3.dp, Color(0xFFE36BE0)), shape = RoundedCornerShape(12.dp))
-                            .clickable {
-                                //TODO: Implement navigation to chat details
-                            },
+                            .border(BorderStroke(3.dp, Color(0xFFE36BE0)), shape = RoundedCornerShape(12.dp)),
                         elevation = CardDefaults.cardElevation(4.dp),
                         colors = CardDefaults.cardColors(containerColor = Color(0xFFD3D3D3))
                     ) {
@@ -115,7 +112,7 @@ fun ChatListScreen(
             MappaStruttureConFiltri(
                 strutture = strutture,
                 onStrutturaSelezionata = { struttura ->
-                   navController.navigate(ChatScreenRoute(struttura.id, struttura.nome))
+                   navController.navigate(ChatScreenRoute(struttura.id, struttura.nome, null))
                 },
                 height = 300.dp,
                 width = Dp.Unspecified

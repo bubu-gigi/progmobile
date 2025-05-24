@@ -13,19 +13,30 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.univpm.gameon.core.UserSessionManager
 import com.univpm.gameon.data.collections.Messaggio
+import com.univpm.gameon.data.collections.enums.UserRuolo
 import com.univpm.gameon.viewmodels.ChatViewModel
 
 @Composable
 fun ChatScreen(
     navController: androidx.navigation.NavController,
     strutturaId: String,
-    strutturaNome: String
+    strutturaNome: String,
+    giocatoreId: String,
 ) {
     val chatViewModel: ChatViewModel = hiltViewModel()
 
-    val giocatoreId = UserSessionManager.userId ?: ""
+    val giocatoreId = if (UserSessionManager.userRole == UserRuolo.Giocatore) {
+        UserSessionManager.userId ?: ""
+    } else {
+        giocatoreId
+    }
     LaunchedEffect(Unit) {
         chatViewModel.caricaConversazione(giocatoreId, strutturaId)
+    }
+    val mittente = if (UserSessionManager.userRole == UserRuolo.Giocatore) {
+        giocatoreId
+    } else {
+        strutturaId
     }
 
     val messaggi by chatViewModel.messaggi.collectAsState()
@@ -61,7 +72,7 @@ fun ChatScreen(
             reverseLayout = true
         ) {
             items(messaggi.reversed()) { messaggio ->
-                MessaggioItem(messaggio = messaggio, currentUser = giocatoreId)
+                MessaggioItem(messaggio = messaggio, currentUser = mittente)
                 Spacer(modifier = Modifier.height(4.dp))
             }
         }
@@ -89,7 +100,7 @@ fun ChatScreen(
                             giocatoreId = giocatoreId,
                             strutturaId = strutturaId,
                             testo = testoMessaggio,
-                            mittente = giocatoreId
+                            mittente = mittente
                         )
                         testoMessaggio = ""
                     }

@@ -26,6 +26,7 @@ import androidx.navigation.NavController
 import com.univpm.gameon.core.checkAccess
 import com.univpm.gameon.data.collections.enums.UserRuolo
 import com.univpm.gameon.R
+import com.univpm.gameon.core.ChatListAdminScreenRoute
 import com.univpm.gameon.viewmodels.AuthViewModel
 
 val futuraBookFontFamily = FontFamily(
@@ -115,7 +116,7 @@ fun AdminHomeScreen(navController: NavController) {
             }
 
             Button(
-                onClick = { /* Azione quando il bottone viene premuto */ },
+                onClick = { navController.navigate(ChatListAdminScreenRoute) },
                 modifier = Modifier
                     .padding(8.dp)
                     .size(width = 190.dp, height = 50.dp)

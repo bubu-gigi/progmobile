@@ -5,6 +5,9 @@ import com.univpm.gameon.data.dao.interfaces.ConversazioneDao
 import com.univpm.gameon.repositories.ConversazioneRepository
 
 class ConversazioneRepositoryImpl(private val dao: ConversazioneDao) : ConversazioneRepository {
+    override suspend fun getConversazioni(): List<Conversazione> {
+        return dao.getConversazioni()
+    }
 
     override suspend fun getConversazioniByGiocatoreId(giocatoreId: String): List<Conversazione> {
         return dao.getConversazioniByGiocatoreId(giocatoreId)
