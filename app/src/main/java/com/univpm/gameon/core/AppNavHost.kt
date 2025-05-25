@@ -1,5 +1,6 @@
 package com.univpm.gameon.core
 
+import StruttureListScreen
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -15,6 +16,7 @@ import com.univpm.gameon.ui.GiocatoreHomeScreen
 import com.univpm.gameon.ui.LoginScreen
 import com.univpm.gameon.ui.NuovaCartaScreen
 import com.univpm.gameon.ui.RegisterScreen
+import com.univpm.gameon.ui.StrutturaFormScreen
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -50,6 +52,12 @@ data class  ChatScreenRoute(
 
 @Serializable
 object ChatListAdminScreenRoute
+
+@Serializable
+object StruttureListRoute
+
+@Serializable
+object EditStrutturaRoute
 
 @Composable
 fun AppNavHost() {
@@ -95,6 +103,14 @@ fun AppNavHost() {
 
         composable<ChatListAdminScreenRoute> {
             ChatListAdminScreen(navController)
+        }
+
+        composable<StruttureListRoute> {
+            StruttureListScreen(navController)
+        }
+
+        composable<EditStrutturaRoute> {
+            StrutturaFormScreen(navController)
         }
     }
 }

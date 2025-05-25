@@ -27,6 +27,7 @@ import com.univpm.gameon.core.checkAccess
 import com.univpm.gameon.data.collections.enums.UserRuolo
 import com.univpm.gameon.R
 import com.univpm.gameon.core.ChatListAdminScreenRoute
+import com.univpm.gameon.core.StruttureListRoute
 import com.univpm.gameon.viewmodels.AuthViewModel
 
 val futuraBookFontFamily = FontFamily(
@@ -110,6 +111,24 @@ fun AdminHomeScreen(navController: NavController) {
             ) {
                 Text(
                     text = "Gestione Prenotazioni",
+                    color = Color.White,
+                    fontSize = 14.sp,
+                    fontFamily = futuraBookFontFamily)
+            }
+
+            Button(
+                onClick = { navController.navigate(StruttureListRoute) },
+                modifier = Modifier
+                    .padding(8.dp)
+                    .size(width = 190.dp, height = 50.dp)
+                    .border(BorderStroke(2.dp, Color(0xFFE36BE0)), shape = RoundedCornerShape(120.dp)), // Bordo con angoli arrotondati
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(232323), // Corretto il colore in formato esadecimale
+                    contentColor = Color.White
+                )
+            ) {
+                Text(
+                    text = "Gestione Strutture",
                     color = Color.White,
                     fontSize = 14.sp,
                     fontFamily = futuraBookFontFamily)

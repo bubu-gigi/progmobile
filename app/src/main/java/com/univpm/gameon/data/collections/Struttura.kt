@@ -9,6 +9,5 @@ data class Struttura(
     val citta: String = "",
     val latitudine: Double = 0.0,
     val longitudine: Double = 0.0,
-    val sportPraticabili: List<Sport> = listOf(),
-    val campi: List<Campo> = listOf(),
+    val sportPraticabili: List<Sport> = listOf()
 )

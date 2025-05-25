@@ -2,6 +2,7 @@ package com.univpm.gameon.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.univpm.gameon.data.collections.Campo
 import com.univpm.gameon.data.collections.Struttura
 import com.univpm.gameon.repositories.StrutturaRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -43,10 +44,10 @@ class StruttureViewModel @Inject constructor(
         }
     }
 
-    fun salvaStruttura(struttura: Struttura) {
+    fun salvaStruttura(struttura: Struttura, campi: List<Campo>) {
         viewModelScope.launch {
             try {
-                val success = repository.saveStruttura(struttura)
+                val success = repository.saveStruttura(struttura, campi)
                 if (success) {
                     caricaStrutture()
                 } else {

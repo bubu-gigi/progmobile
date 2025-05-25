@@ -17,6 +17,8 @@
         android:theme="@style/Theme.GameON"
         tools:targetApi="31">
         <activity
+            android:name=".ui.PlacePickerActivity" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

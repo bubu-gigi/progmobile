@@ -2,6 +2,7 @@ package com.univpm.gameon.data.dao.impl
 
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.univpm.gameon.data.collections.Campo
 import com.univpm.gameon.data.collections.Struttura
 import com.univpm.gameon.data.dao.interfaces.StrutturaDao
 import kotlinx.coroutines.tasks.await
@@ -31,11 +32,18 @@ class StrutturaDaoImpl : StrutturaDao {
         }
     }
 
-    override suspend fun addStruttura(struttura: Struttura): Boolean {
+    override suspend fun addStruttura(struttura: Struttura, campi: List<Campo>): Boolean {
         return try {
             val docRef = struttureCollection.document()
-            val userWithId = struttura.copy(id = docRef.id)
-            docRef.set(userWithId).await()
+            val strutturaWithId = struttura.copy(id = docRef.id)
+            docRef.set(strutturaWithId).await()
+
+            campi.forEach { campo ->
+                val campoDoc = docRef.collection("campi").document()
+                val campoWithId = campo.copy(id = campoDoc.id)
+                campoDoc.set(campoWithId).await()
+            }
+
             true
         } catch (e: Exception) {
             false

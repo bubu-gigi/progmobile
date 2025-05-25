@@ -1,5 +1,6 @@
 package com.univpm.gameon.repositories.impl
 
+import com.univpm.gameon.data.collections.Campo
 import com.univpm.gameon.data.collections.Struttura
 import com.univpm.gameon.data.dao.interfaces.StrutturaDao
 import com.univpm.gameon.repositories.StrutturaRepository
@@ -13,8 +14,8 @@ class StrutturaRepositoryImpl(private val strutturaDao: StrutturaDao) : Struttur
         return strutturaDao.getStrutturaById(id)
     }
 
-    override suspend fun saveStruttura(struttura: Struttura): Boolean {
-        return strutturaDao.addStruttura(struttura)
+    override suspend fun saveStruttura(struttura: Struttura, campi: List<Campo>): Boolean {
+        return strutturaDao.addStruttura(struttura, campi)
     }
 
     override suspend fun updateStruttura(id: String, struttura: Struttura): Boolean {

@@ -10,6 +10,5 @@ data class Campo(
     val tipologiaTerreno: TipologiaTerreno = TipologiaTerreno.ERBA_SINTETICA,
     val prezzoOrario: Double = 0.0,
     val numeroGiocatori: Int = 0,
-    val spogliatoi: Boolean = false,
-    val strutturaId: String
+    val spogliatoi: Boolean = false
 )
