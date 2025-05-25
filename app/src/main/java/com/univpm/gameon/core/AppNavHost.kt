@@ -1,7 +1,16 @@
 package com.univpm.gameon.core
 
 import StruttureListScreen
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.runtime.getValue
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -17,6 +26,7 @@ import com.univpm.gameon.ui.LoginScreen
 import com.univpm.gameon.ui.NuovaCartaScreen
 import com.univpm.gameon.ui.RegisterScreen
 import com.univpm.gameon.ui.StrutturaFormScreen
+import com.univpm.gameon.viewmodels.StruttureViewModel
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -57,7 +67,12 @@ object ChatListAdminScreenRoute
 object StruttureListRoute
 
 @Serializable
-object EditStrutturaRoute
+object NuovaStrutturaRoute
+
+@Serializable
+data class EditStrutturaRoute(
+    val strutturaId: String
+)
 
 @Composable
 fun AppNavHost() {
@@ -109,8 +124,33 @@ fun AppNavHost() {
             StruttureListScreen(navController)
         }
 
-        composable<EditStrutturaRoute> {
+        composable<NuovaStrutturaRoute> {
             StrutturaFormScreen(navController)
         }
+
+        composable<EditStrutturaRoute> { entry ->
+            val args = entry.toRoute<EditStrutturaRoute>()
+            val viewModel: StruttureViewModel = hiltViewModel()
+
+            val struttura by viewModel.strutturaSelezionata.collectAsState()
+            val campi by viewModel.campiStruttura.collectAsState()
+
+            LaunchedEffect(args.strutturaId) {
+                viewModel.caricaStruttura(args.strutturaId)
+            }
+
+            if (struttura != null) {
+                StrutturaFormScreen(
+                    navController = navController,
+                    strutturaDaModificare = struttura,
+                    campiEsistenti = campi
+                )
+            } else {
+                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    Text("Caricamento struttura...")
+                }
+            }
+        }
+
     }
 }

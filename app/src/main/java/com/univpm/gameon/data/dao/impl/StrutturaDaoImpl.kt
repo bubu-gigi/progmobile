@@ -23,14 +23,22 @@ class StrutturaDaoImpl : StrutturaDao {
         }
     }
 
-    override suspend fun getStrutturaById(id: String): Struttura? {
+    override suspend fun getStrutturaById(id: String): Pair<Struttura, List<Campo>> {
         return try {
-            val snapshot = struttureCollection.document(id).get().await()
-            snapshot.toObject(Struttura::class.java)
+            val docRef = struttureCollection.document(id)
+            val snapshot = docRef.get().await()
+            val struttura = snapshot.toObject(Struttura::class.java)!!.copy(id = snapshot.id)
+
+            val campiSnapshot = docRef.collection("campi").get().await()
+            val campi = campiSnapshot.documents.mapNotNull { it.toObject(Campo::class.java)?.copy(id = it.id) }
+
+            Pair(struttura, campi)
         } catch (e: Exception) {
-            null
+            throw e
         }
     }
+
+
 
     override suspend fun addStruttura(struttura: Struttura, campi: List<Campo>): Boolean {
         return try {
@@ -50,14 +58,31 @@ class StrutturaDaoImpl : StrutturaDao {
         }
     }
 
-    override suspend fun updateStruttura(id: String, struttura: Struttura): Boolean {
+    override suspend fun updateStruttura(id: String, struttura: Struttura, campi: List<Campo>): Boolean {
         return try {
-            struttureCollection.document(id).set(struttura).await()
+            val docRef = struttureCollection.document(id)
+
+            val strutturaSenzaCampi = struttura.copy(id = id)
+            docRef.set(strutturaSenzaCampi).await()
+
+            val campiCollection = docRef.collection("campi")
+            val existingCampi = campiCollection.get().await()
+            for (campoDoc in existingCampi.documents) {
+                campoDoc.reference.delete().await()
+            }
+
+            campi.forEach { campo ->
+                val campoDoc = campiCollection.document()
+                val campoWithId = campo.copy(id = campoDoc.id)
+                campoDoc.set(campoWithId).await()
+            }
+
             true
         } catch (e: Exception) {
             false
         }
     }
+
 
     override suspend fun deleteStruttura(id: String): Boolean {
         return try {

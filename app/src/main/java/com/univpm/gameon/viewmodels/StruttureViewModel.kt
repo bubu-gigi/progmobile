@@ -21,6 +21,9 @@ class StruttureViewModel @Inject constructor(
     private val _strutturaSelezionata = MutableStateFlow<Struttura?>(null)
     val strutturaSelezionata: StateFlow<Struttura?> = _strutturaSelezionata.asStateFlow()
 
+    private val _campiStruttura = MutableStateFlow<List<Campo>>(emptyList())
+    val campiStruttura: StateFlow<List<Campo>> = _campiStruttura.asStateFlow()
+
     private val _errore = MutableStateFlow<String?>(null)
     val errore: StateFlow<String?> = _errore.asStateFlow()
 
@@ -37,7 +40,9 @@ class StruttureViewModel @Inject constructor(
     fun caricaStruttura(id: String) {
         viewModelScope.launch {
             try {
-                _strutturaSelezionata.value = repository.getStruttura(id)
+                val (struttura, campi) = repository.getStruttura(id)
+                _strutturaSelezionata.value = struttura
+                _campiStruttura.value = campi
             } catch (e: Exception) {
                 _errore.value = "Errore nel caricamento della struttura: ${e.message}"
             }
@@ -59,10 +64,10 @@ class StruttureViewModel @Inject constructor(
         }
     }
 
-    fun aggiornaStruttura(id: String, struttura: Struttura) {
+    fun aggiornaStruttura(id: String, struttura: Struttura, campi: List<Campo>) {
         viewModelScope.launch {
             try {
-                val success = repository.updateStruttura(id, struttura)
+                val success = repository.updateStruttura(id, struttura, campi)
                 if (success) {
                     caricaStrutture()
                 } else {

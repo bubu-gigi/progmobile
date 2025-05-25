@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -62,17 +63,28 @@ import com.univpm.gameon.data.collections.enums.TipologiaTerreno
 import com.google.android.gms.maps.model.LatLng
 import com.univpm.gameon.core.StruttureListRoute
 import com.univpm.gameon.viewmodels.StruttureViewModel
+
 @Composable
-fun StrutturaFormScreen(navController: NavController) {
+fun StrutturaFormScreen(
+    navController: NavController,
+    strutturaDaModificare: Struttura? = null,
+    campiEsistenti: List<Campo> = emptyList()
+) {
     val struttureViewModel: StruttureViewModel = hiltViewModel()
     val context = LocalContext.current
 
-    var nome by remember { mutableStateOf("") }
-    var indirizzo by remember { mutableStateOf("") }
-    var citta by remember { mutableStateOf("") }
-    var latLng by remember { mutableStateOf<LatLng?>(null) }
-    var campi by remember { mutableStateOf(listOf<Campo>()) }
+    val isEdit = strutturaDaModificare != null
 
+    var nome by remember { mutableStateOf(strutturaDaModificare?.nome ?: "") }
+    var indirizzo by remember { mutableStateOf(strutturaDaModificare?.indirizzo ?: "") }
+    var citta by remember { mutableStateOf(strutturaDaModificare?.citta ?: "") }
+    var latLng by remember {
+        mutableStateOf(
+            strutturaDaModificare?.let { LatLng(it.latitudine, it.longitudine) }
+        )
+    }
+    var campi by remember { mutableStateOf(campiEsistenti.toMutableList()) }
+    var campoInModifica by remember { mutableStateOf<Campo?>(null) }
     var showCampoDialog by remember { mutableStateOf(false) }
 
     val borderColor = Color(0xFFE36BE0)
@@ -88,9 +100,7 @@ fun StrutturaFormScreen(navController: NavController) {
         }
     }
 
-    Box(
-        modifier = Modifier.fillMaxSize()
-    ) {
+    Box(modifier = Modifier.fillMaxSize()) {
         Image(
             painter = painterResource(id = R.drawable.sfondocarta),
             contentDescription = "Sfondo",
@@ -107,7 +117,7 @@ fun StrutturaFormScreen(navController: NavController) {
         ) {
             Spacer(modifier = Modifier.height(210.dp))
             Text(
-                text = "Dettagli Struttura:",
+                text = if (isEdit) "Modifica Struttura:" else "Dettagli Struttura:",
                 style = MaterialTheme.typography.headlineSmall.copy(
                     color = Color.White,
                     fontSize = 23.sp,
@@ -162,17 +172,15 @@ fun StrutturaFormScreen(navController: NavController) {
             Spacer(Modifier.height(2.dp))
 
             Button(
-                onClick = { showCampoDialog = true },
+                onClick = {
+                    campoInModifica = null
+                    showCampoDialog = true
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .border(BorderStroke(2.dp, Color(0xFFCFFF5E)), shape = RoundedCornerShape(12.dp))
-                    .background(
-                        color = Color(0xFF6136FF),
-                        shape = RoundedCornerShape(12.dp)
-                    ),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Transparent
-                )
+                    .background(color = Color(0xFF6136FF), shape = RoundedCornerShape(12.dp)),
+                colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent)
             ) {
                 Text(
                     text = "Aggiungi campo",
@@ -200,31 +208,59 @@ fun StrutturaFormScreen(navController: NavController) {
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text("🟢 ${campo.nomeCampo} (${campo.sport.name})", color = Color.White)
-                            Button(
-                                onClick = { campi = campi.filterNot { it == campo } },
-                                colors = ButtonDefaults.buttonColors(containerColor = Color.Red)
-                            ) {
-                                Text("Elimina", color = Color.White)
+                            Row {
+                                Button(
+                                    onClick = {
+                                        campoInModifica = campo
+                                        showCampoDialog = true
+                                    },
+                                    colors = ButtonDefaults.buttonColors(containerColor = Color.Gray)
+                                ) {
+                                    Text("Modifica", color = Color.White)
+                                }
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Button(
+                                    onClick = { campi =
+                                        campi.filterNot { it == campo } as MutableList<Campo>
+                                    },
+                                    colors = ButtonDefaults.buttonColors(containerColor = Color.Red)
+                                ) {
+                                    Text("Elimina", color = Color.White)
+                                }
                             }
                         }
                     }
                 }
             }
+
             Spacer(Modifier.height(4.dp))
 
+            // Bottone salva/aggiorna
             Button(
                 onClick = {
                     latLng?.let {
-                        val struttura = Struttura(
+                        val struttura = (strutturaDaModificare?.copy(
                             nome = nome,
                             indirizzo = indirizzo,
                             citta = citta,
                             latitudine = it.latitude,
                             longitudine = it.longitude,
-                            sportPraticabili = campi.map { it.sport }.distinct(),
-                        )
-                        println(struttura)
-                        struttureViewModel.salvaStruttura(struttura, campi)
+                            sportPraticabili = campi.map { it.sport }.distinct()
+                        ) ?: Struttura(
+                            nome = nome,
+                            indirizzo = indirizzo,
+                            citta = citta,
+                            latitudine = it.latitude,
+                            longitudine = it.longitude,
+                            sportPraticabili = campi.map { it.sport }.distinct()
+                        ))
+
+                        if (isEdit) {
+                            struttureViewModel.aggiornaStruttura(strutturaDaModificare!!.id, struttura, campi)
+                        } else {
+                            struttureViewModel.salvaStruttura(struttura, campi)
+                        }
+
                         navController.navigate(StruttureListRoute)
                     }
                 },
@@ -232,31 +268,57 @@ fun StrutturaFormScreen(navController: NavController) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .border(BorderStroke(2.dp, Color(0xFFCFFF5E)), shape = RoundedCornerShape(12.dp))
-                    .background(
-                        color = Color(0xFF6136FF),
-                        shape = RoundedCornerShape(12.dp)
-                    ),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Transparent
-                )
+                    .background(color = Color(0xFF6136FF), shape = RoundedCornerShape(12.dp)),
+                colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent)
             ) {
                 Text(
-                    text = "Salva struttura",
+                    text = if (isEdit) "Aggiorna struttura" else "Salva struttura",
                     color = Color(0xFFCFFF5E),
                     fontSize = 18.sp,
                     fontFamily = futuraBookFontFamily,
                     fontWeight = FontWeight.Bold
                 )
             }
+            if (isEdit) {
+                Spacer(modifier = Modifier.height(8.dp))
+                Button(
+                    onClick = {
+                        struttureViewModel.eliminaStruttura(strutturaDaModificare!!.id, "")
+                        navController.navigate(StruttureListRoute)
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .border(BorderStroke(2.dp, Color.Red), shape = RoundedCornerShape(12.dp))
+                        .background(color = Color.Red, shape = RoundedCornerShape(12.dp)),
+                    colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent)
+                ) {
+                    Text(
+                        text = "Elimina struttura",
+                        color = Color.White,
+                        fontSize = 18.sp,
+                        fontFamily = futuraBookFontFamily,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+            }
+
         }
     }
 
     if (showCampoDialog) {
         Dialog(onDismissRequest = { showCampoDialog = false }) {
-            CampoFormDialog(onCampoAdded = {
-                campi = campi + it
-                showCampoDialog = false
-            })
+            CampoFormDialog(
+                campoDaModificare = campoInModifica,
+                onCampoAdded = { nuovoCampo ->
+                    campi = (if (campoInModifica != null) {
+                        campi.map { if (it == campoInModifica) nuovoCampo.copy(id = campoInModifica!!.id) else it }
+                    } else {
+                        campi + nuovoCampo
+                    }) as MutableList<Campo>
+                    showCampoDialog = false
+                    campoInModifica = null
+                }
+            )
         }
     }
 }
@@ -299,16 +361,18 @@ fun GooglePlacesAutocomplete(onPlaceSelected: (String, LatLng) -> Unit, modifier
         )
     }
 }
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CampoFormDialog(onCampoAdded: (Campo) -> Unit) {
-    var nome by remember { mutableStateOf("") }
-    var sport by remember { mutableStateOf(Sport.CALCIO5) }
-    var terreno by remember { mutableStateOf(TipologiaTerreno.ERBA_SINTETICA) }
-    var prezzo by remember { mutableStateOf("20.0") }
-    var numGiocatori by remember { mutableStateOf("5") }
-    var spogliatoi by remember { mutableStateOf(false) }
+fun CampoFormDialog(
+    campoDaModificare: Campo? = null,
+    onCampoAdded: (Campo) -> Unit
+) {
+    var nome by remember { mutableStateOf(campoDaModificare?.nomeCampo ?: "") }
+    var sport by remember { mutableStateOf(campoDaModificare?.sport ?: Sport.CALCIO5) }
+    var terreno by remember { mutableStateOf(campoDaModificare?.tipologiaTerreno ?: TipologiaTerreno.ERBA_SINTETICA) }
+    var prezzo by remember { mutableStateOf(campoDaModificare?.prezzoOrario?.toString() ?: "20.0") }
+    var numGiocatori by remember { mutableStateOf(campoDaModificare?.numeroGiocatori?.toString() ?: "5") }
+    var spogliatoi by remember { mutableStateOf(campoDaModificare?.spogliatoi ?: false) }
 
     val borderColor = Color(0xFFE36BE0)
     val containerColor = Color(0xFF2B2B2B)
@@ -335,7 +399,7 @@ fun CampoFormDialog(onCampoAdded: (Campo) -> Unit) {
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Text(
-                        text = "Aggiungi un nuovo campo:",
+                        text = if (campoDaModificare != null) "Modifica campo:" else "Aggiungi un nuovo campo:",
                         style = MaterialTheme.typography.titleLarge.copy(
                             color = Color.White,
                             fontFamily = lemonMilkFontFamily
@@ -524,7 +588,7 @@ fun CampoFormDialog(onCampoAdded: (Campo) -> Unit) {
                         )
                     ) {
                         Text(
-                            text = "Aggiungi campo",
+                            text = if (campoDaModificare != null) "Modifica campo" else "Aggiungi campo",
                             color = Color(0xFFCFFF5E),
                             fontSize = 18.sp,
                             fontFamily = futuraBookFontFamily,
@@ -536,6 +600,7 @@ fun CampoFormDialog(onCampoAdded: (Campo) -> Unit) {
         }
     }
 }
+
 
 @Preview(showBackground = true)
 @Composable

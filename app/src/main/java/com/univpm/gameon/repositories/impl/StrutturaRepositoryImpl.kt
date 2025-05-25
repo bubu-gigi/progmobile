@@ -10,7 +10,7 @@ class StrutturaRepositoryImpl(private val strutturaDao: StrutturaDao) : Struttur
         return strutturaDao.getStrutture()
     }
 
-    override suspend fun getStruttura(id: String): Struttura? {
+    override suspend fun getStruttura(id: String): Pair<Struttura, List<Campo>> {
         return strutturaDao.getStrutturaById(id)
     }
 
@@ -18,8 +18,8 @@ class StrutturaRepositoryImpl(private val strutturaDao: StrutturaDao) : Struttur
         return strutturaDao.addStruttura(struttura, campi)
     }
 
-    override suspend fun updateStruttura(id: String, struttura: Struttura): Boolean {
-        return strutturaDao.updateStruttura(id, struttura)
+    override suspend fun updateStruttura(id: String, struttura: Struttura, campi: List<Campo>): Boolean {
+        return strutturaDao.updateStruttura(id, struttura, campi)
     }
 
     override suspend fun deleteStruttura(id: String): Boolean {

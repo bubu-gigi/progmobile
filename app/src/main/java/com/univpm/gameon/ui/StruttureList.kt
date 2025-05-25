@@ -37,7 +37,7 @@ fun StruttureListScreen(
         MappaStruttureConFiltri(
             strutture = strutture,
             onStrutturaSelezionata = { struttura ->
-                navController.navigate(EditStrutturaRoute)
+                navController.navigate(EditStrutturaRoute(struttura.id))
             },
             height = 400.dp
         )
