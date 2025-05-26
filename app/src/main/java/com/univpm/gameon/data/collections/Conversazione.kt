@@ -6,6 +6,7 @@ data class Conversazione(
     val giocatoreId: String = "",
     val strutturaId: String = "",
     val strutturaNome: String = "",
+    val giocatoreNome: String = "",
     val ultimoMessaggio: String? = "",
     val ultimoTimestamp: Timestamp? = null
 )

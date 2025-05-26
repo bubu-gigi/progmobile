@@ -29,7 +29,13 @@ class MessaggioDaoImpl : MessaggioDao {
                 .get()
                 .await()
 
+            val giocatoreDoc = db.collection("users")
+                .document(giocatoreId)
+                .get()
+                .await()
+
             val strutturaNome = strutturaDoc.getString("nome") ?: "Struttura"
+            val giocatoreNome = (giocatoreDoc.getString("name") + " " + giocatoreDoc.getString("cognome"))
 
             db.collection("messages")
                 .document(convoId)
@@ -41,6 +47,7 @@ class MessaggioDaoImpl : MessaggioDao {
                 "giocatoreId" to giocatoreId,
                 "strutturaId" to strutturaId,
                 "strutturaNome" to strutturaNome,
+                "giocatoreNome" to giocatoreNome,
                 "ultimoMessaggio" to messaggio.testo,
                 "ultimoTimestamp" to messaggio.timestamp
             )

@@ -101,6 +101,11 @@ fun ChatListAdminScreen(
                                         color = Color.Black
                                     )
                                     Text(
+                                        text = "Giocatore: ${conv.giocatoreNome}",
+                                        style = MaterialTheme.typography.titleMedium,
+                                        color = Color.Black
+                                    )
+                                    Text(
                                         text = "Ultimo messaggio: ${conv.ultimoMessaggio}",
                                         color = Color.Black
                                     )
