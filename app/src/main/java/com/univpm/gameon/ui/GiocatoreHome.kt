@@ -119,7 +119,7 @@ fun GiocatoreHomeContent(
                 ) {
                     Text(text = "Gestione Prenotazioni",
                         color = Color.White,
-                        fontSize = 14.sp,
+                        fontSize = 12.sp,
                         fontWeight = FontWeight.Bold,
                         fontFamily = futuraBookFontFamily)
                 }
