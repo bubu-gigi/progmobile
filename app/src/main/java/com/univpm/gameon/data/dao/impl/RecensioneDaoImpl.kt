@@ -34,7 +34,7 @@ class RecensioneDaoImpl : RecensioneDao {
 
     override suspend fun addRecensione(recensione: Recensione): Boolean {
         return try {
-            if (recensione.stelle in 1..5) {
+            if (recensione.rating in 1..5) {
                 val docRef = recensioniCollection.document()
                 val userWithId = recensione.copy(id = docRef.id)
                 docRef.set(userWithId).await()
@@ -49,7 +49,7 @@ class RecensioneDaoImpl : RecensioneDao {
 
     override suspend fun updateRecensione(id: String, recensione: Recensione): Boolean {
         return try {
-            if (recensione.stelle in 1..5) {
+            if (recensione.rating in 1..5) {
                 recensioniCollection.document(id).set(recensione).await()
                 true
             } else {

@@ -1,8 +1,10 @@
 package com.univpm.gameon.data.collections
 
-data class Recensione (
+data class Recensione(
     val id: String = "",
-    val strutturaId: String,
-    val stelle: Int,
-    val commento: String,
+    val strutturaId: String = "",
+    val utenteId: String = "",
+    val rating: Int = 0,
+    val commento: String = "",
+    val timestamp: Long = System.currentTimeMillis()
 )
