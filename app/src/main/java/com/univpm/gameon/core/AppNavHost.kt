@@ -1,5 +1,6 @@
 package com.univpm.gameon.core
 
+import GiocatorePrenotazioniScreen
 import StruttureListScreen
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -7,9 +8,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -22,9 +23,10 @@ import com.univpm.gameon.ui.ChatListScreen
 import com.univpm.gameon.ui.ChatScreen
 import com.univpm.gameon.ui.EditProfileScreen
 import com.univpm.gameon.ui.GiocatoreHomeScreen
-import com.univpm.gameon.ui.auth.LoginScreen
 import com.univpm.gameon.ui.NuovaCartaScreen
+import com.univpm.gameon.ui.auth.LoginScreen
 import com.univpm.gameon.ui.auth.RegisterScreen
+import com.univpm.gameon.ui.struttura.StrutturaDettaglioScreen
 import com.univpm.gameon.ui.struttura.StrutturaFormScreen
 import com.univpm.gameon.viewmodels.StruttureViewModel
 import kotlinx.serialization.Serializable
@@ -70,7 +72,15 @@ object StruttureListRoute
 object NuovaStrutturaRoute
 
 @Serializable
+object GiocatorePrenotazioniRoute
+
+@Serializable
 data class EditStrutturaRoute(
+    val strutturaId: String
+)
+
+@Serializable
+data class StrutturaDettaglioRoute(
     val strutturaId: String
 )
 
@@ -128,6 +138,10 @@ fun AppNavHost() {
             StrutturaFormScreen(navController)
         }
 
+        composable<GiocatorePrenotazioniRoute> {
+            GiocatorePrenotazioniScreen(navController)
+        }
+
         composable<EditStrutturaRoute> { entry ->
             val args = entry.toRoute<EditStrutturaRoute>()
             val viewModel: StruttureViewModel = hiltViewModel()
@@ -151,6 +165,41 @@ fun AppNavHost() {
                 }
             }
         }
+        composable<StrutturaDettaglioRoute> { entry ->
+            val args = entry.toRoute<StrutturaDettaglioRoute>()
+            val viewModel: StruttureViewModel = hiltViewModel()
+
+            val struttura by viewModel.strutturaSelezionata.collectAsState()
+            val campi by viewModel.campiStruttura.collectAsState()
+            val errore by viewModel.errore.collectAsState()
+
+            LaunchedEffect(args.strutturaId) {
+                viewModel.caricaStruttura(args.strutturaId)
+            }
+
+            when {
+                errore != null -> {
+                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        Text("Errore: $errore")
+                    }
+                }
+
+                struttura != null -> {
+                    StrutturaDettaglioScreen(
+                        navController = navController,
+                        struttura = struttura!!,
+                        campi = campi
+                    )
+                }
+
+                else -> {
+                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        Text("Caricamento struttura...")
+                    }
+                }
+            }
+        }
+
 
     }
 }

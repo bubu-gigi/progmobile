@@ -51,8 +51,8 @@ class AuthViewModel @Inject constructor(
                 Log.d("AuthViewModel", "Ruolo utente: ${user?.ruolo}")
                 Log.d("AuthViewModel", "Destinazione: ${destination.value}")
                 destination.value = when (user?.ruolo) {
-                    UserRuolo.Admin -> AdminHomeScreenRoute
-                    UserRuolo.Giocatore -> GiocatoreHomeScreenRoute
+                    UserRuolo.ADMIN -> AdminHomeScreenRoute
+                    UserRuolo.GIOCATORE -> GiocatoreHomeScreenRoute
                     else -> LoginScreenRoute
                 }
                 println(destination.value)

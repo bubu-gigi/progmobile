@@ -6,7 +6,6 @@ data class Prenotazione(
     val strutturaId: String = "",
     val campoId: String = "",
     val data: String = "",
-    val orarioInizio: String = "",
-    val orarioFine: String = "",
+    val orari: String = "", // es. "08:00-09:00,10:00-11:00"
     val pubblica: Boolean = false
 )

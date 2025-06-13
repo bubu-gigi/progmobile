@@ -156,15 +156,22 @@ fun generaSlotDisponibili(
     val inizio = LocalTime.parse(template.orarioApertura)
     val fine = LocalTime.parse(template.orarioChiusura)
 
-    val orariOccupati = prenotazioni.filter { it.data == giorno.toString() }.mapNotNull { p ->
-        try {
-            val start = LocalTime.parse(p.orarioInizio)
-            val end = LocalTime.parse(p.orarioFine)
-            start to end
-        } catch (e: Exception) {
-            null
+    val orariOccupati = prenotazioni
+        .filter { it.data == giorno.toString() }
+        .flatMap { p ->
+            p.orari.split(",").mapNotNull { slot ->
+                val parts = slot.split("-")
+                if (parts.size == 2) {
+                    try {
+                        val start = LocalTime.parse(parts[0])
+                        val end = LocalTime.parse(parts[1])
+                        start to end
+                    } catch (e: Exception) {
+                        null
+                    }
+                } else null
+            }
         }
-    }
 
     val slotDisponibili = mutableListOf<Pair<LocalTime, LocalTime>>()
     var orario = inizio

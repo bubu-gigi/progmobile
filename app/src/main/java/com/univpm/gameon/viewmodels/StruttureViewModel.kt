@@ -6,7 +6,9 @@ import com.univpm.gameon.data.collections.Campo
 import com.univpm.gameon.data.collections.Struttura
 import com.univpm.gameon.repositories.StrutturaRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -14,6 +16,7 @@ import javax.inject.Inject
 class StruttureViewModel @Inject constructor(
     private val repository: StrutturaRepository
 ) : ViewModel() {
+
 
     private val _strutture = MutableStateFlow<List<Struttura>>(emptyList())
     val strutture: StateFlow<List<Struttura>> = _strutture.asStateFlow()

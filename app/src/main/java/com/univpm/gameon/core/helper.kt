@@ -1,8 +1,11 @@
 package com.univpm.gameon.core
 
+import android.icu.util.Calendar
 import androidx.navigation.NavController
 import com.google.firebase.auth.FirebaseAuth
 import com.univpm.gameon.data.collections.enums.UserRuolo
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 fun checkAccess(navController: NavController, requiredRole: UserRuolo? = null) {
     if (!UserSessionManager.isLoggedIn || (requiredRole != null && UserSessionManager.userRole != requiredRole)) {
@@ -54,3 +57,22 @@ fun giornoLabel(numero: Int): String {
     return listOf("Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato", "Domenica")
         .getOrNull(numero - 1) ?: "?"
 }
+
+fun generaSlotOrari(inizio: String, fine: String): List<Pair<String, String>> {
+    val formatter = SimpleDateFormat("HH:mm", Locale.getDefault())
+    val start = Calendar.getInstance().apply { time = formatter.parse(inizio)!! }
+    val end = Calendar.getInstance().apply { time = formatter.parse(fine)!! }
+
+    val slots = mutableListOf<Pair<String, String>>()
+
+    while (start.before(end)) {
+        val slotStart = formatter.format(start.time)
+        start.add(Calendar.HOUR_OF_DAY, 1)
+        val slotEnd = formatter.format(start.time)
+        if (start.after(end)) break
+        slots.add(slotStart to slotEnd)
+    }
+
+    return slots
+}
+

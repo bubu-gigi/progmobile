@@ -50,7 +50,8 @@ fun MappaStruttureConFiltri(
     val cittaPrincipali = listOf(
         "Roma", "Milano", "Napoli", "Torino", "Palermo",
         "Genova", "Bologna", "Firenze", "Bari", "Catania",
-        "Venezia", "Verona", "Messina", "Padova", "Trieste"
+        "Venezia", "Verona", "Messina", "Padova", "Trieste",
+        "Ancona"
     )
 
     val struttureFiltrate = strutture.filter {

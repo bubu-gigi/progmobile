@@ -30,6 +30,7 @@ import com.univpm.gameon.core.logout
 import com.univpm.gameon.viewmodels.AuthViewModel
 import com.univpm.gameon.R
 import com.univpm.gameon.core.ChatListScreenRoute
+import com.univpm.gameon.core.GiocatorePrenotazioniRoute
 
 @Composable
 fun GiocatoreHomeScreen(navController: NavController) {
@@ -46,6 +47,7 @@ fun GiocatoreHomeScreen(navController: NavController) {
 
     GiocatoreHomeContent(
         onLogout = { logout(navController) },
+        onPrenotazioni = { navController.navigate(GiocatorePrenotazioniRoute) },
         onEditProfile = { navController.navigate(EditProfileScreenRoute) },
         onGestioneCarte = { navController.navigate(CarteListScreenRoute) },
         onContattaStrutture = { navController.navigate(ChatListScreenRoute) },
@@ -57,6 +59,7 @@ fun GiocatoreHomeScreen(navController: NavController) {
 @Composable
 fun GiocatoreHomeContent(
     onLogout: () -> Unit,
+    onPrenotazioni: () -> Unit,
     onEditProfile: () -> Unit,
     onGestioneCarte: () -> Unit,
     onContattaStrutture: () -> Unit,
@@ -104,7 +107,7 @@ fun GiocatoreHomeContent(
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
                 Button(
-                    onClick = { onLogout() },
+                    onClick = { onPrenotazioni() },
                     modifier = Modifier
                         .padding(7.dp)
                         .size(width = 183.dp, height = 50.dp)
@@ -258,6 +261,7 @@ fun GiocatoreHomeContent(
 fun GiocatoreHomeContentPreview() {
     GiocatoreHomeContent(
         onLogout = {},
+        onPrenotazioni = {},
         onEditProfile = {},
         onGestioneCarte = {},
         onContattaStrutture = {},

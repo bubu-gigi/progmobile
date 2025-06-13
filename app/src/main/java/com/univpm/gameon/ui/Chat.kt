@@ -45,7 +45,7 @@ fun ChatScreen(
     val chatViewModel: ChatViewModel = hiltViewModel()
     val recensioneViewModel: RecensioneViewModel = hiltViewModel()
 
-    val giocatoreId = if (UserSessionManager.userRole == UserRuolo.Giocatore) {
+    val giocatoreId = if (UserSessionManager.userRole == UserRuolo.GIOCATORE) {
         UserSessionManager.userId ?: ""
     } else {
         giocatoreId
@@ -53,7 +53,7 @@ fun ChatScreen(
     LaunchedEffect(Unit) {
         chatViewModel.caricaConversazione(giocatoreId, strutturaId)
     }
-    val mittente = if (UserSessionManager.userRole == UserRuolo.Giocatore) {
+    val mittente = if (UserSessionManager.userRole == UserRuolo.GIOCATORE) {
         giocatoreId
     } else {
         strutturaId
