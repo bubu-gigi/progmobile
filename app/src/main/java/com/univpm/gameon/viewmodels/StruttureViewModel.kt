@@ -31,6 +31,7 @@ class StruttureViewModel @Inject constructor(
     val errore: StateFlow<String?> = _errore.asStateFlow()
 
     fun caricaStrutture() {
+        _errore.value = null
         viewModelScope.launch {
             try {
                 _strutture.value = repository.getStrutture()
@@ -41,6 +42,7 @@ class StruttureViewModel @Inject constructor(
     }
 
     fun caricaStruttura(id: String) {
+        _errore.value = null
         viewModelScope.launch {
             try {
                 val (struttura, campi) = repository.getStruttura(id)
@@ -53,6 +55,7 @@ class StruttureViewModel @Inject constructor(
     }
 
     fun salvaStruttura(struttura: Struttura, campi: List<Campo>) {
+        _errore.value = null
         viewModelScope.launch {
             try {
                 val success = repository.saveStruttura(struttura, campi)
@@ -68,6 +71,7 @@ class StruttureViewModel @Inject constructor(
     }
 
     fun aggiornaStruttura(id: String, struttura: Struttura, campi: List<Campo>) {
+        _errore.value = null
         viewModelScope.launch {
             try {
                 val success = repository.updateStruttura(id, struttura, campi)
@@ -82,7 +86,8 @@ class StruttureViewModel @Inject constructor(
         }
     }
 
-    fun eliminaStruttura(id: String, userId: String) {
+    fun eliminaStruttura(id: String) {
+        _errore.value = null
         viewModelScope.launch {
             try {
                 val success = repository.deleteStruttura(id)

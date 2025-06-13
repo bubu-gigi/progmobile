@@ -24,9 +24,6 @@ class PrenotazioneViewModel @Inject constructor(
     private val _error = MutableStateFlow<String?>(null)
     val error: StateFlow<String?> = _error
 
-    private val _success = MutableStateFlow<String?>(null)
-    val success: StateFlow<String?> = _success
-
     fun caricaPrenotazioniUtente(userId: String) {
         _error.value = null
         viewModelScope.launch {
@@ -51,12 +48,10 @@ class PrenotazioneViewModel @Inject constructor(
 
     fun creaPrenotazione(prenotazione: Prenotazione) {
         _error.value = null
-        _success.value = null
         viewModelScope.launch {
             try {
                 val success = repository.savePrenotazione(prenotazione)
                 if (success) {
-                    _success.value = "Prenotazione creata con successo"
                     caricaPrenotazioniUtente(prenotazione.userId)
                 } else {
                     _error.value = "Impossibile creare la prenotazione"
@@ -69,12 +64,10 @@ class PrenotazioneViewModel @Inject constructor(
 
     fun aggiornaPrenotazione(id: String, prenotazione: Prenotazione) {
         _error.value = null
-        _success.value = null
         viewModelScope.launch {
             try {
                 val success = repository.updatePrenotazione(id, prenotazione)
                 if (success) {
-                    _success.value = "Prenotazione aggiornata"
                     caricaPrenotazioniUtente(prenotazione.userId)
                 } else {
                     _error.value = "Aggiornamento non riuscito"
@@ -87,12 +80,10 @@ class PrenotazioneViewModel @Inject constructor(
 
     fun annullaPrenotazione(id: String, onSuccess: () -> Unit) {
         _error.value = null
-        _success.value = null
         viewModelScope.launch {
             val success = repository.deletePrenotazione(id)
             if (success) {
                 _prenotazioniUtente.value = _prenotazioniUtente.value.filterNot { it.id == id }
-                _success.value = "Prenotazione annullata"
                 onSuccess()
             } else {
                 _error.value = "Impossibile annullare la prenotazione"

@@ -46,14 +46,14 @@ import com.univpm.gameon.core.ChatScreenRoute
 import com.univpm.gameon.core.UserSessionManager
 import com.univpm.gameon.data.collections.Conversazione
 import com.univpm.gameon.ui.components.MappaStruttureConFiltri
-import com.univpm.gameon.viewmodels.ChatListViewModel
+import com.univpm.gameon.viewmodels.ChatViewModel
 import com.univpm.gameon.viewmodels.StruttureViewModel
 
 @Composable
 fun ChatListScreen(
     navController: NavController
 ) {
-    val viewModel: ChatListViewModel = hiltViewModel()
+    val viewModel: ChatViewModel = hiltViewModel()
     val struttureViewModel: StruttureViewModel = hiltViewModel()
 
     val conversazioni by viewModel.conversazioni.collectAsState()

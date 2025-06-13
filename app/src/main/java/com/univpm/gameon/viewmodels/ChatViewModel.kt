@@ -19,6 +19,9 @@ class ChatViewModel @Inject constructor(
     private val conversazioneRepository: ConversazioneRepository
 ) : ViewModel() {
 
+    private val _conversazioni = MutableStateFlow<List<Conversazione>>(emptyList())
+    val conversazioni: StateFlow<List<Conversazione>> = _conversazioni
+
     private val _messaggi = MutableStateFlow<List<Messaggio>>(emptyList())
     val messaggi: StateFlow<List<Messaggio>> = _messaggi
 
@@ -38,6 +41,18 @@ class ChatViewModel @Inject constructor(
             if (messaggioRepository.sendMessaggio(giocatoreId, strutturaId, messaggio)) {
                 caricaConversazione(giocatoreId, strutturaId) // aggiorna messaggi
             }
+        }
+    }
+
+    fun loadConversazioniForUser(userId: String) {
+        viewModelScope.launch {
+            _conversazioni.value = conversazioneRepository.getConversazioniByPlayerId(userId)
+        }
+    }
+
+    fun caricaTutteLeConversazioni() {
+        viewModelScope.launch {
+            _conversazioni.value = conversazioneRepository.getConversazioni()
         }
     }
 }
