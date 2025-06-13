@@ -13,9 +13,12 @@ class RecensioneViewModel @Inject constructor(
     private val repository: RecensioneRepository
 ) : ViewModel() {
 
-    fun inviaRecensione(recensione: Recensione) {
+    fun inviaRecensione(recensione: Recensione, onComplete: () -> Unit) {
         viewModelScope.launch {
-            repository.saveRecensione(recensione)
+            val success = repository.saveRecensione(recensione)
+            if (success) {
+                onComplete()
+            }
         }
     }
 
