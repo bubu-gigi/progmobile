@@ -18,7 +18,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.univpm.gameon.core.EditStrutturaRoute
 import com.univpm.gameon.core.NuovaStrutturaRoute
-import com.univpm.gameon.ui.MappaStruttureConFiltri
+import com.univpm.gameon.ui.components.MappaStruttureConFiltri
 import com.univpm.gameon.viewmodels.StruttureViewModel
 
 @Composable

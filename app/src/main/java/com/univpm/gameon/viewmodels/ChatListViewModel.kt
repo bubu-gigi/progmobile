@@ -20,7 +20,7 @@ class ChatListViewModel @Inject constructor(
 
     fun loadConversazioniForUser(userId: String) {
         viewModelScope.launch {
-            _conversazioni.value = conversazioneRepository.getConversazioniByGiocatoreId(userId)
+            _conversazioni.value = conversazioneRepository.getConversazioniByPlayerId(userId)
         }
     }
 

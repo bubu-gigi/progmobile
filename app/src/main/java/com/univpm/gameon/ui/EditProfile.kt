@@ -26,6 +26,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.graphics.Color
+import com.univpm.gameon.ui.auth.RegisterEditProfileForm
 
 
 @Composable
@@ -140,7 +141,7 @@ fun EditProfileFormContent(
                 actionButtonText = " ",
                 onActionClick = onSave,
                 errorMessage = errorMessage,
-                        color = Color(0xFFCFFF5E),
+                color = Color(0xFFCFFF5E),
                 fontSize = 18.sp
             )
         }

@@ -50,3 +50,7 @@ fun validateCodiceFiscale(cf: String): String? {
     }
 }
 
+fun giornoLabel(numero: Int): String {
+    return listOf("Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato", "Domenica")
+        .getOrNull(numero - 1) ?: "?"
+}

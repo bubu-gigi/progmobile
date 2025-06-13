@@ -1,4 +1,4 @@
-package com.univpm.gameon.ui
+package com.univpm.gameon.ui.auth
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -31,6 +31,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import com.univpm.gameon.ui.futuraBookFontFamily
+import com.univpm.gameon.ui.lemonMilkFontFamily
 
 @Composable
 fun LoginScreen(navController: NavController) {
@@ -124,7 +126,8 @@ fun LoginContent(
                         color = Color.White,
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Bold,
-                        fontFamily = futuraBookFontFamily) }
+                        fontFamily = futuraBookFontFamily
+                        ) }
                 )
                 emailError?.let {
                     Text(
@@ -150,7 +153,8 @@ fun LoginContent(
                         color = Color.White,
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Bold,
-                        fontFamily = futuraBookFontFamily) },
+                        fontFamily = futuraBookFontFamily
+                    ) },
                     visualTransformation = PasswordVisualTransformation()
                 )
                 passwordError?.let {

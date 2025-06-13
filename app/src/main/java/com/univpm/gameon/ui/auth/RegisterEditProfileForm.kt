@@ -1,4 +1,4 @@
-package com.univpm.gameon.ui
+package com.univpm.gameon.ui.auth
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -21,6 +21,8 @@ import com.univpm.gameon.R
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import com.univpm.gameon.ui.futuraBookFontFamily
+import com.univpm.gameon.ui.lemonMilkFontFamily
 
 @Composable
 fun RegisterEditProfileForm(
@@ -243,3 +245,4 @@ fun RegisterEditProfileContentPreview() {
         errorMessage = null
     )
 }
+
