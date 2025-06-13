@@ -85,22 +85,18 @@ class PrenotazioneViewModel @Inject constructor(
         }
     }
 
-    fun cancellaPrenotazione(id: String) {
+    fun annullaPrenotazione(id: String, onSuccess: () -> Unit) {
         _error.value = null
         _success.value = null
         viewModelScope.launch {
             val success = repository.deletePrenotazione(id)
             if (success) {
                 _prenotazioniUtente.value = _prenotazioniUtente.value.filterNot { it.id == id }
-                _success.value = "Prenotazione eliminata"
+                _success.value = "Prenotazione annullata"
+                onSuccess()
             } else {
-                _error.value = "Impossibile cancellare la prenotazione"
+                _error.value = "Impossibile annullare la prenotazione"
             }
         }
-    }
-
-    fun resetMessaggi() {
-        _error.value = null
-        _success.value = null
     }
 }
