@@ -1,5 +1,7 @@
 package com.univpm.gameon.ui.struttura
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -26,6 +28,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.univpm.gameon.core.UserSessionManager
+import com.univpm.gameon.core.raggruppaSlotConsecutivi
 import com.univpm.gameon.data.collections.Campo
 import com.univpm.gameon.data.collections.Prenotazione
 import com.univpm.gameon.data.collections.Struttura
@@ -37,6 +40,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun StrutturaDettaglioScreen(
     navController: NavController,
@@ -79,6 +83,7 @@ fun StrutturaDettaglioScreen(
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun CampoCard(campo: Campo, strutturaId: String) {
     val prenotazioniViewModel: PrenotazioneViewModel = hiltViewModel()
@@ -147,17 +152,22 @@ fun CampoCard(campo: Campo, strutturaId: String) {
                     Button(
                         onClick = {
                             val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                            val dataString = sdf.format(dataSelezionata)
 
-                            val nuovaPrenotazione = Prenotazione(
-                                userId = UserSessionManager.userId ?: "",
-                                strutturaId = strutturaId,
-                                campoId = campo.id,
-                                data = sdf.format(dataSelezionata),
-                                orari = orariSelezionati.joinToString(",") { "${it.first}-${it.second}" },
-                                pubblica = false
-                            )
+                            val prenotazioniRaggruppate = raggruppaSlotConsecutivi(orariSelezionati)
 
-                            prenotazioniViewModel.creaPrenotazione(nuovaPrenotazione)
+                            prenotazioniRaggruppate.forEach { slot ->
+                                val prenotazione = Prenotazione(
+                                    userId = UserSessionManager.userId ?: "",
+                                    strutturaId = strutturaId,
+                                    campoId = campo.id,
+                                    data = dataString,
+                                    orarioInizio = slot.first,
+                                    orarioFine = slot.second,
+                                    pubblica = false
+                                )
+                                prenotazioniViewModel.creaPrenotazione(prenotazione)
+                            }
                         },
                         modifier = Modifier.fillMaxWidth()
                     ) {

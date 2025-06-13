@@ -149,41 +149,52 @@ fun generaSlotDisponibili(
     durataSlot: Int = 60
 ): List<Pair<LocalTime, LocalTime>> {
     val giornoSettimana = giorno.dayOfWeek.value
-    val template = campo.disponibilitaSettimanale.find {
+    val disponibilita = campo.disponibilitaSettimanale.find {
         it.giornoSettimana == giornoSettimana
     } ?: return emptyList()
 
-    val inizio = LocalTime.parse(template.orarioApertura)
-    val fine = LocalTime.parse(template.orarioChiusura)
+    val apertura = try {
+        LocalTime.parse(disponibilita.orarioApertura)
+    } catch (e: Exception) {
+        return emptyList()
+    }
 
-    val orariOccupati = prenotazioni
+    val chiusura = try {
+        LocalTime.parse(disponibilita.orarioChiusura)
+    } catch (e: Exception) {
+        return emptyList()
+    }
+
+    // Converti prenotazioni esistenti in intervalli occupati
+    val occupati = prenotazioni
         .filter { it.data == giorno.toString() }
-        .flatMap { p ->
-            p.orari.split(",").mapNotNull { slot ->
-                val parts = slot.split("-")
-                if (parts.size == 2) {
-                    try {
-                        val start = LocalTime.parse(parts[0])
-                        val end = LocalTime.parse(parts[1])
-                        start to end
-                    } catch (e: Exception) {
-                        null
-                    }
-                } else null
+        .mapNotNull { pren ->
+            try {
+                val start = LocalTime.parse(pren.orarioInizio)
+                val end = LocalTime.parse(pren.orarioFine)
+                start to end
+            } catch (e: Exception) {
+                null
             }
         }
 
-    val slotDisponibili = mutableListOf<Pair<LocalTime, LocalTime>>()
-    var orario = inizio
-    while (orario.plusMinutes(durataSlot.toLong()) <= fine) {
-        val slotInizio = orario
-        val slotFine = orario.plusMinutes(durataSlot.toLong())
-        val sovrapposto = orariOccupati.any { (inizioP, fineP) ->
-            slotInizio < fineP && slotFine > inizioP
+    // Genera gli slot disponibili
+    val disponibili = mutableListOf<Pair<LocalTime, LocalTime>>()
+    var orario = apertura
+
+    while (orario.plusMinutes(durataSlot.toLong()) <= chiusura) {
+        val fineSlot = orario.plusMinutes(durataSlot.toLong())
+
+        val èSovrapposto = occupati.any { (occupatoInizio, occupatoFine) ->
+            orario < occupatoFine && fineSlot > occupatoInizio
         }
-        if (!sovrapposto) slotDisponibili.add(slotInizio to slotFine)
+
+        if (!èSovrapposto) {
+            disponibili.add(orario to fineSlot)
+        }
+
         orario = orario.plusMinutes(durataSlot.toLong())
     }
 
-    return slotDisponibili
+    return disponibili
 }

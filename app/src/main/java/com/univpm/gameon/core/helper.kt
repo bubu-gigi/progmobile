@@ -1,10 +1,13 @@
 package com.univpm.gameon.core
 
 import android.icu.util.Calendar
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.navigation.NavController
 import com.google.firebase.auth.FirebaseAuth
 import com.univpm.gameon.data.collections.enums.UserRuolo
 import java.text.SimpleDateFormat
+import java.time.LocalTime
 import java.util.Locale
 
 fun checkAccess(navController: NavController, requiredRole: UserRuolo? = null) {
@@ -75,4 +78,32 @@ fun generaSlotOrari(inizio: String, fine: String): List<Pair<String, String>> {
 
     return slots
 }
+
+
+@RequiresApi(Build.VERSION_CODES.O)
+fun raggruppaSlotConsecutivi(slots: List<Pair<String, String>>): List<Pair<String, String>> {
+    val ordinati = slots.map { LocalTime.parse(it.first) to LocalTime.parse(it.second) }
+        .sortedBy { it.first }
+
+    if (ordinati.isEmpty()) return emptyList()
+
+    val gruppi = mutableListOf<MutableList<Pair<LocalTime, LocalTime>>>()
+    var gruppoCorrente = mutableListOf(ordinati.first())
+
+    for (i in 1 until ordinati.size) {
+        val precedente = gruppoCorrente.last()
+        val corrente = ordinati[i]
+
+        if (precedente.second == corrente.first) {
+            gruppoCorrente.add(corrente)
+        } else {
+            gruppi.add(gruppoCorrente)
+            gruppoCorrente = mutableListOf(corrente)
+        }
+    }
+    gruppi.add(gruppoCorrente)
+
+    return gruppi.map { it.first().first.toString() to it.last().second.toString() }
+}
+
 

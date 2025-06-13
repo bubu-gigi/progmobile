@@ -92,7 +92,7 @@ fun GiocatorePrenotazioniScreen(navController: NavController) {
                                     fontFamily = futuraBookFontFamily
                                 )
                                 Text(
-                                    text = "Orario: ${prenotazione.orari}",
+                                    text = "Orario: ${prenotazione.orarioInizio} - ${prenotazione.orarioFine}",
                                     color = Color.White,
                                     fontFamily = futuraBookFontFamily
                                 )
