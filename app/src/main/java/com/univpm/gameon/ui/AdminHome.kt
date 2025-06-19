@@ -37,6 +37,8 @@ import com.univpm.gameon.core.ChatListAdminScreenRoute
 import com.univpm.gameon.core.StruttureListRoute
 import com.univpm.gameon.viewmodels.AuthViewModel
 
+//definizione dei font
+
 val futuraBookFontFamily = FontFamily(
     Font(R.font.futura_book_font)
 )
@@ -309,6 +311,7 @@ fun AdminHomeContent(onLogout: () -> Unit) {
         }
     }
 
+//funzione di anteprima
 
 @Preview(showBackground = true)
 @Composable
