@@ -272,7 +272,7 @@ fun StrutturaFormScreen(
                 Spacer(modifier = Modifier.height(8.dp))
                 Button(
                     onClick = {
-                        struttureViewModel.eliminaStruttura(strutturaDaModificare!!.id, "")
+                        struttureViewModel.eliminaStruttura(strutturaDaModificare!!.id)
                         navController.navigate(StruttureListRoute)
                     },
                     modifier = Modifier

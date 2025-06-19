@@ -244,7 +244,9 @@ fun CarteListContentPreview() {
             labelSmall = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 11.sp, fontWeight = FontWeight.Medium),
         )
     ) {
-        Surface { // La Surface assicura che il tema sia applicato al contenuto
+        // La Surface assicura che il tema sia applicato al contenuto
+
+        Surface {
             CarteListContent(
                 carte = dummyCards,
                 errore = null,
