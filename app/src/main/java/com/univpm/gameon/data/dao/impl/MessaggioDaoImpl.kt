@@ -9,9 +9,9 @@ class MessaggioDaoImpl : MessaggioDao {
     private val db = FirebaseFirestore.getInstance()
 
     override suspend fun getMessaggi(giocatoreId: String, strutturaId: String): List<Messaggio> {
-        val convoId = "conversation_${giocatoreId}_$strutturaId"
+        val convId = "conversation_${giocatoreId}_$strutturaId"
         val snapshot = db.collection("messages")
-            .document(convoId)
+            .document(convId)
             .collection("messages")
             .orderBy("timestamp")
             .get()
@@ -20,7 +20,7 @@ class MessaggioDaoImpl : MessaggioDao {
     }
 
     override suspend fun sendMessaggio(giocatoreId: String, strutturaId: String, messaggio: Messaggio): Boolean {
-        val convoId = "conversation_${giocatoreId}_$strutturaId"
+        val convId = "conversation_${giocatoreId}_$strutturaId"
         return try {
             val db = FirebaseFirestore.getInstance()
 
@@ -38,7 +38,7 @@ class MessaggioDaoImpl : MessaggioDao {
             val giocatoreNome = (giocatoreDoc.getString("name") + " " + giocatoreDoc.getString("cognome"))
 
             db.collection("messages")
-                .document(convoId)
+                .document(convId)
                 .collection("messages")
                 .add(messaggio)
                 .await()
@@ -53,7 +53,7 @@ class MessaggioDaoImpl : MessaggioDao {
             )
 
             db.collection("conversazioni")
-                .document(convoId)
+                .document(convId)
                 .set(conversazione)
                 .await()
 
