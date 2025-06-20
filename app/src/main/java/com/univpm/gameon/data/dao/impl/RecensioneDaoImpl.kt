@@ -36,8 +36,8 @@ class RecensioneDaoImpl : RecensioneDao {
         return try {
             if (recensione.rating in 1..5) {
                 val docRef = recensioniCollection.document()
-                val userWithId = recensione.copy(id = docRef.id)
-                docRef.set(userWithId).await()
+                val recensioneWithId = recensione.copy(id = docRef.id)
+                docRef.set(recensioneWithId).await()
                 true
             } else {
                 false

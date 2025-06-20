@@ -5,6 +5,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
 import com.google.firebase.auth.FirebaseAuth
 import com.univpm.gameon.core.AdminHomeScreenRoute
 import com.univpm.gameon.core.GiocatoreHomeScreenRoute
@@ -79,6 +80,8 @@ class AuthViewModel @Inject constructor(
         auth.signOut()
         UserSessionManager.clear()
         authState.value = null
+        UserSessionManager.isLoggedIn = false
+        UserSessionManager.userRole = null
         destination.value = LoginScreenRoute
     }
 

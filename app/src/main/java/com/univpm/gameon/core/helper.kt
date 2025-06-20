@@ -1,28 +1,10 @@
 package com.univpm.gameon.core
 
-import android.icu.util.Calendar
 import android.os.Build
 import androidx.annotation.RequiresApi
-import androidx.navigation.NavController
-import com.google.firebase.auth.FirebaseAuth
-import com.univpm.gameon.data.collections.enums.UserRuolo
-import java.text.SimpleDateFormat
 import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 import java.util.Locale
-
-fun checkAccess(navController: NavController, requiredRole: UserRuolo? = null) {
-    if (!UserSessionManager.isLoggedIn || (requiredRole != null && UserSessionManager.userRole != requiredRole)) {
-        navController.navigate(LoginScreenRoute)
-    }
-}
-
-//viewmodel?
-fun logout(navController: NavController) {
-    FirebaseAuth.getInstance().signOut()
-    UserSessionManager.isLoggedIn = false
-    UserSessionManager.userRole = null
-    navController.navigate(LoginScreenRoute)
-}
 
 fun validateEmail(email: String): String? {
     if (email.isBlank()) return "Il campo email è obbligatorio."
@@ -61,24 +43,25 @@ fun giornoLabel(numero: Int): String {
         .getOrNull(numero - 1) ?: "?"
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 fun generaSlotOrari(inizio: String, fine: String): List<Pair<String, String>> {
-    val formatter = SimpleDateFormat("HH:mm", Locale.getDefault())
-    val start = Calendar.getInstance().apply { time = formatter.parse(inizio)!! }
-    val end = Calendar.getInstance().apply { time = formatter.parse(fine)!! }
+    val formatter = DateTimeFormatter.ofPattern("HH:mm", Locale.getDefault())
+
+    val startTime = LocalTime.parse(inizio, formatter)
+    val endTime = LocalTime.parse(fine, formatter)
 
     val slots = mutableListOf<Pair<String, String>>()
 
-    while (start.before(end)) {
-        val slotStart = formatter.format(start.time)
-        start.add(Calendar.HOUR_OF_DAY, 1)
-        val slotEnd = formatter.format(start.time)
-        if (start.after(end)) break
-        slots.add(slotStart to slotEnd)
+    var current = startTime
+    while (current < endTime) {
+        val next = current.plusHours(1)
+        if (next > endTime) break
+        slots.add(current.format(formatter) to next.format(formatter))
+        current = next
     }
 
     return slots
 }
-
 
 @RequiresApi(Build.VERSION_CODES.O)
 fun raggruppaSlotConsecutivi(slots: List<Pair<String, String>>): List<Pair<String, String>> {

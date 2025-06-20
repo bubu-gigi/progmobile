@@ -20,10 +20,6 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideCampoDao(): CampoDao = CampoDaoImpl()
-
-    @Provides
-    @Singleton
     fun provideCartaDao(): CartaDao = CartaDaoImpl()
 
     @Provides
@@ -49,10 +45,6 @@ object AppModule {
     @Provides
     @Singleton
     fun provideUserRepository(userDao: UserDao): UserRepository = UserRepositoryImpl(userDao)
-
-    @Provides
-    @Singleton
-    fun provideCampoRepository(campoDao: CampoDao): CampoRepository = CampoRepositoryImpl(campoDao)
 
     @Provides
     @Singleton

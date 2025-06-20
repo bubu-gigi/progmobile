@@ -25,7 +25,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.univpm.gameon.core.CarteListScreenRoute
 import com.univpm.gameon.core.EditProfileScreenRoute
-import com.univpm.gameon.core.checkAccess
 import com.univpm.gameon.core.logout
 import com.univpm.gameon.viewmodels.AuthViewModel
 import com.univpm.gameon.R
@@ -34,7 +33,6 @@ import com.univpm.gameon.core.GiocatorePrenotazioniRoute
 
 @Composable
 fun GiocatoreHomeScreen(navController: NavController) {
-    checkAccess(navController)
 
     val authViewModel: AuthViewModel = hiltViewModel()
 

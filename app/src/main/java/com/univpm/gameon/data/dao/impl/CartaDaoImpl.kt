@@ -34,8 +34,8 @@ class CartaDaoImpl : CartaDao {
     override suspend fun addCarta(carta: Carta): Boolean {
         return try {
             val docRef = carteCollection.document()
-            val userWithId = carta.copy(id = docRef.id)
-            docRef.set(userWithId).await()
+            val cartaWithId = carta.copy(id = docRef.id)
+            docRef.set(cartaWithId).await()
             true
         } catch (e: Exception) {
             false
