@@ -29,8 +29,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.tooling.preview.Preview
 import com.univpm.gameon.data.collections.Campo
 import com.univpm.gameon.data.collections.Prenotazione
+import com.univpm.gameon.data.collections.enums.Sport
+import com.univpm.gameon.data.collections.enums.TipologiaTerreno
+import.com.univpm.gameon.data.collections.Campo.TemplateGiornaliero
 import java.text.SimpleDateFormat
 import java.time.Instant
 import java.time.LocalDate
@@ -198,4 +202,77 @@ fun generaSlotDisponibili(
     }
 
     return disponibili
+}
+
+@Preview(showBackground = true)
+@Composable
+fun CampoPrenotazioniPreview() {
+    // Mock Campo con le classi
+    val mockCampo = Campo(
+        id = "campo1",
+        nomeCampo = "Campo Tennis A",
+        sport = Sport.CALCIO5, // Usando il valore di default
+        tipologiaTerreno = TipologiaTerreno.ERBA_SINTETICA, // Usando il valore di default
+        prezzoOrario = 25.0,
+        numeroGiocatori = 10,
+        spogliatoi = true,
+        disponibilitaSettimanale = listOf(
+            TemplateGiornaliero(
+                giornoSettimana = 1, // Lunedì
+                orarioApertura = "09:00",
+                orarioChiusura = "22:00"
+            ),
+            TemplateGiornaliero(
+                giornoSettimana = 2, // Martedì
+                orarioApertura = "09:00",
+                orarioChiusura = "22:00"
+            ),
+            TemplateGiornaliero(
+                giornoSettimana = 6, // Sabato
+                orarioApertura = "08:00",
+                orarioChiusura = "23:00"
+            )
+        )
+    )
+
+    // Mock Prenotazioni con le tue classi reali
+    val mockPrenotazioni = listOf(
+        Prenotazione(
+            id = "pren1",
+            userId = "user1",
+            strutturaId = "strutt1",
+            campoId = "campo1",
+            data = "2025-06-21",
+            orarioInizio = "10:00",
+            orarioFine = "11:00",
+            pubblica = false
+        ),
+        Prenotazione(
+            id = "pren2",
+            userId = "user2",
+            strutturaId = "strutt1",
+            campoId = "campo1",
+            data = "2025-06-21",
+            orarioInizio = "14:00",
+            orarioFine = "16:00",
+            pubblica = true
+        )
+    )
+
+    MaterialTheme {
+        Column(modifier = Modifier.padding(16.dp)) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                CampoPrenotazioni(
+                    campo = mockCampo,
+                    prenotazioni = mockPrenotazioni,
+                    onSlotSelezionato = { slot ->
+                        // Mock callback per la preview
+                        println("Slot selezionato: ${slot.first} - ${slot.second}")
+                    }
+                )
+            } else {
+                Text("Richiede Android API 26+")
+            }
+        }
+    }
 }

@@ -25,7 +25,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.univpm.gameon.core.CarteListScreenRoute
 import com.univpm.gameon.core.EditProfileScreenRoute
-import com.univpm.gameon.core.logout
 import com.univpm.gameon.viewmodels.AuthViewModel
 import com.univpm.gameon.R
 import com.univpm.gameon.core.ChatListScreenRoute
@@ -44,7 +43,7 @@ fun GiocatoreHomeScreen(navController: NavController) {
     }
 
     GiocatoreHomeContent(
-        onLogout = { logout(navController) },
+        onLogout = { authViewModel.logout() }, // Rimosso navController
         onPrenotazioni = { navController.navigate(GiocatorePrenotazioniRoute) },
         onEditProfile = { navController.navigate(EditProfileScreenRoute) },
         onGestioneCarte = { navController.navigate(CarteListScreenRoute) },
@@ -52,7 +51,6 @@ fun GiocatoreHomeScreen(navController: NavController) {
         onDeleteAccount = { authViewModel.deleteAccount() }
     )
 }
-
 
 @Composable
 fun GiocatoreHomeContent(
@@ -114,7 +112,7 @@ fun GiocatoreHomeContent(
                             shape = RoundedCornerShape(120.dp)
                         ), // Bordo con angoli arrotondati
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(232323), // Corretto il colore in formato esadecimale
+                        containerColor = Color(0xFF232323), // CORRETTO: formato esadecimale
                         contentColor = Color.White
                     )
                 ) {
@@ -135,7 +133,7 @@ fun GiocatoreHomeContent(
                             shape = RoundedCornerShape(120.dp)
                         ), // Bordo con angoli arrotondati
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(232323), // Corretto il colore in formato esadecimale
+                        containerColor = Color(0xFF232323), // CORRETTO: formato esadecimale
                         contentColor = Color.White
                     )
                 ) {
@@ -163,7 +161,7 @@ fun GiocatoreHomeContent(
                             shape = RoundedCornerShape(120.dp)
                         ), // Bordo con angoli arrotondati
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(232323), // Corretto il colore in formato esadecimale
+                        containerColor = Color(0xFF232323), // CORRETTO: formato esadecimale
                         contentColor = Color.White
                     )
                 ) {
@@ -184,7 +182,7 @@ fun GiocatoreHomeContent(
                             shape = RoundedCornerShape(120.dp)
                         ), // Bordo con angoli arrotondati
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(232323), // Corretto il colore in formato esadecimale
+                        containerColor = Color(0xFF232323), // CORRETTO: formato esadecimale
                         contentColor = Color.White
                     )
                 ) {
@@ -198,58 +196,56 @@ fun GiocatoreHomeContent(
 
             Spacer(modifier = Modifier.height(25.dp))
 
-                    Row(
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween // Cambiato per ridurre lo spazio
+            ) {
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(8.dp) // Ridotto il padding orizzontale
+                        .border(BorderStroke(2.dp, Color(0xFFCFFF5E)), shape = RoundedCornerShape(12.dp))
+                        .background(
+                            color = Color(0xFF6136FF),
+                            shape = RoundedCornerShape(12.dp)
+                        )
+                        .clickable(onClick = onDeleteAccount)
+                        .padding(vertical = 15.dp)
+                ) {
+                    Text(
+                        text = "Elimina Account",
+                        color = Color(0xFFCFFF5E),
+                        fontSize = 18.sp,
+                        fontFamily = futuraBookFontFamily,
+                        fontWeight = FontWeight.Bold,
                         modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween // Cambiato per ridurre lo spazio
-                    ) {
-                        Box(
-                            modifier = Modifier
-                                .weight(1f)
-                                .padding(8.dp) // Ridotto il padding orizzontale
-                                .border(BorderStroke(2.dp, Color(0xFFCFFF5E)), shape = RoundedCornerShape(12.dp))
-                                .background(
-                                    color = Color(0xFF6136FF),
-                                    shape = RoundedCornerShape(12.dp)
-                                )
-                                .clickable(onClick = onDeleteAccount)
-                                .padding(vertical = 15.dp)
-                        ) {
-                            Text(
-                                text = "Elimina Account",
-                                color = Color(0xFFCFFF5E),
-                                fontSize = 18.sp,
-                                fontFamily = futuraBookFontFamily,
-                                fontWeight = FontWeight.Bold,
-                                modifier = Modifier.fillMaxWidth(),
-                                textAlign = TextAlign.Center
-                            )
-                        }
+                        textAlign = TextAlign.Center
+                    )
+                }
 
-                        Box(
-                            modifier = Modifier
-                                .weight(1f)
-                                .padding(8.dp) // Ridotto il padding orizzontale
-                                .border(BorderStroke(2.dp, Color(0xFFCFFF5E)), shape = RoundedCornerShape(12.dp))
-                                .background(
-                                    color = Color(0xFF6136FF),
-                                    shape = RoundedCornerShape(12.dp)
-                                )
-                                .clickable(onClick = onLogout)
-                                .padding(vertical = 15.dp)
-                        ) {
-                            Text(
-                                text = "Logout",
-                                color = Color(0xFFCFFF5E),
-                                fontSize = 18.sp,
-                                fontWeight = FontWeight.Bold,
-                                fontFamily = futuraBookFontFamily,
-                                modifier = Modifier.fillMaxWidth(),
-                                textAlign = TextAlign.Center
-                            )
-                        }
-                    }
-
-
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(8.dp) // Ridotto il padding orizzontale
+                        .border(BorderStroke(2.dp, Color(0xFFCFFF5E)), shape = RoundedCornerShape(12.dp))
+                        .background(
+                            color = Color(0xFF6136FF),
+                            shape = RoundedCornerShape(12.dp)
+                        )
+                        .clickable(onClick = onLogout)
+                        .padding(vertical = 15.dp)
+                ) {
+                    Text(
+                        text = "Logout",
+                        color = Color(0xFFCFFF5E),
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold,
+                        fontFamily = futuraBookFontFamily,
+                        modifier = Modifier.fillMaxWidth(),
+                        textAlign = TextAlign.Center
+                    )
+                }
+            }
         }
     }
 }
