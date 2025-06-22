@@ -104,7 +104,7 @@ fun DropdownMenuProviderSelector(
             expanded = expanded,
             onDismissRequest = { expanded = false }
         ) {
-            CardProvider.values().forEach { provider ->
+            CardProvider.entries.forEach { provider ->
                 DropdownMenuItem(
                     text = {
                         Text(

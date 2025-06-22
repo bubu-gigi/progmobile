@@ -18,7 +18,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.google.android.gms.maps.model.LatLng
-import com.univpm.gameon.ui.PlacePickerActivity
+import com.univpm.gameon.activities.PlacePickerActivity
 import com.univpm.gameon.ui.futuraBookFontFamily
 
 

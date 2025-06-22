@@ -43,7 +43,6 @@ fun RecensioneForm(
     var haGiaRecensito by remember { mutableStateOf(false) }
     var loading by remember { mutableStateOf(true) }
 
-    // Controllo iniziale: ha già recensito?
     LaunchedEffect(Unit) {
         viewModel.haGiaRecensito(strutturaId, utenteId) { esiste ->
             haGiaRecensito = esiste

@@ -1,6 +1,5 @@
-package com.univpm.gameon.ui
+package com.univpm.gameon.activities
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -48,19 +47,19 @@ class PlacePickerActivity : AppCompatActivity() {
                         putExtra("lng", latLng?.longitude)
                     }
 
-                    setResult(Activity.RESULT_OK, result)
+                    setResult(RESULT_OK, result)
                     finish()
                 }
 
                 AutocompleteActivity.RESULT_ERROR -> {
                     val status = Autocomplete.getStatusFromIntent(data!!)
                     Log.e("PlacePicker", "Errore: ${status.statusMessage}")
-                    setResult(Activity.RESULT_CANCELED)
+                    setResult(RESULT_CANCELED)
                     finish()
                 }
 
                 else -> {
-                    setResult(Activity.RESULT_CANCELED)
+                    setResult(RESULT_CANCELED)
                     finish()
                 }
             }
