@@ -47,12 +47,11 @@ fun MappaStruttureConFiltri(
     var cittaFiltrata by remember { mutableStateOf<String?>(null) }
     var menuCittaEspanso by remember { mutableStateOf(false) }
 
-    val cittaPrincipali = listOf(
-        "Roma", "Milano", "Napoli", "Torino", "Palermo",
-        "Genova", "Bologna", "Firenze", "Bari", "Catania",
-        "Venezia", "Verona", "Messina", "Padova", "Trieste",
-        "Ancona"
-    )
+    val cittaPrincipali = strutture
+        .map { it.citta }
+        .map { it.trim() }
+        .distinct()
+        .sortedBy { it.lowercase() }
 
     val struttureFiltrate = strutture.filter {
         (sportFiltrato == null || it.sportPraticabili.contains(sportFiltrato)) &&

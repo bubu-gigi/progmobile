@@ -34,6 +34,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.univpm.gameon.R
 import com.univpm.gameon.core.ChatListAdminScreenRoute
+import com.univpm.gameon.core.EditProfileScreenRoute
 import com.univpm.gameon.core.LoginScreenRoute
 import com.univpm.gameon.core.StruttureListRoute
 import com.univpm.gameon.viewmodels.AuthViewModel
@@ -90,7 +91,7 @@ fun AdminHomeScreen(navController: NavController) {
             Spacer(modifier = Modifier.height(20.dp))
 
             Button(
-                onClick = { /* Azione quando il bottone viene premuto */ },
+                onClick = { navController.navigate(EditProfileScreenRoute) },
                 modifier = Modifier
                     .padding(8.dp)
                     .size(width = 190.dp, height = 50.dp)
