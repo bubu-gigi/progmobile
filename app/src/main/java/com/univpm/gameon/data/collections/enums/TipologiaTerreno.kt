@@ -1,8 +1,6 @@
 package com.univpm.gameon.data.collections.enums
 
-enum class TipologiaTerreno(val displayName: String) {
+enum class TipologiaTerreno(val label: String) {
     ERBA_SINTETICA("Erba Sintetica"),
     CEMENTO("Cemento");
-
-    override fun toString(): String = displayName
 }

@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.univpm.gameon.core.GiocatorePrenotazioniRoute
 import com.univpm.gameon.core.UserSessionManager
 import com.univpm.gameon.core.raggruppaSlotConsecutivi
 import com.univpm.gameon.data.collections.Campo
@@ -77,7 +78,7 @@ fun StrutturaDettaglioScreen(
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             items(campi) { campo ->
-                CampoCard(campo, struttura.id)
+                CampoCard(campo, struttura.id, navController)
             }
         }
     }
@@ -85,7 +86,7 @@ fun StrutturaDettaglioScreen(
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun CampoCard(campo: Campo, strutturaId: String) {
+fun CampoCard(campo: Campo, strutturaId: String, navController: NavController) {
     val prenotazioniViewModel: PrenotazioneViewModel = hiltViewModel()
 
     var dataSelezionata by remember { mutableStateOf<Date?>(null) }
@@ -167,6 +168,7 @@ fun CampoCard(campo: Campo, strutturaId: String) {
                                     pubblica = false
                                 )
                                 prenotazioniViewModel.creaPrenotazione(prenotazione)
+                                navController.navigate(GiocatorePrenotazioniRoute)
                             }
                         },
                         modifier = Modifier.fillMaxWidth()

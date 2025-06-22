@@ -1,6 +1,8 @@
 package com.univpm.gameon.ui.struttura
 
 import android.icu.util.Calendar
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -25,6 +27,7 @@ import com.univpm.gameon.data.collections.Campo
 import com.univpm.gameon.ui.lemonMilkFontFamily
 import java.util.Date
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun SelezionaOrariDialog(
     campo: Campo,

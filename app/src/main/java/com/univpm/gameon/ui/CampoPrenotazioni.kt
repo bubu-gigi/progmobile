@@ -32,9 +32,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.tooling.preview.Preview
 import com.univpm.gameon.data.collections.Campo
 import com.univpm.gameon.data.collections.Prenotazione
+import com.univpm.gameon.data.collections.TemplateGiornaliero
 import com.univpm.gameon.data.collections.enums.Sport
 import com.univpm.gameon.data.collections.enums.TipologiaTerreno
-import.com.univpm.gameon.data.collections.Campo.TemplateGiornaliero
 import java.text.SimpleDateFormat
 import java.time.Instant
 import java.time.LocalDate

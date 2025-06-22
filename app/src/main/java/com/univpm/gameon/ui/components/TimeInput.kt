@@ -16,7 +16,7 @@ fun TimeInput(label: String, initial: String, onTimeSelected: (String) -> Unit) 
         TimePickerDialog(
             context,
             { _, hour: Int, minute: Int ->
-                onTimeSelected(String.format("%02d:%02d", hour, minute))
+                onTimeSelected("%02d:%02d".format(hour, minute))
             },
             timeParts[0],
             timeParts[1],

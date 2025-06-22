@@ -52,7 +52,10 @@ class AuthViewModel @Inject constructor(
                 destination.value = when (user?.ruolo) {
                     "Admin" -> AdminHomeScreenRoute
                     "Giocatore" -> GiocatoreHomeScreenRoute
-                    else -> LoginScreenRoute
+                    else -> {
+                        LoginScreenRoute
+                        print("AIUTO")
+                    }
                 }
                 println(destination.value)
                 authState.value = "SUCCESS"

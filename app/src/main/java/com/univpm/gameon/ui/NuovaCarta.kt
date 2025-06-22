@@ -68,34 +68,51 @@ fun NuovaCartaScreen(navController: NavController) {
             navController.popBackStack()
         }
     )
-}
-
+}@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DropdownMenuProviderSelector(current: CardProvider, onSelected: (CardProvider) -> Unit) {
+fun DropdownMenuProviderSelector(
+    current: CardProvider,
+    onSelected: (CardProvider) -> Unit
+) {
     var expanded by remember { mutableStateOf(false) }
 
-    Box {
+    ExposedDropdownMenuBox(
+        expanded = expanded,
+        onExpandedChange = { expanded = !expanded }
+    ) {
         OutlinedTextField(
-            value = current.name,
+            value = current.label,
             onValueChange = {},
-            label = { Text("Circuito", fontFamily = futuraBookFontFamily, color = Color.White) },
             readOnly = true,
-            modifier = Modifier
-                .fillMaxWidth()
-                .clickable { expanded = true },
-            textStyle = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 16.sp, color = Color.White),
+            label = { Text("Circuito", color = Color.White, fontFamily = futuraBookFontFamily) },
+            trailingIcon = {
+                ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
+            },
             colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = Color(0xFFE36BE0),
                 unfocusedBorderColor = Color(0xFFE36BE0),
                 focusedLabelColor = Color(0xFFE36BE0),
-                unfocusedLabelColor = Color(0xFFE36BE0)
-            )
+                unfocusedLabelColor = Color(0xFFE36BE0),
+                cursorColor = Color.Transparent
+            ),
+            modifier = Modifier
+                .menuAnchor() // molto importante per il posizionamento del menu
+                .fillMaxWidth()
         )
 
-        DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
-            CardProvider.entries.forEach { provider ->
+        ExposedDropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false }
+        ) {
+            CardProvider.values().forEach { provider ->
                 DropdownMenuItem(
-                    text = { Text(provider.name, fontFamily = futuraBookFontFamily, color = Color.Black) },
+                    text = {
+                        Text(
+                            provider.label,
+                            color = Color.Black,
+                            fontFamily = futuraBookFontFamily
+                        )
+                    },
                     onClick = {
                         onSelected(provider)
                         expanded = false
@@ -105,6 +122,7 @@ fun DropdownMenuProviderSelector(current: CardProvider, onSelected: (CardProvide
         }
     }
 }
+
 
 @Composable
 fun NuovaCartaContent(
