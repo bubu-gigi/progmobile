@@ -26,7 +26,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.graphics.Color
-import com.univpm.gameon.ui.auth.RegisterEditProfileForm
+import com.univpm.gameon.ui.components.RegisterEditProfileForm
 
 
 @Composable
@@ -67,6 +67,7 @@ fun EditProfileScreen(navController: NavController) {
         onCodiceFiscaleChange = { codiceFiscale = it },
         onPasswordChange = { password = it },
         onSave = {
+
             val updatedUser = User(userId, name, cognome, email, codiceFiscale, password)
             Log.d("AuthViewModel", "Id ${updatedUser}")
             authViewModel.updateProfile(userId, updatedUser)
@@ -138,11 +139,8 @@ fun EditProfileFormContent(
                 onEmailChange = onEmailChange,
                 onCodiceFiscaleChange = onCodiceFiscaleChange,
                 onPasswordChange = onPasswordChange,
-                actionButtonText = " ",
                 onActionClick = onSave,
                 errorMessage = errorMessage,
-                color = Color(0xFFCFFF5E),
-                fontSize = 18.sp
             )
         }
     }
