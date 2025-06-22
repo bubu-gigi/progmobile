@@ -31,6 +31,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import com.univpm.gameon.core.validateEmail
 import com.univpm.gameon.ui.futuraBookFontFamily
 import com.univpm.gameon.ui.lemonMilkFontFamily
 
@@ -59,7 +60,7 @@ fun LoginScreen(navController: NavController) {
         onEmailChange = { email = it },
         onPasswordChange = { password = it },
         onLoginClick = {
-            val emailValidation = null // Puoi aggiungere validateEmail() se vuoi
+            val emailValidation = validateEmail(email)
             val passwordValidation = validatePassword(password)
 
             emailError = emailValidation
