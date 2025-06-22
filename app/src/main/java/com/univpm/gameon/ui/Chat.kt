@@ -31,7 +31,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.univpm.gameon.core.UserSessionManager
 import com.univpm.gameon.data.collections.Messaggio
-import com.univpm.gameon.data.collections.enums.UserRuolo
 import com.univpm.gameon.viewmodels.ChatViewModel
 import com.univpm.gameon.viewmodels.RecensioneViewModel
 
@@ -45,7 +44,7 @@ fun ChatScreen(
     val chatViewModel: ChatViewModel = hiltViewModel()
     val recensioneViewModel: RecensioneViewModel = hiltViewModel()
 
-    val giocatoreId = if (UserSessionManager.userRole == UserRuolo.GIOCATORE) {
+    val giocatoreId = if (UserSessionManager.userRole == "Giocatore") {
         UserSessionManager.userId ?: ""
     } else {
         giocatoreId
@@ -53,7 +52,7 @@ fun ChatScreen(
     LaunchedEffect(Unit) {
         chatViewModel.caricaConversazione(giocatoreId, strutturaId)
     }
-    val mittente = if (UserSessionManager.userRole == UserRuolo.GIOCATORE) {
+    val mittente = if (UserSessionManager.userRole == "Admin") {
         giocatoreId
     } else {
         strutturaId
