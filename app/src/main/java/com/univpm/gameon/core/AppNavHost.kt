@@ -2,6 +2,8 @@ package com.univpm.gameon.core
 
 import GiocatorePrenotazioniScreen
 import StruttureListScreen
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Text
@@ -84,6 +86,7 @@ data class StrutturaDettaglioRoute(
     val strutturaId: String
 )
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun AppNavHost() {
     val navController = rememberNavController()
@@ -199,7 +202,5 @@ fun AppNavHost() {
                 }
             }
         }
-
-
     }
 }
