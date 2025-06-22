@@ -1,4 +1,4 @@
-package com.univpm.gameon.ui.auth
+package com.univpm.gameon.ui.components
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -13,7 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.layout.ContentScale
@@ -38,10 +37,7 @@ fun RegisterEditProfileForm(
     onCodiceFiscaleChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
     onActionClick: () -> Unit,
-    actionButtonText: String,
     errorMessage: String? = null,
-    fontSize: TextUnit,
-    color: Color
 ) {
     val borderColor = Color(0xFFE36BE0)
 
@@ -218,10 +214,7 @@ fun RegisterEditProfileContent(
         onCodiceFiscaleChange = onCodiceFiscaleChange,
         onPasswordChange = onPasswordChange,
         onActionClick = onActionClick,
-        actionButtonText = actionButtonText,
-        errorMessage = errorMessage,
-        fontSize = MaterialTheme.typography.bodyLarge.fontSize,
-        color = Color.White
+        errorMessage = errorMessage
     )
 }
 
