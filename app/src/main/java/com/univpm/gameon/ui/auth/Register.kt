@@ -28,6 +28,7 @@ import com.univpm.gameon.core.validateCodiceFiscale
 import com.univpm.gameon.core.validateEmail
 import com.univpm.gameon.core.validatePassword
 import com.univpm.gameon.data.collections.User
+import com.univpm.gameon.ui.components.RegisterEditProfileForm
 import com.univpm.gameon.ui.futuraBookFontFamily
 import com.univpm.gameon.viewmodels.AuthViewModel
 
@@ -164,10 +165,7 @@ fun RegisterFormContent(
                 onCodiceFiscaleChange = onCodiceFiscaleChange,
                 onPasswordChange = onPasswordChange,
                 onActionClick = onRegisterClick,
-                actionButtonText = "Registrati",
-                errorMessage = errorMessage,
-                fontSize = 18.sp,
-                color = Color(0xFFCFFF5E)
+                errorMessage = errorMessage
             )
         }
     }
