@@ -5,14 +5,12 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavController
 import com.google.firebase.auth.FirebaseAuth
 import com.univpm.gameon.core.AdminHomeScreenRoute
 import com.univpm.gameon.core.GiocatoreHomeScreenRoute
 import com.univpm.gameon.core.LoginScreenRoute
 import com.univpm.gameon.core.UserSessionManager
 import com.univpm.gameon.data.collections.User
-import com.univpm.gameon.data.collections.enums.UserRuolo
 import com.univpm.gameon.repositories.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -52,8 +50,8 @@ class AuthViewModel @Inject constructor(
                 Log.d("AuthViewModel", "Ruolo utente: ${user?.ruolo}")
                 Log.d("AuthViewModel", "Destinazione: ${destination.value}")
                 destination.value = when (user?.ruolo) {
-                    UserRuolo.ADMIN -> AdminHomeScreenRoute
-                    UserRuolo.GIOCATORE -> GiocatoreHomeScreenRoute
+                    "Admin" -> AdminHomeScreenRoute
+                    "Giocatore" -> GiocatoreHomeScreenRoute
                     else -> LoginScreenRoute
                 }
                 println(destination.value)
@@ -88,16 +86,30 @@ class AuthViewModel @Inject constructor(
     fun updateProfile(id: String, updatedUser: User) {
         viewModelScope.launch {
             try {
-                auth.currentUser?.verifyBeforeUpdateEmail(updatedUser.email)?.await()
-                auth.currentUser?.updatePassword(updatedUser.password)?.await()
-                Log.d("AuthViewModel", "Id ${updatedUser}")
+                val firebaseUser = auth.currentUser
+                if (firebaseUser == null) {
+                    authState.value = "FAILED: Nessun utente autenticato"
+                    return@launch
+                }
+
+                if (firebaseUser.email != updatedUser.email) {
+                    firebaseUser.updateEmail(updatedUser.email).await()
+                }
+
+                firebaseUser.updatePassword(updatedUser.password).await()
+
                 userRepository.updateUser(id, updatedUser)
+
+                UserSessionManager.userRole = updatedUser.ruolo
+                UserSessionManager.userId = updatedUser.id
+
                 authState.value = "UPDATED"
             } catch (e: Exception) {
                 authState.value = "FAILED: ${e.message}"
             }
         }
     }
+
 
     fun deleteAccount() {
         viewModelScope.launch {
