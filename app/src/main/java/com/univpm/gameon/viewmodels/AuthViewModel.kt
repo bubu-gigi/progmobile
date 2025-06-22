@@ -1,6 +1,5 @@
 package com.univpm.gameon.viewmodels
 
-import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -39,25 +38,16 @@ class AuthViewModel @Inject constructor(
     fun login(email: String, password: String) {
         viewModelScope.launch {
             try {
-                Log.d("RegisterScreen", "Email: '$email' Password: '$password'")
                 auth.signInWithEmailAndPassword(email, password).await()
                 val user = userRepository.getUserByEmail(email)
                 UserSessionManager.isLoggedIn = true
                 UserSessionManager.userRole = user?.ruolo
                 UserSessionManager.userId = user?.id
-                Log.d("AuthViewModel", "Login riuscito per ${user?.email}")
-                Log.d("AuthViewModel", "Id ${user?.id}")
-                Log.d("AuthViewModel", "Ruolo utente: ${user?.ruolo}")
-                Log.d("AuthViewModel", "Destinazione: ${destination.value}")
                 destination.value = when (user?.ruolo) {
                     "Admin" -> AdminHomeScreenRoute
                     "Giocatore" -> GiocatoreHomeScreenRoute
-                    else -> {
-                        LoginScreenRoute
-                        print("AIUTO")
-                    }
+                    else -> { LoginScreenRoute }
                 }
-                println(destination.value)
                 authState.value = "SUCCESS"
             } catch (e: Exception) {
                 authState.value = "FAILED: ${e.message}"
@@ -117,7 +107,6 @@ class AuthViewModel @Inject constructor(
     fun deleteAccount() {
         viewModelScope.launch {
             try {
-                Log.d("AuthViewModel", "Current user ${UserSessionManager.userId}")
                 userRepository.removeUser(UserSessionManager.userId ?: "")
                 auth.currentUser?.delete()?.await()
                 logout()
