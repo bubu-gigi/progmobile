@@ -34,6 +34,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.univpm.gameon.R
 import com.univpm.gameon.core.ChatListAdminScreenRoute
+import com.univpm.gameon.core.LoginScreenRoute
 import com.univpm.gameon.core.StruttureListRoute
 import com.univpm.gameon.viewmodels.AuthViewModel
 
@@ -48,7 +49,6 @@ val lemonMilkFontFamily= FontFamily(
 
 @Composable
 fun AdminHomeScreen(navController: NavController) {
-    //checkAccess(navController, UserRuolo.ADMIN)
 
     val authViewModel: AuthViewModel = hiltViewModel()
 
@@ -172,7 +172,8 @@ fun AdminHomeScreen(navController: NavController) {
                         color = Color(232323),
                         shape = RoundedCornerShape(12.dp) // Assicurati che il background abbia la stessa forma
                     )
-                    .clickable(onClick = {authViewModel.logout()})
+                    .clickable(onClick = {authViewModel.logout(); navController.navigate(
+                        LoginScreenRoute)})
                     .padding(vertical = 15.dp, horizontal = 32.dp)
             ) {
                 Text(
