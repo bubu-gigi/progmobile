@@ -29,6 +29,7 @@ import com.univpm.gameon.viewmodels.AuthViewModel
 import com.univpm.gameon.R
 import com.univpm.gameon.core.ChatListScreenRoute
 import com.univpm.gameon.core.GiocatorePrenotazioniRoute
+import com.univpm.gameon.core.LoginScreenRoute
 
 @Composable
 fun GiocatoreHomeScreen(navController: NavController) {
@@ -43,7 +44,8 @@ fun GiocatoreHomeScreen(navController: NavController) {
     }
 
     GiocatoreHomeContent(
-        onLogout = { authViewModel.logout() }, // Rimosso navController
+        onLogout = { authViewModel.logout(); navController.navigate(
+            LoginScreenRoute) },
         onPrenotazioni = { navController.navigate(GiocatorePrenotazioniRoute) },
         onEditProfile = { navController.navigate(EditProfileScreenRoute) },
         onGestioneCarte = { navController.navigate(CarteListScreenRoute) },
@@ -51,6 +53,7 @@ fun GiocatoreHomeScreen(navController: NavController) {
         onDeleteAccount = { authViewModel.deleteAccount() }
     )
 }
+
 
 @Composable
 fun GiocatoreHomeContent(
