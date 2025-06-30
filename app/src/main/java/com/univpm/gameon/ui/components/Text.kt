@@ -9,7 +9,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
 import com.univpm.gameon.core.futuraBookFontFamily
-import java.time.format.TextStyle
 
 @Composable
 fun CustomText(

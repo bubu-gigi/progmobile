@@ -18,23 +18,26 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.univpm.gameon.R
 import com.univpm.gameon.core.ChatScreenRoute
-import com.univpm.gameon.core.lemonMilkFontFamily
+import com.univpm.gameon.ui.components.CustomText
+import com.univpm.gameon.ui.components.SearchBar
 import com.univpm.gameon.viewmodels.ChatViewModel
 
 @Composable
@@ -44,14 +47,17 @@ fun ChatListAdminScreen(
     val viewModel: ChatViewModel = hiltViewModel()
     val conversazioni by viewModel.conversazioni.collectAsState()
 
+    var searchQuery by remember { mutableStateOf("") }
+
     LaunchedEffect(Unit) {
         viewModel.caricaTutteLeConversazioni()
     }
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-    ) {
+    val filteredConversazioni = conversazioni.filter {
+        it.strutturaNome.contains(searchQuery, ignoreCase = true)
+    }
+
+    Box(modifier = Modifier.fillMaxSize()) {
         Image(
             painter = painterResource(id = R.drawable.sfondocarta),
             contentDescription = "Sfondo",
@@ -59,26 +65,21 @@ fun ChatListAdminScreen(
             contentScale = ContentScale.Crop
         )
 
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(18.dp)
-        ) {
+        Column(modifier = Modifier
+            .fillMaxSize()
+            .padding(18.dp)) {
+
             Spacer(modifier = Modifier.height(210.dp))
 
-            Text(
+            CustomText(
                 text = "Le tue conversazioni:",
-                style = MaterialTheme.typography.headlineSmall.copy(
-                    color = Color.White,
-                    fontSize = 23.sp,
-                    fontFamily = lemonMilkFontFamily
-                )
+                fontSize = 23.sp
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            SearchBar(query = searchQuery, onQueryChange = { searchQuery = it })
 
             LazyColumn(modifier = Modifier.weight(1f)) {
-                items(conversazioni) { conv ->
+                items(filteredConversazioni) { conv ->
                     Card(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -110,19 +111,21 @@ fun ChatListAdminScreen(
                                 horizontalArrangement = Arrangement.SpaceBetween
                             ) {
                                 Column(modifier = Modifier.weight(1f)) {
-                                    Text(
+                                    CustomText(
                                         text = "Struttura: ${conv.strutturaNome}",
-                                        style = MaterialTheme.typography.titleMedium,
-                                        color = Color.Black
+                                        color = Color.Black,
+                                        fontSize = 16.sp
                                     )
-                                    Text(
+                                    CustomText(
                                         text = "Giocatore: ${conv.giocatoreNome}",
-                                        style = MaterialTheme.typography.titleMedium,
-                                        color = Color.Black
+                                        color = Color.Black,
+                                        fontSize = 16.sp
                                     )
-                                    Text(
+                                    CustomText(
                                         text = "Ultimo messaggio: ${conv.ultimoMessaggio}",
-                                        color = Color.Black
+                                        color = Color.Black,
+                                        fontSize = 14.sp,
+                                        fontWeight = FontWeight.Normal
                                     )
                                 }
                             }
