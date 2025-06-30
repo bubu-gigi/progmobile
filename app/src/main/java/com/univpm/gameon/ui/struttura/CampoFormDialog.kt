@@ -101,7 +101,7 @@ fun CampoFormDialog(
                     Dropdown(
                         current = sport,
                         options = Sport.entries,
-                        getLabel = { it.name },
+                        getLabel = { it.label },
                         label = "Sport",
                         onSelected = { sport = it }
                     )
@@ -109,7 +109,7 @@ fun CampoFormDialog(
                     Dropdown(
                         current = terreno,
                         options = TipologiaTerreno.entries,
-                        getLabel = { it.name },
+                        getLabel = { it.label },
                         label = "Terreno",
                         onSelected = { terreno = it }
                     )

@@ -170,7 +170,6 @@ fun generaSlotDisponibili(
         return emptyList()
     }
 
-    // Converti prenotazioni esistenti in intervalli occupati
     val occupati = prenotazioni
         .filter { it.data == giorno.toString() }
         .mapNotNull { pren ->
