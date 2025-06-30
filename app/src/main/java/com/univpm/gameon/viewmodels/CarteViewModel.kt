@@ -22,6 +22,9 @@ class CarteViewModel @Inject constructor(
     private val _errore = MutableStateFlow<String?>(null)
     val errore: StateFlow<String?> = _errore.asStateFlow()
 
+    private val _cartaSelezionataId = MutableStateFlow<String?>(null)
+    val cartaSelezionataId: StateFlow<String?> = _cartaSelezionataId
+
     fun caricaCartePerUtente(userId: String) {
         viewModelScope.launch {
             try {
@@ -58,6 +61,25 @@ class CarteViewModel @Inject constructor(
                 }
             } catch (e: Exception) {
                 _errore.value = "Errore nell’eliminazione: ${e.message}"
+            }
+        }
+    }
+
+    fun selezionaCarta(id: String) {
+        viewModelScope.launch {
+            try {
+                val carteAttuali = _carte.value
+                val cartaDaSelezionare = carteAttuali.find { it.id == id } ?: return@launch
+                carteAttuali.forEach { carta ->
+                    if (carta.default && carta.id != id) {
+                        repository.updateCarta(carta.id, carta.copy(default = false))
+                    }
+                }
+                repository.updateCarta(cartaDaSelezionare.id, cartaDaSelezionare.copy(default = true))
+                _cartaSelezionataId.value = id
+                caricaCartePerUtente(cartaDaSelezionare.userId)
+            } catch (e: Exception) {
+                _errore.value = "Errore durante la selezione della carta: ${e.message}"
             }
         }
     }

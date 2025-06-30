@@ -40,6 +40,7 @@ import com.univpm.gameon.core.lemonMilkFontFamily
 import com.univpm.gameon.ui.components.MappaStruttureConFiltri
 import com.univpm.gameon.viewmodels.ChatViewModel
 import com.univpm.gameon.viewmodels.StruttureViewModel
+import androidx.compose.runtime.getValue
 
 @Composable
 fun ChatListScreen(
@@ -50,6 +51,7 @@ fun ChatListScreen(
 
     val conversazioni by viewModel.conversazioni.collectAsState()
     val strutture by struttureViewModel.strutture.collectAsState()
+
 
     LaunchedEffect(Unit) {
         val userId = UserSessionManager.userId

@@ -1,7 +1,6 @@
 package com.univpm.gameon.ui
 
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -21,12 +20,13 @@ import com.univpm.gameon.viewmodels.CarteViewModel
 import com.univpm.gameon.ui.components.ButtonComponent
 import com.univpm.gameon.ui.components.CustomText
 
-
 @Composable
 fun CarteListScreen(navController: NavController) {
-
     val carteViewModel: CarteViewModel = hiltViewModel()
     val userId = UserSessionManager.userId
+
+    val carte by carteViewModel.carte.collectAsState()
+    val errore by carteViewModel.errore.collectAsState()
 
     LaunchedEffect(Unit) {
         userId?.let {
@@ -34,27 +34,38 @@ fun CarteListScreen(navController: NavController) {
         }
     }
 
-    val carte by carteViewModel.carte.collectAsState()
-    val errore by carteViewModel.errore.collectAsState()
-
     Column(modifier = Modifier
         .fillMaxSize()
         .padding(16.dp)) {
+
         CustomText(
             text = "Le tue carte:",
             fontSize = 23.sp
         )
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Text(
+            text = "Tocca una carta per selezionarla come metodo di pagamento predefinito",
+            color = Color.DarkGray,
+            fontSize = 14.sp
+        )
         Spacer(modifier = Modifier.height(16.dp))
+
         errore?.let {
             Text(
                 text = it,
                 color = MaterialTheme.colorScheme.error
             )
         }
+
         LazyColumn {
             items(carte) { carta ->
                 CartaItem(
                     carta = carta,
+                    isSelected = carta.default,
+                    onClick = {
+                        carteViewModel.selezionaCarta(carta.id)
+                    },
                     onDelete = {
                         userId?.let { uid ->
                             carteViewModel.eliminaCarta(carta.id, uid)
@@ -66,7 +77,6 @@ fun CarteListScreen(navController: NavController) {
 
         Spacer(modifier = Modifier.height(24.dp))
 
-
         ButtonComponent(
             text = "Inserisci nuova carta",
             onClick = {
@@ -76,16 +86,23 @@ fun CarteListScreen(navController: NavController) {
         )
     }
 }
-
 @Composable
-fun CartaItem(carta: Carta, onDelete: () -> Unit) {
+fun CartaItem(
+    carta: Carta,
+    isSelected: Boolean,
+    onClick: () -> Unit,
+    onDelete: () -> Unit
+) {
+    val bgColor = if (isSelected) Color(0xFFB2FFB2) else Color(0xFFD3D3D3)
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 4.dp)
-            .border(BorderStroke(3.dp, Color(0xFFE36BE0)), shape = RoundedCornerShape(12.dp)),
+            .clickable { onClick() },
         elevation = CardDefaults.cardElevation(4.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(0xFFD3D3D3))
+        shape = RoundedCornerShape(12.dp),
+        colors = CardDefaults.cardColors(containerColor = bgColor)
     ) {
         Row(
             modifier = Modifier

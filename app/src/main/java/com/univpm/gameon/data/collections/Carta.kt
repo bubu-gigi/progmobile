@@ -10,5 +10,6 @@ data class Carta(
     val expirationMonth: Int = 1,
     val expirationYear: Int = 2025,
     val cvv: String = "",
-    val provider: CardProvider = CardProvider.VISA
+    val provider: CardProvider = CardProvider.VISA,
+    val default: Boolean = false
 )
