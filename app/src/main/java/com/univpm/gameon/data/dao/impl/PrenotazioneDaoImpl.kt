@@ -31,10 +31,9 @@ class PrenotazioneDaoImpl : PrenotazioneDao {
         }
     }
 
-    override suspend fun getPrenotazioniByStrutturaId(strutturaId: String): List<Prenotazione> {
+    override suspend fun getPrenotazioni(): List<Prenotazione> {
         return try {
             val snapshot = prenotazioniCollection
-                .whereEqualTo("strutturaId", strutturaId)
                 .get()
                 .await()
             snapshot.documents.mapNotNull { it.toObject(Prenotazione::class.java) }

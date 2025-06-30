@@ -1,5 +1,6 @@
 package com.univpm.gameon.viewmodels
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.univpm.gameon.data.collections.Recensione
@@ -13,6 +14,8 @@ class RecensioneViewModel @Inject constructor(
     private val repository: RecensioneRepository
 ) : ViewModel() {
 
+    val recensioneUtente = mutableStateOf<Recensione?>(null)
+
     fun inviaRecensione(recensione: Recensione, onComplete: () -> Unit) {
         viewModelScope.launch {
             val success = repository.saveRecensione(recensione)
@@ -22,15 +25,10 @@ class RecensioneViewModel @Inject constructor(
         }
     }
 
-    fun haGiaRecensito(
-        strutturaId: String,
-        utenteId: String,
-        onResult: (Boolean) -> Unit
-    ) {
+    fun getRecensioneUtente(strutturaId: String, utenteId: String) {
         viewModelScope.launch {
             val recensioni = repository.getRecensioniByStruttura(strutturaId)
-            val esiste = recensioni.any { it.utenteId == utenteId }
-            onResult(esiste)
+            recensioneUtente.value = recensioni.find { it.utenteId == utenteId }
         }
     }
 }

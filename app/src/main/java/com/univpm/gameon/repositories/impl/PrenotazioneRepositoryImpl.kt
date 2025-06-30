@@ -14,8 +14,8 @@ class PrenotazioneRepositoryImpl(private val dao: PrenotazioneDao) : Prenotazion
         return dao.getPrenotazioniByUserId(userId)
     }
 
-    override suspend fun getPrenotazioniByStruttura(strutturaId: String): List<Prenotazione> {
-        return dao.getPrenotazioniByStrutturaId(strutturaId)
+    override suspend fun getPrenotazioni(): List<Prenotazione> {
+        return dao.getPrenotazioni()
     }
 
     override suspend fun savePrenotazione(prenotazione: Prenotazione): Boolean {

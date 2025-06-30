@@ -196,9 +196,7 @@ fun GiocatorePrenotazioniScreen(navController: NavController) {
                                 text = { Text("Sei sicuro di voler annullare questa prenotazione?") },
                                 confirmButton = {
                                     TextButton(onClick = {
-                                        prenotazioniViewModel.annullaPrenotazione(prenotazione.id) {
-                                            prenotazioniViewModel.caricaPrenotazioniUtente(UserSessionManager.userId.orEmpty())
-                                        }
+                                        prenotazioniViewModel.annullaPrenotazione(prenotazione.id)
                                         showDialog = false
                                     }) {
                                         Text("Conferma")

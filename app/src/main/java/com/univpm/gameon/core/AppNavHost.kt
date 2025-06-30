@@ -23,6 +23,7 @@ import com.univpm.gameon.ui.CarteListScreen
 import com.univpm.gameon.ui.ChatListAdminScreen
 import com.univpm.gameon.ui.ChatListScreen
 import com.univpm.gameon.ui.ChatScreen
+import com.univpm.gameon.ui.GestionePrenotazioniAdminScreen
 import com.univpm.gameon.ui.auth.EditProfileScreen
 import com.univpm.gameon.ui.GiocatoreHomeScreen
 import com.univpm.gameon.ui.NuovaCartaScreen
@@ -30,6 +31,7 @@ import com.univpm.gameon.ui.auth.LoginScreen
 import com.univpm.gameon.ui.auth.RegisterScreen
 import com.univpm.gameon.ui.struttura.StrutturaDettaglioScreen
 import com.univpm.gameon.ui.struttura.StrutturaFormScreen
+import com.univpm.gameon.viewmodels.PrenotazioneViewModel
 import com.univpm.gameon.viewmodels.StruttureViewModel
 import kotlinx.serialization.Serializable
 
@@ -75,6 +77,9 @@ object NuovaStrutturaRoute
 
 @Serializable
 object GiocatorePrenotazioniRoute
+
+@Serializable
+object GestionePrenotazioniAdminRoute
 
 @Serializable
 data class EditStrutturaRoute(
@@ -126,7 +131,7 @@ fun AppNavHost() {
 
         composable<ChatScreenRoute> { entry ->
             val args = entry.toRoute<ChatScreenRoute>()
-            ChatScreen(navController, args.strutturaId, args.strutturaNome, args.giocatoreId ?: "")
+            ChatScreen(args.strutturaId, args.strutturaNome, args.giocatoreId ?: "")
         }
 
         composable<ChatListAdminScreenRoute> {
@@ -199,6 +204,39 @@ fun AppNavHost() {
                     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                         Text("Caricamento struttura...")
                     }
+                }
+            }
+        }
+        composable<GestionePrenotazioniAdminRoute> {
+            val struttureViewModel: StruttureViewModel = hiltViewModel()
+            val prenotazioniViewModel: PrenotazioneViewModel = hiltViewModel()
+            val strutture by struttureViewModel.strutture.collectAsState()
+            val prenotazioni by prenotazioniViewModel.prenotazioni.collectAsState()
+            val errore by struttureViewModel.errore.collectAsState()
+
+            LaunchedEffect(Unit) {
+                struttureViewModel.caricaStrutture()
+                prenotazioniViewModel.caricaTuttePrenotazioni()
+            }
+
+            when {
+                errore != null -> {
+                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        Text("Errore: $errore")
+                    }
+                }
+
+                strutture.isEmpty() -> {
+                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        Text("Caricamento strutture...")
+                    }
+                }
+
+                else -> {
+                    GestionePrenotazioniAdminScreen(
+                        strutture = strutture,
+                        prenotazioni = prenotazioni
+                    )
                 }
             }
         }

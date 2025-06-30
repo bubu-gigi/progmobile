@@ -2,6 +2,7 @@ package com.univpm.gameon.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.univpm.gameon.core.UserSessionManager
 import com.univpm.gameon.data.collections.Prenotazione
 import com.univpm.gameon.repositories.PrenotazioneRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,8 +19,8 @@ class PrenotazioneViewModel @Inject constructor(
     private val _prenotazioniUtente = MutableStateFlow<List<Prenotazione>>(emptyList())
     val prenotazioniUtente: StateFlow<List<Prenotazione>> = _prenotazioniUtente
 
-    private val _prenotazioniStruttura = MutableStateFlow<List<Prenotazione>>(emptyList())
-    val prenotazioniStruttura: StateFlow<List<Prenotazione>> = _prenotazioniStruttura
+    private val _prenotazioni= MutableStateFlow<List<Prenotazione>>(emptyList())
+    val prenotazioni: StateFlow<List<Prenotazione>> = _prenotazioni
 
     private val _error = MutableStateFlow<String?>(null)
     val error: StateFlow<String?> = _error
@@ -35,11 +36,11 @@ class PrenotazioneViewModel @Inject constructor(
         }
     }
 
-    fun caricaPrenotazioniStruttura(strutturaId: String) {
+    fun caricaTuttePrenotazioni() {
         _error.value = null
         viewModelScope.launch {
             try {
-                _prenotazioniStruttura.value = repository.getPrenotazioniByStruttura(strutturaId)
+                _prenotazioni.value = repository.getPrenotazioni()
             } catch (e: Exception) {
                 _error.value = "Errore durante il caricamento: ${e.message}"
             }
@@ -78,15 +79,18 @@ class PrenotazioneViewModel @Inject constructor(
         }
     }
 
-    fun annullaPrenotazione(id: String, onSuccess: () -> Unit) {
+    fun annullaPrenotazione(id: String) {
         _error.value = null
         viewModelScope.launch {
             val success = repository.deletePrenotazione(id)
-            if (success) {
-                _prenotazioniUtente.value = _prenotazioniUtente.value.filterNot { it.id == id }
-                onSuccess()
-            } else {
+            if (!success) {
                 _error.value = "Impossibile annullare la prenotazione"
+            } else {
+                if(UserSessionManager.userRole == "Admin") {
+                    caricaTuttePrenotazioni()
+                } else {
+                    UserSessionManager.userId?.let { caricaPrenotazioniUtente(it) }
+                }
             }
         }
     }

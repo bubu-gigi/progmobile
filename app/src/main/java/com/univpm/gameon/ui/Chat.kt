@@ -33,52 +33,97 @@ import com.univpm.gameon.core.UserSessionManager
 import com.univpm.gameon.data.collections.Messaggio
 import com.univpm.gameon.viewmodels.ChatViewModel
 import com.univpm.gameon.viewmodels.RecensioneViewModel
+import android.widget.Toast
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.outlined.Star
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Icon
+import com.univpm.gameon.data.collections.Recensione
 
 @Composable
 fun ChatScreen(
-    navController: androidx.navigation.NavController,
     strutturaId: String,
     strutturaNome: String,
     giocatoreId: String,
 ) {
     val chatViewModel: ChatViewModel = hiltViewModel()
     val recensioneViewModel: RecensioneViewModel = hiltViewModel()
+    val isAdmin: Boolean = UserSessionManager.userRole == "Admin"
+    val context = LocalContext.current
+    var showRecensioneDialog by remember { mutableStateOf(false) }
+    var recensioneInviata by remember { mutableStateOf(false) }
+    val recensioneUtente by recensioneViewModel.recensioneUtente
+    val haGiaRecensito = recensioneUtente != null
 
-    val giocatoreId = if (UserSessionManager.userRole == "Giocatore") {
+    val giocatoreId = if (!isAdmin) {
         UserSessionManager.userId ?: ""
     } else {
         giocatoreId
     }
-    LaunchedEffect(Unit) {
-        chatViewModel.caricaConversazione(giocatoreId, strutturaId)
-    }
-    val mittente = if (UserSessionManager.userRole == "Admin") {
+    val mittente = if (isAdmin) {
         giocatoreId
     } else {
         strutturaId
     }
 
     val messaggi by chatViewModel.messaggi.collectAsState()
-    val conversazione by chatViewModel.conversazione.collectAsState()
     var testoMessaggio by remember { mutableStateOf("") }
 
     val listState = rememberLazyListState()
 
-    // Scroll automatico all’ultimo messaggio (che è all’inizio della lista)
+    LaunchedEffect(Unit) {
+        chatViewModel.caricaConversazione(giocatoreId, strutturaId)
+        recensioneViewModel.getRecensioneUtente(strutturaId, giocatoreId)
+    }
+
     LaunchedEffect(messaggi.size) {
         if (messaggi.isNotEmpty()) {
             listState.animateScrollToItem(0)
         }
     }
 
+    LaunchedEffect(recensioneInviata) {
+        if (recensioneInviata) {
+            Toast.makeText(context, "Recensione inviata con successo", Toast.LENGTH_SHORT).show()
+            recensioneInviata = false
+        }
+    }
+
     Column(modifier = Modifier.fillMaxSize()) {
         Spacer(modifier = Modifier.height(40.dp))
 
-        Text(
-            text = "Chat con $strutturaNome",
-            style = MaterialTheme.typography.titleMedium,
-            modifier = Modifier.padding(16.dp)
-        )
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(
+                text = "Chat con $strutturaNome",
+                style = MaterialTheme.typography.titleMedium
+            )
+
+            if (!isAdmin) {
+                if(!haGiaRecensito) {
+                    Button(onClick = { showRecensioneDialog = true }) {
+                        Text("Recensisci")
+                    }
+                } else {
+                    Row {
+                        repeat(5) { index ->
+                            val filled = (recensioneUtente?.rating ?: 0) > index
+                            Icon(
+                                imageVector = if (filled) Icons.Filled.Star else Icons.Outlined.Star,
+                                contentDescription = null,
+                                tint = if (filled) Color(0xFFFFC107) else Color.Gray
+                            )
+                        }
+                    }
+                }
+            }
+        }
 
         Divider()
 
@@ -97,13 +142,6 @@ fun ChatScreen(
         }
 
         Divider()
-
-
-        RecensioneForm(
-            strutturaId = strutturaId,
-            utenteId = giocatoreId,
-            viewModel = recensioneViewModel
-        )
 
         Row(
             modifier = Modifier
@@ -136,6 +174,25 @@ fun ChatScreen(
             }
         }
     }
+    if (showRecensioneDialog) {
+        AlertDialog(
+            onDismissRequest = { showRecensioneDialog = false },
+            title = { Text("Recensisci") },
+            text = {
+                RecensioneForm(
+                    strutturaId = strutturaId,
+                    utenteId = giocatoreId,
+                    viewModel = recensioneViewModel,
+                    onRecensioneInviata = {
+                        recensioneInviata = true
+                        showRecensioneDialog = false
+                    }
+                )
+            },
+            confirmButton = {},
+            dismissButton = {}
+        )
+    }
 }
 
 @Composable
@@ -153,6 +210,7 @@ fun MessaggioItem(messaggio: Messaggio, currentUser: String) {
         isStrutturaMessage -> Color(0xFFD0E8FF) // Azzurro chiaro per messaggi della struttura
         else -> MaterialTheme.colorScheme.secondaryContainer
     }
+
 
     Row(
         modifier = Modifier.fillMaxWidth(),

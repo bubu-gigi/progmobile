@@ -26,6 +26,7 @@ import androidx.navigation.NavController
 import com.univpm.gameon.R
 import com.univpm.gameon.core.ChatListAdminScreenRoute
 import com.univpm.gameon.core.EditProfileScreenRoute
+import com.univpm.gameon.core.GestionePrenotazioniAdminRoute
 import com.univpm.gameon.core.LoginScreenRoute
 import com.univpm.gameon.core.StruttureListRoute
 import com.univpm.gameon.ui.components.CustomText
@@ -65,7 +66,7 @@ fun AdminHomeScreen(navController: NavController) {
             Spacer(modifier = Modifier.height(4.dp))
             RoundedButtonComponent(
                 text = "Gestione Prenotazioni",
-                onClick = { navController.navigate(ChatListAdminScreenRoute) }
+                onClick = { navController.navigate(GestionePrenotazioniAdminRoute) }
             )
             Spacer(modifier = Modifier.height(4.dp))
             RoundedButtonComponent(
