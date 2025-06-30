@@ -40,7 +40,6 @@ import androidx.compose.material.icons.outlined.Star
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
-import com.univpm.gameon.ui.RecensioneForm
 
 @Composable
 fun ChatScreen(

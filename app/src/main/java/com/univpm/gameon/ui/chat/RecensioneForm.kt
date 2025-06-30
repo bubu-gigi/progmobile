@@ -1,4 +1,4 @@
-package com.univpm.gameon.ui
+package com.univpm.gameon.ui.chat
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.Column
