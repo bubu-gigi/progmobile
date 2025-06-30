@@ -1,29 +1,19 @@
 package com.univpm.gameon.ui.struttura
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExposedDropdownMenuBox
-import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -36,10 +26,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.univpm.gameon.R
 import com.univpm.gameon.core.futuraBookFontFamily
@@ -48,14 +36,15 @@ import com.univpm.gameon.core.lemonMilkFontFamily
 import com.univpm.gameon.data.collections.Campo
 import com.univpm.gameon.data.collections.enums.Sport
 import com.univpm.gameon.data.collections.enums.TipologiaTerreno
+import com.univpm.gameon.ui.components.ButtonComponent
+import com.univpm.gameon.ui.components.Dropdown
+import com.univpm.gameon.ui.components.OutlinedInputField
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CampoFormDialog(
     campoDaModificare: Campo? = null,
     onCampoAdded: (Campo) -> Unit
 ) {
-
     var nome by remember { mutableStateOf(campoDaModificare?.nomeCampo ?: "") }
     var sport by remember { mutableStateOf(campoDaModificare?.sport ?: Sport.CALCIO5) }
     var terreno by remember { mutableStateOf(campoDaModificare?.tipologiaTerreno ?: TipologiaTerreno.ERBA_SINTETICA) }
@@ -63,16 +52,9 @@ fun CampoFormDialog(
     var numGiocatori by remember { mutableStateOf(campoDaModificare?.numeroGiocatori?.toString() ?: "5") }
     var spogliatoi by remember { mutableStateOf(campoDaModificare?.spogliatoi ?: false) }
     val disponibilita = remember {
-        mutableStateOf(
-            campoDaModificare?.disponibilitaSettimanale?.toMutableList() ?: mutableListOf()
-        )
+        mutableStateOf(campoDaModificare?.disponibilitaSettimanale?.toMutableList() ?: mutableListOf())
     }
 
-
-    val borderColor = Color(0xFFE36BE0)
-    val containerColor = Color(0xFF2B2B2B)
-    var menuSportEspanso by remember { mutableStateOf(false) }
-    var menuTerrenoEspanso by remember { mutableStateOf(false) }
     var showOrarioDialog by remember { mutableStateOf(false) }
 
     Dialog(onDismissRequest = { }) {
@@ -112,144 +94,27 @@ fun CampoFormDialog(
                         )
                     }
 
-                    OutlinedTextField(
-                        value = nome,
-                        onValueChange = { nome = it },
-                        label = { Text("Nome campo", fontFamily = futuraBookFontFamily, color = Color.White) },
-                        modifier = Modifier.fillMaxWidth(),
-                        textStyle = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 16.sp, color = Color.White),
-                        colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = borderColor,
-                            unfocusedBorderColor = borderColor,
-                            cursorColor = Color.White,
-                            focusedTextColor = Color.White,
-                            unfocusedTextColor = Color.White,
-                            focusedContainerColor = containerColor,
-                            unfocusedContainerColor = containerColor,
-                        )
+                    OutlinedInputField(value = nome, onValueChange = { nome = it }, label = "Nome campo")
+                    OutlinedInputField(value = prezzo, onValueChange = { prezzo = it }, label = "Prezzo/h")
+                    OutlinedInputField(value = numGiocatori, onValueChange = { numGiocatori = it }, label = "Num. giocatori")
+
+                    Dropdown(
+                        current = sport,
+                        options = Sport.entries,
+                        getLabel = { it.name },
+                        label = "Sport",
+                        onSelected = { sport = it }
                     )
 
-                    Text("Sport", color = Color.White, fontFamily = futuraBookFontFamily, fontWeight = FontWeight.Bold)
-                    ExposedDropdownMenuBox(
-                        expanded = menuSportEspanso,
-                        onExpandedChange = { menuSportEspanso = !menuSportEspanso }
-                    ) {
-                        OutlinedTextField(
-                            readOnly = true,
-                            value = sport.name,
-                            onValueChange = {},
-                            label = { Text("Sport", fontFamily = futuraBookFontFamily, color = Color.White) },
-                            trailingIcon = {
-                                ExposedDropdownMenuDefaults.TrailingIcon(expanded = menuSportEspanso)
-                            },
-                            modifier = Modifier.menuAnchor().fillMaxWidth(),
-                            textStyle = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 16.sp, color = Color.White),
-                            colors = OutlinedTextFieldDefaults.colors(
-                                focusedContainerColor = containerColor,
-                                unfocusedContainerColor = containerColor,
-                                focusedBorderColor = borderColor,
-                                unfocusedBorderColor = borderColor,
-                                focusedTextColor = Color.White,
-                                unfocusedTextColor = Color.White,
-                                cursorColor = Color.White
-                            )
-                        )
-
-                        ExposedDropdownMenu(
-                            expanded = menuSportEspanso,
-                            onDismissRequest = { menuSportEspanso = false }
-                        ) {
-                            Sport.entries.forEach {
-                                DropdownMenuItem(
-                                    text = { Text(it.name, color = Color.White) },
-                                    onClick = {
-                                        sport = it
-                                        menuSportEspanso = false
-                                    }
-                                )
-                            }
-                        }
-                    }
-
-                    Text("Terreno", color = Color.White, fontFamily = futuraBookFontFamily, fontWeight = FontWeight.Bold)
-                    ExposedDropdownMenuBox(
-                        expanded = menuTerrenoEspanso,
-                        onExpandedChange = { menuTerrenoEspanso = !menuTerrenoEspanso }
-                    ) {
-                        OutlinedTextField(
-                            readOnly = true,
-                            value = terreno.name,
-                            onValueChange = {},
-                            label = { Text("Terreno", fontFamily = futuraBookFontFamily, color = Color.White) },
-                            trailingIcon = {
-                                ExposedDropdownMenuDefaults.TrailingIcon(expanded = menuTerrenoEspanso)
-                            },
-                            modifier = Modifier.menuAnchor().fillMaxWidth(),
-                            textStyle = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 16.sp, color = Color.White),
-                            colors = OutlinedTextFieldDefaults.colors(
-                                focusedContainerColor = containerColor,
-                                unfocusedContainerColor = containerColor,
-                                focusedBorderColor = borderColor,
-                                unfocusedBorderColor = borderColor,
-                                focusedTextColor = Color.White,
-                                unfocusedTextColor = Color.White,
-                                cursorColor = Color.White
-                            )
-                        )
-
-                        ExposedDropdownMenu(
-                            expanded = menuTerrenoEspanso,
-                            onDismissRequest = { menuTerrenoEspanso = false }
-                        ) {
-                            TipologiaTerreno.entries.forEach {
-                                DropdownMenuItem(
-                                    text = { Text(it.name, color = Color.White) },
-                                    onClick = {
-                                        terreno = it
-                                        menuTerrenoEspanso = false
-                                    }
-                                )
-                            }
-                        }
-                    }
-
-                    OutlinedTextField(
-                        value = prezzo,
-                        onValueChange = { prezzo = it },
-                        label = { Text("Prezzo/h", fontFamily = futuraBookFontFamily, color = Color.White) },
-                        modifier = Modifier.fillMaxWidth(),
-                        textStyle = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 16.sp, color = Color.White),
-                        colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = borderColor,
-                            unfocusedBorderColor = borderColor,
-                            cursorColor = Color.White,
-                            focusedTextColor = Color.White,
-                            unfocusedTextColor = Color.White,
-                            focusedContainerColor = containerColor,
-                            unfocusedContainerColor = containerColor,
-                        )
-                    )
-                    OutlinedTextField(
-                        value = numGiocatori,
-                        onValueChange = { numGiocatori = it },
-                        label = { Text("Num. giocatori", fontFamily = futuraBookFontFamily, color = Color.White) },
-                        modifier = Modifier.fillMaxWidth(),
-                        textStyle = TextStyle(fontFamily = futuraBookFontFamily, fontSize = 16.sp, color = Color.White),
-                        colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = borderColor,
-                            unfocusedBorderColor = borderColor,
-                            cursorColor = Color.White,
-                            focusedTextColor = Color.White,
-                            unfocusedTextColor = Color.White,
-                            focusedContainerColor = containerColor,
-                            unfocusedContainerColor = containerColor,
-                        )
+                    Dropdown(
+                        current = terreno,
+                        options = TipologiaTerreno.entries,
+                        getLabel = { it.name },
+                        label = "Terreno",
+                        onSelected = { terreno = it }
                     )
 
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
                         Checkbox(
                             checked = spogliatoi,
                             onCheckedChange = { spogliatoi = it },
@@ -266,8 +131,6 @@ fun CampoFormDialog(
                             fontWeight = FontWeight.Normal
                         )
                     }
-
-                    Spacer(Modifier.height(8.dp))
 
                     if (disponibilita.value.isNotEmpty()) {
                         Column(
@@ -303,27 +166,14 @@ fun CampoFormDialog(
                         }
                     }
 
-                    Spacer(Modifier.height(8.dp))
-
-                    Button(
+                    ButtonComponent(
+                        text = "+ Aggiungi orario",
                         onClick = { showOrarioDialog = true },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .border(BorderStroke(1.dp, Color.Yellow), RoundedCornerShape(12.dp))
-                            .background(Color(0xFF444444), RoundedCornerShape(12.dp)),
-                        colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent)
-                    ) {
-                        Text(
-                            text = "+ Aggiungi orario",
-                            color = Color.Yellow,
-                            fontFamily = futuraBookFontFamily
-                        )
-                    }
+                        modifier = Modifier.fillMaxWidth()
+                    )
 
-                    Spacer(Modifier.height(8.dp))
-
-
-                    Button(
+                    ButtonComponent(
+                        text = if (campoDaModificare != null) "Modifica campo" else "Aggiungi campo",
                         onClick = {
                             onCampoAdded(
                                 Campo(
@@ -337,25 +187,8 @@ fun CampoFormDialog(
                                 )
                             )
                         },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .border(BorderStroke(2.dp, Color(0xFFCFFF5E)), shape = RoundedCornerShape(12.dp))
-                            .background(
-                                color = Color(0xFF6136FF),
-                                shape = RoundedCornerShape(12.dp)
-                            ),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = Color.Transparent
-                        )
-                    ) {
-                        Text(
-                            text = if (campoDaModificare != null) "Modifica campo" else "Aggiungi campo",
-                            color = Color(0xFFCFFF5E),
-                            fontSize = 18.sp,
-                            fontFamily = futuraBookFontFamily,
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
+                        modifier = Modifier.fillMaxWidth()
+                    )
                 }
             }
         }
