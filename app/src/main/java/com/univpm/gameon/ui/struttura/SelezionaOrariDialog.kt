@@ -23,8 +23,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.univpm.gameon.core.generaSlotOrari
+import com.univpm.gameon.core.lemonMilkFontFamily
 import com.univpm.gameon.data.collections.Campo
-import com.univpm.gameon.ui.lemonMilkFontFamily
 import java.util.Date
 
 @RequiresApi(Build.VERSION_CODES.O)

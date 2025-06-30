@@ -34,6 +34,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.univpm.gameon.R
 import com.univpm.gameon.core.ChatScreenRoute
+import com.univpm.gameon.core.lemonMilkFontFamily
 import com.univpm.gameon.viewmodels.ChatViewModel
 
 @Composable

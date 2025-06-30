@@ -18,6 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.univpm.gameon.R
+import com.univpm.gameon.core.futuraBookFontFamily
 
 @Composable
 fun HomeScreen(

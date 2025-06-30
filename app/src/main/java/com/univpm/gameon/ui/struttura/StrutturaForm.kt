@@ -47,11 +47,11 @@ import androidx.navigation.compose.rememberNavController
 import com.google.android.gms.maps.model.LatLng
 import com.univpm.gameon.R
 import com.univpm.gameon.core.StruttureListRoute
+import com.univpm.gameon.core.futuraBookFontFamily
+import com.univpm.gameon.core.lemonMilkFontFamily
 import com.univpm.gameon.data.collections.Campo
 import com.univpm.gameon.data.collections.Struttura
 import com.univpm.gameon.ui.components.GooglePlacesAutocomplete
-import com.univpm.gameon.ui.futuraBookFontFamily
-import com.univpm.gameon.ui.lemonMilkFontFamily
 import com.univpm.gameon.viewmodels.StruttureViewModel
 
 @Composable

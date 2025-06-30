@@ -19,8 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.google.android.gms.maps.model.LatLng
 import com.univpm.gameon.activities.PlacePickerActivity
-import com.univpm.gameon.ui.futuraBookFontFamily
-
+import com.univpm.gameon.core.futuraBookFontFamily
 
 @Composable
 fun GooglePlacesAutocomplete(onPlaceSelected: (String, LatLng) -> Unit, modifier: Modifier = Modifier) {

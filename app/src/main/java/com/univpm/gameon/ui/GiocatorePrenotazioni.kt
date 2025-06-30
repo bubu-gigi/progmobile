@@ -39,9 +39,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.univpm.gameon.core.StrutturaDettaglioRoute
 import com.univpm.gameon.core.UserSessionManager
+import com.univpm.gameon.core.futuraBookFontFamily
+import com.univpm.gameon.core.lemonMilkFontFamily
 import com.univpm.gameon.ui.components.MappaStruttureConFiltri
-import com.univpm.gameon.ui.futuraBookFontFamily
-import com.univpm.gameon.ui.lemonMilkFontFamily
 import com.univpm.gameon.viewmodels.PrenotazioneViewModel
 import com.univpm.gameon.viewmodels.StruttureViewModel
 import java.time.LocalDate

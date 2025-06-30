@@ -29,13 +29,13 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.univpm.gameon.core.GiocatorePrenotazioniRoute
 import com.univpm.gameon.core.UserSessionManager
+import com.univpm.gameon.core.futuraBookFontFamily
+import com.univpm.gameon.core.lemonMilkFontFamily
 import com.univpm.gameon.core.raggruppaSlotConsecutivi
 import com.univpm.gameon.data.collections.Campo
 import com.univpm.gameon.data.collections.Prenotazione
 import com.univpm.gameon.data.collections.Struttura
 import com.univpm.gameon.data.collections.TemplateGiornaliero
-import com.univpm.gameon.ui.futuraBookFontFamily
-import com.univpm.gameon.ui.lemonMilkFontFamily
 import com.univpm.gameon.viewmodels.PrenotazioneViewModel
 import java.text.SimpleDateFormat
 import java.util.Date

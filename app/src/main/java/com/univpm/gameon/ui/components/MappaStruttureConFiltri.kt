@@ -10,12 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExposedDropdownMenuBox
-import androidx.compose.material3.ExposedDropdownMenuDefaults.TrailingIcon
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -33,7 +27,6 @@ import com.google.maps.android.compose.rememberCameraPositionState
 import com.univpm.gameon.data.collections.Struttura
 import com.univpm.gameon.data.collections.enums.Sport
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MappaStruttureConFiltri(
     strutture: List<Struttura>,
@@ -42,14 +35,10 @@ fun MappaStruttureConFiltri(
     height: Dp = Dp.Unspecified
 ) {
     var sportFiltrato by remember { mutableStateOf<Sport?>(null) }
-    var menuSportEspanso by remember { mutableStateOf(false) }
-
     var cittaFiltrata by remember { mutableStateOf<String?>(null) }
-    var menuCittaEspanso by remember { mutableStateOf(false) }
 
     val cittaPrincipali = strutture
-        .map { it.citta }
-        .map { it.trim() }
+        .map { it.citta.trim() }
         .distinct()
         .sortedBy { it.lowercase() }
 
@@ -79,83 +68,23 @@ fun MappaStruttureConFiltri(
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Box(modifier = Modifier.weight(1f)) {
-                ExposedDropdownMenuBox(
-                    expanded = menuCittaEspanso,
-                    onExpandedChange = { menuCittaEspanso = !menuCittaEspanso }
-                ) {
-                    TextField(
-                        readOnly = true,
-                        value = cittaFiltrata ?: "Tutte le città",
-                        onValueChange = {},
-                        label = { Text("Filtra per città") },
-                        trailingIcon = { TrailingIcon(expanded = menuCittaEspanso) },
-                        modifier = Modifier
-                            .menuAnchor()
-                            .fillMaxWidth()
-                    )
-
-                    ExposedDropdownMenu(
-                        expanded = menuCittaEspanso,
-                        onDismissRequest = { menuCittaEspanso = false }
-                    ) {
-                        DropdownMenuItem(
-                            text = { Text("Tutte le città") },
-                            onClick = {
-                                cittaFiltrata = null
-                                menuCittaEspanso = false
-                            }
-                        )
-                        cittaPrincipali.forEach { citta ->
-                            DropdownMenuItem(
-                                text = { Text(citta) },
-                                onClick = {
-                                    cittaFiltrata = citta
-                                    menuCittaEspanso = false
-                                }
-                            )
-                        }
-                    }
-                }
+                Dropdown(
+                    current = cittaFiltrata,
+                    options = listOf(null) + cittaPrincipali,
+                    getLabel = { it ?: "Tutte le città" },
+                    label = "Filtra per città",
+                    onSelected = { cittaFiltrata = it }
+                )
             }
 
             Box(modifier = Modifier.weight(1f)) {
-                ExposedDropdownMenuBox(
-                    expanded = menuSportEspanso,
-                    onExpandedChange = { menuSportEspanso = !menuSportEspanso }
-                ) {
-                    TextField(
-                        readOnly = true,
-                        value = sportFiltrato?.name ?: "Tutti gli sport",
-                        onValueChange = {},
-                        label = { Text("Filtra per sport") },
-                        trailingIcon = { TrailingIcon(expanded = menuSportEspanso) },
-                        modifier = Modifier
-                            .menuAnchor()
-                            .fillMaxWidth()
-                    )
-
-                    ExposedDropdownMenu(
-                        expanded = menuSportEspanso,
-                        onDismissRequest = { menuSportEspanso = false }
-                    ) {
-                        DropdownMenuItem(
-                            text = { Text("Tutti gli sport") },
-                            onClick = {
-                                sportFiltrato = null
-                                menuSportEspanso = false
-                            }
-                        )
-                        Sport.entries.forEach { sport ->
-                            DropdownMenuItem(
-                                text = { Text(sport.name) },
-                                onClick = {
-                                    sportFiltrato = sport
-                                    menuSportEspanso = false
-                                }
-                            )
-                        }
-                    }
-                }
+                Dropdown(
+                    current = sportFiltrato,
+                    options = listOf(null) + Sport.entries,
+                    getLabel = { it?.name ?: "Tutti gli sport" },
+                    label = "Filtra per sport",
+                    onSelected = { sportFiltrato = it }
+                )
             }
         }
 
