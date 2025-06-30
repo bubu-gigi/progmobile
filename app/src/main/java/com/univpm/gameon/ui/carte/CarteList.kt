@@ -1,4 +1,4 @@
-package com.univpm.gameon.ui
+package com.univpm.gameon.ui.carte
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*

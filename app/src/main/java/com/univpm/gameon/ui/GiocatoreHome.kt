@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,19 +26,20 @@ import com.univpm.gameon.viewmodels.AuthViewModel
 import com.univpm.gameon.R
 import com.univpm.gameon.core.ChatListScreenRoute
 import com.univpm.gameon.core.GiocatorePrenotazioniRoute
-import com.univpm.gameon.core.LoginScreenRoute
+import androidx.compose.runtime.getValue
 import com.univpm.gameon.ui.components.CustomText
 import com.univpm.gameon.ui.components.RoundedButtonComponent
 
 @Composable
 fun GiocatoreHomeScreen(navController: NavController) {
-
     val authViewModel: AuthViewModel = hiltViewModel()
 
-    LaunchedEffect(authViewModel.destination.value) {
-        authViewModel.destination.value?.let {
+    val destination by authViewModel.destination.collectAsState()
+
+    LaunchedEffect(destination) {
+        destination?.let {
             navController.navigate(it)
-            authViewModel.destination.value = null
+            authViewModel.clearDestination()
         }
     }
 
@@ -72,19 +74,16 @@ fun GiocatoreHomeScreen(navController: NavController) {
                 onClick = { navController.navigate(GiocatorePrenotazioniRoute) },
                 modifier = Modifier.padding(vertical = 6.dp)
             )
-            Spacer(modifier = Modifier.height(4.dp))
             RoundedButtonComponent(
                 text = "Modifica Profilo",
                 onClick = { navController.navigate(EditProfileScreenRoute) },
                 modifier = Modifier.padding(vertical = 6.dp)
             )
-            Spacer(modifier = Modifier.height(4.dp))
             RoundedButtonComponent(
                 text = "Gestione Carte",
-                onClick = {  navController.navigate(CarteListScreenRoute) },
+                onClick = { navController.navigate(CarteListScreenRoute) },
                 modifier = Modifier.padding(vertical = 6.dp)
             )
-            Spacer(modifier = Modifier.height(4.dp))
             RoundedButtonComponent(
                 text = "Contatta Strutture",
                 onClick = { navController.navigate(ChatListScreenRoute) },
@@ -103,14 +102,16 @@ fun GiocatoreHomeScreen(navController: NavController) {
                         .padding(8.dp)
                         .border(BorderStroke(2.dp, Color(0xFFCFFF5E)), RoundedCornerShape(12.dp))
                         .background(Color(0xFF6136FF), RoundedCornerShape(12.dp))
-                        .clickable(onClick = { authViewModel.deleteAccount() })
+                        .clickable {
+                            authViewModel.deleteAccount()
+                        }
                         .padding(vertical = 15.dp)
                 ) {
                     CustomText(
                         text = "Elimina Account",
                         fontSize = 18.sp,
                         color = Color(0xFFCFFF5E),
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
                     )
                 }
 
@@ -120,18 +121,16 @@ fun GiocatoreHomeScreen(navController: NavController) {
                         .padding(8.dp)
                         .border(BorderStroke(2.dp, Color(0xFFCFFF5E)), RoundedCornerShape(12.dp))
                         .background(Color(0xFF6136FF), RoundedCornerShape(12.dp))
-                        .clickable(onClick = {
-                            authViewModel.logout(); navController.navigate(
-                            LoginScreenRoute
-                        )
-                        })
+                        .clickable {
+                            authViewModel.logout()
+                        }
                         .padding(vertical = 15.dp)
                 ) {
                     CustomText(
                         text = "Logout",
                         fontSize = 18.sp,
                         color = Color(0xFFCFFF5E),
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
                     )
                 }
             }

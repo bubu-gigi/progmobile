@@ -1,4 +1,4 @@
-package com.univpm.gameon.ui
+package com.univpm.gameon.ui.chat
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image

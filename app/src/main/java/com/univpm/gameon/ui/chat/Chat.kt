@@ -1,4 +1,4 @@
-package com.univpm.gameon.ui
+package com.univpm.gameon.ui.chat
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -40,7 +40,7 @@ import androidx.compose.material.icons.outlined.Star
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
-import com.univpm.gameon.data.collections.Recensione
+import com.univpm.gameon.ui.RecensioneForm
 
 @Composable
 fun ChatScreen(

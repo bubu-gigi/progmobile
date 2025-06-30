@@ -1,4 +1,4 @@
-package com.univpm.gameon.ui
+package com.univpm.gameon.ui.chat
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -40,7 +40,6 @@ import com.univpm.gameon.core.lemonMilkFontFamily
 import com.univpm.gameon.ui.components.MappaStruttureConFiltri
 import com.univpm.gameon.viewmodels.ChatViewModel
 import com.univpm.gameon.viewmodels.StruttureViewModel
-import androidx.compose.runtime.getValue
 
 @Composable
 fun ChatListScreen(

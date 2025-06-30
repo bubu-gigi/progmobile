@@ -1,7 +1,5 @@
 package com.univpm.gameon.viewmodels
 
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
@@ -12,6 +10,9 @@ import com.univpm.gameon.core.UserSessionManager
 import com.univpm.gameon.data.collections.User
 import com.univpm.gameon.repositories.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
@@ -23,15 +24,20 @@ class AuthViewModel @Inject constructor(
 
     private val auth = FirebaseAuth.getInstance()
 
-    var authState: MutableState<String?> = mutableStateOf(null)
-    val destination: MutableState<Any?> = mutableStateOf(null)
+    private val _authState = MutableStateFlow<String?>(null)
+    val authState: StateFlow<String?> = _authState.asStateFlow()
 
-    val currentUser: MutableState<User?> = mutableStateOf(null)
+    private val _currentUser = MutableStateFlow<User?>(null)
+    val currentUser: StateFlow<User?> = _currentUser.asStateFlow()
+
+    private val _destination = MutableStateFlow<Any?>(null)
+    var destination: StateFlow<Any?> = _destination.asStateFlow()
 
     fun loadCurrentUser() {
         viewModelScope.launch {
             val email = auth.currentUser?.email ?: return@launch
-            currentUser.value = userRepository.getUserByEmail(email)
+            val user = userRepository.getUserByEmail(email)
+            _currentUser.value = user
         }
     }
 
@@ -43,14 +49,17 @@ class AuthViewModel @Inject constructor(
                 UserSessionManager.isLoggedIn = true
                 UserSessionManager.userRole = user?.ruolo
                 UserSessionManager.userId = user?.id
-                destination.value = when (user?.ruolo) {
+
+                _destination.value = when (user?.ruolo) {
                     "Admin" -> AdminHomeScreenRoute
                     "Giocatore" -> GiocatoreHomeScreenRoute
-                    else -> { LoginScreenRoute }
+                    else -> LoginScreenRoute
                 }
-                authState.value = "SUCCESS"
+
+                _authState.value = "SUCCESS"
+                _currentUser.value = user
             } catch (e: Exception) {
-                authState.value = "FAILED: ${e.message}"
+                _authState.value = "FAILED: ${e.message}"
             }
         }
     }
@@ -59,10 +68,10 @@ class AuthViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 auth.createUserWithEmailAndPassword(user.email, user.password).await()
-                userRepository.saveUser(user.copy())
-                authState.value = "SUCCESS"
+                userRepository.saveUser(user)
+                _authState.value = "SUCCESS"
             } catch (e: Exception) {
-                authState.value = "FAILED: ${e.message}"
+                _authState.value = "FAILED: ${e.message}"
             }
         }
     }
@@ -70,10 +79,9 @@ class AuthViewModel @Inject constructor(
     fun logout() {
         auth.signOut()
         UserSessionManager.clear()
-        authState.value = null
-        UserSessionManager.isLoggedIn = false
-        UserSessionManager.userRole = null
-        destination.value = LoginScreenRoute
+        _authState.value = null
+        _destination.value = LoginScreenRoute
+        _currentUser.value = null
     }
 
     fun updateProfile(id: String, updatedUser: User) {
@@ -81,7 +89,7 @@ class AuthViewModel @Inject constructor(
             try {
                 val firebaseUser = auth.currentUser
                 if (firebaseUser == null) {
-                    authState.value = "FAILED: Nessun utente autenticato"
+                    _authState.value = "FAILED: Nessun utente autenticato"
                     return@launch
                 }
 
@@ -96,13 +104,13 @@ class AuthViewModel @Inject constructor(
                 UserSessionManager.userRole = updatedUser.ruolo
                 UserSessionManager.userId = updatedUser.id
 
-                authState.value = "UPDATED"
+                _authState.value = "UPDATED"
+                _currentUser.value = updatedUser
             } catch (e: Exception) {
-                authState.value = "FAILED: ${e.message}"
+                _authState.value = "FAILED: ${e.message}"
             }
         }
     }
-
 
     fun deleteAccount() {
         viewModelScope.launch {
@@ -111,8 +119,12 @@ class AuthViewModel @Inject constructor(
                 auth.currentUser?.delete()?.await()
                 logout()
             } catch (e: Exception) {
-                authState.value = "FAILED: ${e.message}"
+                _authState.value = "FAILED: ${e.message}"
             }
         }
+    }
+
+    fun clearDestination() {
+        _destination.value = null
     }
 }

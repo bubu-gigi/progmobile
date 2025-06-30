@@ -1,4 +1,4 @@
-package com.univpm.gameon.ui
+package com.univpm.gameon.ui.struttura
 
 import android.os.Build
 import androidx.annotation.RequiresApi

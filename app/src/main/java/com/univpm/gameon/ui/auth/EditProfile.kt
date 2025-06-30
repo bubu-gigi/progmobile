@@ -8,11 +8,13 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.univpm.gameon.data.collections.User
 import com.univpm.gameon.viewmodels.AuthViewModel
 import com.univpm.gameon.ui.components.UserForm
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 
 @Composable
 fun EditProfileScreen(navController: NavController) {
     val authViewModel: AuthViewModel = hiltViewModel()
-    val currentUser by authViewModel.currentUser
+    val currentUser by authViewModel.currentUser.collectAsState()
 
     var userId by rememberSaveable { mutableStateOf("") }
     var name by rememberSaveable { mutableStateOf("") }

@@ -15,7 +15,7 @@ data class Campo(
 )
 
 data class TemplateGiornaliero(
-    val giornoSettimana: Int = 1, // Lunedì
+    val giornoSettimana: Int = 1,
     val orarioApertura: String = "08:00",
     val orarioChiusura: String = "20:00"
 )

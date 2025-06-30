@@ -30,15 +30,18 @@ fun LoginScreen(navController: NavController) {
     var emailError by remember { mutableStateOf<String?>(null) }
     var passwordError by remember { mutableStateOf<String?>(null) }
 
-    LaunchedEffect(authViewModel.destination.value) {
-        authViewModel.destination.value?.let {
+    val destination by authViewModel.destination.collectAsState()
+    val authState by authViewModel.authState.collectAsState()
+
+    LaunchedEffect(destination) {
+        destination?.let {
             navController.navigate(it)
-            authViewModel.destination.value = null
+            authViewModel.clearDestination()
         }
     }
 
     val errorMessage = listOfNotNull(emailError, passwordError)
-        .firstOrNull() ?: authViewModel.authState.value?.takeIf { it.startsWith("FAILED") }
+        .firstOrNull() ?: authState?.takeIf { it.startsWith("FAILED") }
 
     BackgroundScaffold {
         Column(
