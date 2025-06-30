@@ -24,7 +24,7 @@ fun RoundedButtonComponent(
         onClick = onClick,
         modifier = modifier
             .border(BorderStroke(2.dp, borderColor), shape = RoundedCornerShape(120.dp))
-            .size(width = 190.dp, height = 50.dp),
+            .size(width = 230.dp, height = 50.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = containerColor,
             contentColor = contentColor

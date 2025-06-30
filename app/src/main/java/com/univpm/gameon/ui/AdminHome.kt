@@ -62,14 +62,17 @@ fun AdminHomeScreen(navController: NavController) {
                 text = "Gestione Account",
                 onClick = { navController.navigate(EditProfileScreenRoute) }
             )
+            Spacer(modifier = Modifier.height(4.dp))
             RoundedButtonComponent(
                 text = "Gestione Prenotazioni",
                 onClick = { navController.navigate(ChatListAdminScreenRoute) }
             )
+            Spacer(modifier = Modifier.height(4.dp))
             RoundedButtonComponent(
                 text = "Gestione Strutture",
                 onClick = { navController.navigate(StruttureListRoute) }
             )
+            Spacer(modifier = Modifier.height(4.dp))
             RoundedButtonComponent(
                 text = "Visualizza Messaggi",
                 onClick = { navController.navigate(ChatListAdminScreenRoute) }

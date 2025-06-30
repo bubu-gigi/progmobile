@@ -72,19 +72,19 @@ fun GiocatoreHomeScreen(navController: NavController) {
                 onClick = { navController.navigate(GiocatorePrenotazioniRoute) },
                 modifier = Modifier.padding(vertical = 6.dp)
             )
-
+            Spacer(modifier = Modifier.height(4.dp))
             RoundedButtonComponent(
                 text = "Modifica Profilo",
                 onClick = { navController.navigate(EditProfileScreenRoute) },
                 modifier = Modifier.padding(vertical = 6.dp)
             )
-
+            Spacer(modifier = Modifier.height(4.dp))
             RoundedButtonComponent(
                 text = "Gestione Carte",
                 onClick = {  navController.navigate(CarteListScreenRoute) },
                 modifier = Modifier.padding(vertical = 6.dp)
             )
-
+            Spacer(modifier = Modifier.height(4.dp))
             RoundedButtonComponent(
                 text = "Contatta Strutture",
                 onClick = { navController.navigate(ChatListScreenRoute) },

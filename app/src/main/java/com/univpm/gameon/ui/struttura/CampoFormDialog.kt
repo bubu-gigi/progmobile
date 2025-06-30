@@ -42,13 +42,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.univpm.gameon.R
+import com.univpm.gameon.core.futuraBookFontFamily
 import com.univpm.gameon.core.giornoLabel
+import com.univpm.gameon.core.lemonMilkFontFamily
 import com.univpm.gameon.data.collections.Campo
 import com.univpm.gameon.data.collections.enums.Sport
 import com.univpm.gameon.data.collections.enums.TipologiaTerreno
-import com.univpm.gameon.ui.futuraBookFontFamily
-import com.univpm.gameon.ui.lemonMilkFontFamily
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
