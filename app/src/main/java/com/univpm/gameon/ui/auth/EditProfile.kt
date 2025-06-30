@@ -15,6 +15,7 @@ import androidx.compose.runtime.setValue
 fun EditProfileScreen(navController: NavController) {
     val authViewModel: AuthViewModel = hiltViewModel()
     val currentUser by authViewModel.currentUser.collectAsState()
+    val authState by authViewModel.authState.collectAsState()
 
     var userId by rememberSaveable { mutableStateOf("") }
     var name by rememberSaveable { mutableStateOf("") }
@@ -68,10 +69,11 @@ fun EditProfileScreen(navController: NavController) {
             Log.d("EditProfile", "Aggiornamento utente: $updatedUser")
             authViewModel.updateProfile(userId, updatedUser)
         },
-        errorMessage = authViewModel.authState.value?.takeIf { it.startsWith("FAILED") }
+        errorMessage = authState?.takeIf { it.startsWith("FAILED")
+        }
     )
 
-    if (authViewModel.authState.value == "UPDATED") {
+    if (authState == "UPDATED") {
         LaunchedEffect(Unit) {
             navController.popBackStack()
         }
