@@ -23,7 +23,7 @@ import com.univpm.gameon.ui.CarteListScreen
 import com.univpm.gameon.ui.ChatListAdminScreen
 import com.univpm.gameon.ui.ChatListScreen
 import com.univpm.gameon.ui.ChatScreen
-import com.univpm.gameon.ui.EditProfileScreen
+import com.univpm.gameon.ui.auth.EditProfileScreen
 import com.univpm.gameon.ui.GiocatoreHomeScreen
 import com.univpm.gameon.ui.NuovaCartaScreen
 import com.univpm.gameon.ui.auth.LoginScreen
