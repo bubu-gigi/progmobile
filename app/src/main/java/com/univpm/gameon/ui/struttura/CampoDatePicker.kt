@@ -28,9 +28,8 @@ fun CampoDatePicker(
                 }
 
                 val calendarDayOfWeek = selected.get(Calendar.DAY_OF_WEEK)
-                val gameonDay = if (calendarDayOfWeek == Calendar.SUNDAY) 7 else calendarDayOfWeek - 1 + 1
 
-                if (giorniDisponibili.contains(gameonDay)) {
+                if (giorniDisponibili.contains(calendarDayOfWeek)) {
                     onDateSelected(selected.time)
                 } else {
                     Toast.makeText(
