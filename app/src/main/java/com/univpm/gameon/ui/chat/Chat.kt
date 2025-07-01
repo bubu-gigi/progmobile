@@ -34,6 +34,7 @@ import com.univpm.gameon.data.collections.Messaggio
 import com.univpm.gameon.viewmodels.ChatViewModel
 import com.univpm.gameon.viewmodels.RecensioneViewModel
 import android.widget.Toast
+import androidx.compose.foundation.clickable
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.Star
@@ -55,6 +56,7 @@ fun ChatScreen(
     var recensioneInviata by remember { mutableStateOf(false) }
     val recensioneUtente by recensioneViewModel.recensioneUtente
     val haGiaRecensito = recensioneUtente != null
+    var showDeleteDialog by remember { mutableStateOf(false) }
 
     val giocatoreId = if (!isAdmin) {
         UserSessionManager.userId ?: ""
@@ -110,7 +112,7 @@ fun ChatScreen(
                         Text("Recensisci")
                     }
                 } else {
-                    Row {
+                    Row(modifier = Modifier.clickable { showDeleteDialog = true }) {
                         repeat(5) { index ->
                             val filled = (recensioneUtente?.rating ?: 0) > index
                             Icon(
@@ -119,6 +121,31 @@ fun ChatScreen(
                                 tint = if (filled) Color(0xFFFFC107) else Color.Gray
                             )
                         }
+                    }
+
+                    if (showDeleteDialog) {
+                        AlertDialog(
+                            onDismissRequest = { showDeleteDialog = false },
+                            title = { Text("Elimina recensione") },
+                            text = { Text("Vuoi davvero eliminare la tua recensione?") },
+                            confirmButton = {
+                                Button(onClick = {
+                                    recensioneViewModel.eliminaRecensione(strutturaId, giocatoreId) { success ->
+                                        if (success) {
+                                            recensioneViewModel.getRecensioneUtente(strutturaId, giocatoreId)
+                                            showDeleteDialog = false
+                                        }
+                                    }
+                                }) {
+                                    Text("Sì")
+                                }
+                            },
+                            dismissButton = {
+                                Button(onClick = { showDeleteDialog = false }) {
+                                    Text("Chiudi")
+                                }
+                            }
+                        )
                     }
                 }
             }
@@ -185,6 +212,7 @@ fun ChatScreen(
                     onRecensioneInviata = {
                         recensioneInviata = true
                         showRecensioneDialog = false
+                        recensioneViewModel.getRecensioneUtente(strutturaId, giocatoreId)
                     }
                 )
             },
@@ -209,7 +237,6 @@ fun MessaggioItem(messaggio: Messaggio, currentUser: String) {
         isStrutturaMessage -> Color(0xFFD0E8FF) // Azzurro chiaro per messaggi della struttura
         else -> MaterialTheme.colorScheme.secondaryContainer
     }
-
 
     Row(
         modifier = Modifier.fillMaxWidth(),

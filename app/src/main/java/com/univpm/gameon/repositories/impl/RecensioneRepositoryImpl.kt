@@ -22,7 +22,7 @@ class RecensioneRepositoryImpl(private val recensioneDao: RecensioneDao) : Recen
         return recensioneDao.updateRecensione(id, recensione)
     }
 
-    override suspend fun deleteRecensione(id: String): Boolean {
-        return recensioneDao.deleteRecensione(id)
+    override suspend fun deleteRecensione(strutturaId: String, utenteId: String): Boolean {
+        return recensioneDao.deleteRecensione(strutturaId, utenteId)
     }
 }

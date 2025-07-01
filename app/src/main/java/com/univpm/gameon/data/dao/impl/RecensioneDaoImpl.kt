@@ -60,11 +60,21 @@ class RecensioneDaoImpl : RecensioneDao {
         }
     }
 
-    override suspend fun deleteRecensione(id: String): Boolean {
+    override suspend fun deleteRecensione(strutturaId: String, utenteId: String): Boolean {
         return try {
-            recensioniCollection.document(id).delete().await()
+            val querySnapshot = recensioniCollection
+                .whereEqualTo("strutturaId", strutturaId)
+                .whereEqualTo("utenteId", utenteId)
+                .get()
+                .await()
+
+            for (document in querySnapshot.documents) {
+                recensioniCollection.document(document.id).delete().await()
+            }
+
             true
         } catch (e: Exception) {
+            e.printStackTrace()
             false
         }
     }

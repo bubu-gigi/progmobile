@@ -7,5 +7,5 @@ interface RecensioneRepository {
     suspend fun getRecensioniByStruttura(strutturaId: String): List<Recensione>
     suspend fun saveRecensione(recensione: Recensione): Boolean
     suspend fun updateRecensione(id: String, recensione: Recensione): Boolean
-    suspend fun deleteRecensione(id: String): Boolean
+    suspend fun deleteRecensione(strutturaId: String, utenteId: String): Boolean
 }

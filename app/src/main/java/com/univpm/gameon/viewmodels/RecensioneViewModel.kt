@@ -31,5 +31,12 @@ class RecensioneViewModel @Inject constructor(
             recensioneUtente.value = recensioni.find { it.utenteId == utenteId }
         }
     }
+
+    fun eliminaRecensione(strutturaId: String, utenteId: String, onComplete: (Boolean) -> Unit) {
+        viewModelScope.launch {
+            val success = repository.deleteRecensione(strutturaId, utenteId)
+            onComplete(success)
+        }
+    }
 }
 
