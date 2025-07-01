@@ -27,6 +27,7 @@ import com.univpm.gameon.R
 import com.univpm.gameon.core.ChatListScreenRoute
 import com.univpm.gameon.core.GiocatorePrenotazioniRoute
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.draw.clip
 import com.univpm.gameon.ui.components.ButtonComponent
 import com.univpm.gameon.ui.components.CustomText
 import com.univpm.gameon.ui.components.RoundedButtonComponent
@@ -44,7 +45,7 @@ fun GiocatoreHomeScreen(navController: NavController) {
         }
     }
 
-    val background = painterResource(id = R.drawable.sfondocarta)
+    val background = painterResource(id = R.drawable.sfondobase)
 
     Box(modifier = Modifier.fillMaxSize()) {
         Image(
@@ -61,7 +62,7 @@ fun GiocatoreHomeScreen(navController: NavController) {
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Spacer(modifier = Modifier.height(45.dp))
+            Spacer(modifier = Modifier.height(400.dp))
 
             CustomText(
                 text = "BENVENUTO!",
@@ -69,32 +70,54 @@ fun GiocatoreHomeScreen(navController: NavController) {
             )
 
             Spacer(modifier = Modifier.height(25.dp))
-
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp),
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
+            ){
             RoundedButtonComponent(
                 text = "Gestione Prenotazioni",
                 onClick = { navController.navigate(GiocatorePrenotazioniRoute) },
-                modifier = Modifier.padding(vertical = 6.dp)
+                modifier = Modifier
+                    .weight(1f)
+                    .height(60.dp)
             )
             RoundedButtonComponent(
                 text = "Modifica Profilo",
                 onClick = { navController.navigate(EditProfileScreenRoute) },
-                modifier = Modifier.padding(vertical = 6.dp)
-            )
+                modifier = Modifier
+                    .weight(1f)
+                    .height(60.dp)
+            )}
+            Spacer(modifier = Modifier.height(5.dp))
+            Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
+            ){
             RoundedButtonComponent(
                 text = "Gestione Carte",
                 onClick = { navController.navigate(CarteListScreenRoute) },
-                modifier = Modifier.padding(vertical = 6.dp)
+                modifier = Modifier
+                    .weight(1f)
+                    .height(60.dp)
             )
             RoundedButtonComponent(
                 text = "Contatta Strutture",
                 onClick = { navController.navigate(ChatListScreenRoute) },
-                modifier = Modifier.padding(vertical = 6.dp)
-            )
+                modifier = Modifier
+                    .weight(1f)
+                    .height(60.dp)
+            )}
 
             Spacer(modifier = Modifier.height(25.dp))
 
             Row(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp),
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 ButtonComponent(
@@ -102,7 +125,8 @@ fun GiocatoreHomeScreen(navController: NavController) {
                     onClick = { authViewModel.deleteAccount() },
                     modifier = Modifier
                         .weight(1f)
-                        .padding(8.dp)
+                        .height(70.dp)
+                        .clip(RoundedCornerShape(16.dp))
                 )
 
                 ButtonComponent(
@@ -110,9 +134,11 @@ fun GiocatoreHomeScreen(navController: NavController) {
                     onClick = { authViewModel.logout() },
                     modifier = Modifier
                         .weight(1f)
-                        .padding(8.dp)
+                        .height(70.dp)
+                        .clip(RoundedCornerShape(16.dp))
                 )
             }
+
         }
     }
 }

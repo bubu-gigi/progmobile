@@ -23,7 +23,7 @@ fun ButtonComponent(
     Button(
         onClick = onClick,
         modifier = modifier
-            .border(BorderStroke(2.dp, Color(0xFFCFFF5E)), RoundedCornerShape(12.dp))
+            .border(BorderStroke(3.dp, Color(0xFFCFFF5E)), RoundedCornerShape(12.dp))
             .background(Color(0xFF6136FF), RoundedCornerShape(12.dp))
             .padding(horizontal = 16.dp, vertical = 6.dp),
         colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
