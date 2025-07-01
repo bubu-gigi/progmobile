@@ -1,25 +1,11 @@
 package com.univpm.gameon.ui.struttura
 
 import android.location.Geocoder
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,30 +19,46 @@ import com.google.android.gms.maps.model.LatLng
 import com.univpm.gameon.core.StruttureListRoute
 import com.univpm.gameon.data.collections.Campo
 import com.univpm.gameon.data.collections.Struttura
-import com.univpm.gameon.ui.components.BackgroundScaffold
-import com.univpm.gameon.ui.components.ButtonComponent
-import com.univpm.gameon.ui.components.CustomText
-import com.univpm.gameon.ui.components.GooglePlacesAutocomplete
-import com.univpm.gameon.ui.components.OutlinedInputField
+import com.univpm.gameon.ui.components.*
 import com.univpm.gameon.viewmodels.StruttureViewModel
 
 @Composable
 fun StrutturaFormScreen(
     navController: NavController,
-    strutturaDaModificare: Struttura? = null,
-    campiEsistenti: List<Campo> = emptyList()
+    strutturaId: String? = null
 ) {
     val struttureViewModel: StruttureViewModel = hiltViewModel()
     val context = LocalContext.current
-    val isEdit = strutturaDaModificare != null
+    val isEdit = strutturaId != null
 
-    var nome by remember { mutableStateOf(strutturaDaModificare?.nome ?: "") }
-    var indirizzo by remember { mutableStateOf(strutturaDaModificare?.indirizzo ?: "") }
-    var citta by remember { mutableStateOf(strutturaDaModificare?.citta ?: "") }
-    var latLng by remember { mutableStateOf(strutturaDaModificare?.let { LatLng(it.latitudine, it.longitudine) }) }
-    var campi by remember { mutableStateOf(campiEsistenti.toMutableList()) }
+    val struttura by struttureViewModel.strutturaSelezionata.collectAsState()
+    val campiStruttura by struttureViewModel.campiStruttura.collectAsState()
+
+    var nome by remember { mutableStateOf("") }
+    var indirizzo by remember { mutableStateOf("") }
+    var citta by remember { mutableStateOf("") }
+    var latLng by remember { mutableStateOf<LatLng?>(null) }
+    var campi by remember { mutableStateOf(mutableListOf<Campo>()) }
     var campoInModifica by remember { mutableStateOf<Campo?>(null) }
     var showCampoDialog by remember { mutableStateOf(false) }
+    var inizializzato by remember { mutableStateOf(false) }
+
+    LaunchedEffect(strutturaId) {
+        if (isEdit) {
+            struttureViewModel.caricaStruttura(strutturaId!!)
+        }
+    }
+
+    LaunchedEffect(struttura, campiStruttura) {
+        if (isEdit && struttura != null && !inizializzato) {
+            nome = struttura!!.nome
+            indirizzo = struttura!!.indirizzo
+            citta = struttura!!.citta
+            latLng = LatLng(struttura!!.latitudine, struttura!!.longitudine)
+            campi = campiStruttura.toMutableList()
+            inizializzato = true
+        }
+    }
 
     fun getCityFromLatLng(lat: Double, lng: Double): String {
         return try {
@@ -101,7 +103,7 @@ fun StrutturaFormScreen(
             OutlinedInputField(
                 value = indirizzo,
                 onValueChange = {},
-                label = "Indirizzo completo",
+                label = "Indirizzo completo"
             )
 
             ButtonComponent(
@@ -114,10 +116,7 @@ fun StrutturaFormScreen(
             )
 
             if (campi.isNotEmpty()) {
-                CustomText(
-                    text = "Campi aggiunti:",
-                    fontSize = 16.sp
-                )
+                CustomText(text = "Campi aggiunti:", fontSize = 16.sp)
 
                 LazyColumn(modifier = Modifier.height(100.dp)) {
                     items(campi) { campo ->
@@ -139,8 +138,8 @@ fun StrutturaFormScreen(
                                 }
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Button(
-                                    onClick = { campi =
-                                        campi.filterNot { it == campo } as MutableList<Campo>
+                                    onClick = {
+                                        campi = campi.filterNot { it == campo }.toMutableList()
                                     },
                                     colors = ButtonDefaults.buttonColors(containerColor = Color.Red)
                                 ) {
@@ -156,26 +155,26 @@ fun StrutturaFormScreen(
                 text = if (isEdit) "Aggiorna struttura" else "Salva struttura",
                 onClick = {
                     latLng?.let {
-                        val struttura = (strutturaDaModificare?.copy(
+                        val nuovaStruttura = struttura?.copy(
                             nome = nome,
                             indirizzo = indirizzo,
                             citta = citta,
                             latitudine = it.latitude,
                             longitudine = it.longitude,
-                            sportPraticabili = campi.map { it.sport }.distinct()
+                            sportPraticabili = campi.map { campo -> campo.sport }.distinct()
                         ) ?: Struttura(
                             nome = nome,
                             indirizzo = indirizzo,
                             citta = citta,
                             latitudine = it.latitude,
                             longitudine = it.longitude,
-                            sportPraticabili = campi.map { it.sport }.distinct()
-                        ))
+                            sportPraticabili = campi.map { campo -> campo.sport }.distinct()
+                        )
 
                         if (isEdit) {
-                            struttureViewModel.aggiornaStruttura(strutturaDaModificare!!.id, struttura, campi)
+                            struttureViewModel.aggiornaStruttura(strutturaId!!, nuovaStruttura, campi)
                         } else {
-                            struttureViewModel.salvaStruttura(struttura, campi)
+                            struttureViewModel.salvaStruttura(nuovaStruttura, campi)
                         }
 
                         navController.navigate(StruttureListRoute)
@@ -183,14 +182,14 @@ fun StrutturaFormScreen(
                 },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 8.dp),
+                    .padding(top = 8.dp)
             )
 
-            if (isEdit) {
+            if (isEdit && struttura != null) {
                 ButtonComponent(
                     text = "Elimina struttura",
                     onClick = {
-                        struttureViewModel.eliminaStruttura(strutturaDaModificare!!.id)
+                        struttureViewModel.eliminaStruttura(strutturaId!!)
                         navController.navigate(StruttureListRoute)
                     },
                     modifier = Modifier
@@ -205,13 +204,16 @@ fun StrutturaFormScreen(
                 CampoFormDialog(
                     campoDaModificare = campoInModifica,
                     onCampoAdded = { nuovoCampo ->
-                        campi = (if (campoInModifica != null) {
-                            campi.map { if (it == campoInModifica) nuovoCampo.copy(id = campoInModifica!!.id) else it }
+                        campi = if (campoInModifica != null) {
+                            campi.map {
+                                if (it == campoInModifica) nuovoCampo.copy(id = campoInModifica!!.id)
+                                else it
+                            }.toMutableList()
                         } else {
-                            campi + nuovoCampo
-                        }).toMutableList()
-                        showCampoDialog = false
+                            (campi + nuovoCampo).toMutableList()
+                        }
                         campoInModifica = null
+                        showCampoDialog = false
                     }
                 )
             }

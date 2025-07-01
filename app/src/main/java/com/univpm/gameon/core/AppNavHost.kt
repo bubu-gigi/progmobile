@@ -4,16 +4,7 @@ import GiocatorePrenotazioniScreen
 import StruttureListScreen
 import android.os.Build
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -31,8 +22,6 @@ import com.univpm.gameon.ui.auth.LoginScreen
 import com.univpm.gameon.ui.auth.RegisterScreen
 import com.univpm.gameon.ui.struttura.StrutturaFormScreen
 import com.univpm.gameon.ui.struttura.giocatore.StrutturaDettaglioScreen
-import com.univpm.gameon.viewmodels.PrenotazioneViewModel
-import com.univpm.gameon.viewmodels.StruttureViewModel
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -152,63 +141,16 @@ fun AppNavHost() {
 
         composable<EditStrutturaRoute> { entry ->
             val args = entry.toRoute<EditStrutturaRoute>()
-            val viewModel: StruttureViewModel = hiltViewModel()
-
-            val struttura by viewModel.strutturaSelezionata.collectAsState()
-            val campi by viewModel.campiStruttura.collectAsState()
-
-            LaunchedEffect(args.strutturaId) {
-                viewModel.caricaStruttura(args.strutturaId)
-            }
-
-            if (struttura != null) {
-                StrutturaFormScreen(
-                    navController = navController,
-                    strutturaDaModificare = struttura,
-                    campiEsistenti = campi
-                )
-            } else {
-                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    Text("Caricamento struttura...")
-                }
-            }
+            StrutturaFormScreen(navController = navController, strutturaId = args.strutturaId)
         }
+
         composable<StrutturaDettaglioRoute> { entry ->
             val args = entry.toRoute<StrutturaDettaglioRoute>()
             StrutturaDettaglioScreen(navController = navController, strutturaId = args.strutturaId)
         }
+
         composable<GestionePrenotazioniAdminRoute> {
-            val struttureViewModel: StruttureViewModel = hiltViewModel()
-            val prenotazioniViewModel: PrenotazioneViewModel = hiltViewModel()
-            val strutture by struttureViewModel.strutture.collectAsState()
-            val prenotazioni by prenotazioniViewModel.prenotazioni.collectAsState()
-            val errore by struttureViewModel.errore.collectAsState()
-
-            LaunchedEffect(Unit) {
-                struttureViewModel.caricaStrutture()
-                prenotazioniViewModel.caricaTuttePrenotazioni()
-            }
-
-            when {
-                errore != null -> {
-                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                        Text("Errore: $errore")
-                    }
-                }
-
-                strutture.isEmpty() -> {
-                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                        Text("Caricamento strutture...")
-                    }
-                }
-
-                else -> {
-                    GestionePrenotazioniAdminScreen(
-                        strutture = strutture,
-                        prenotazioni = prenotazioni
-                    )
-                }
-            }
+            GestionePrenotazioniAdminScreen()
         }
     }
 }

@@ -50,8 +50,11 @@ fun ChatScreen(
 ) {
     val chatViewModel: ChatViewModel = hiltViewModel()
     val recensioneViewModel: RecensioneViewModel = hiltViewModel()
+
     val isAdmin: Boolean = UserSessionManager.userRole == "Admin"
+
     val context = LocalContext.current
+
     var showRecensioneDialog by remember { mutableStateOf(false) }
     var recensioneInviata by remember { mutableStateOf(false) }
     val recensioneUtente by recensioneViewModel.recensioneUtente

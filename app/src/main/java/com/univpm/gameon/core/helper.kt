@@ -1,7 +1,13 @@
 package com.univpm.gameon.core
 
+import android.Manifest
+import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.annotation.RequiresPermission
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.model.LatLng
+import kotlinx.coroutines.tasks.await
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.util.Locale
@@ -90,3 +96,13 @@ fun raggruppaSlotConsecutivi(slots: List<Pair<String, String>>): List<Pair<Strin
 }
 
 
+@RequiresPermission(allOf = [Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION])
+suspend fun getCurrentLocation(context: Context): LatLng? {
+    return try {
+        val locationClient = LocationServices.getFusedLocationProviderClient(context)
+        val location = locationClient.lastLocation.await()
+        location?.let { LatLng(it.latitude, it.longitude) }
+    } catch (e: Exception) {
+        null
+    }
+}

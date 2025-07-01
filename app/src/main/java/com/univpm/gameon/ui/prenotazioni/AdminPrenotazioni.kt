@@ -22,6 +22,8 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -40,15 +42,58 @@ import com.univpm.gameon.ui.components.Dropdown
 import androidx.compose.ui.graphics.Color
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.univpm.gameon.viewmodels.PrenotazioneViewModel
+import com.univpm.gameon.viewmodels.StruttureViewModel
 import kotlinx.coroutines.launch
 
 @Composable
-fun GestionePrenotazioniAdminScreen(
+fun GestionePrenotazioniAdminScreen() {
+    val struttureViewModel: StruttureViewModel = hiltViewModel()
+    val prenotazioneViewModel: PrenotazioneViewModel = hiltViewModel()
+
+    val strutture by struttureViewModel.strutture.collectAsState()
+    val prenotazioni by prenotazioneViewModel.prenotazioni.collectAsState()
+    val errore by struttureViewModel.errore.collectAsState()
+
+    var inizializzato by remember { mutableStateOf(false) }
+
+    LaunchedEffect(Unit) {
+        if (!inizializzato) {
+            struttureViewModel.caricaStrutture()
+            prenotazioneViewModel.caricaTuttePrenotazioni()
+            inizializzato = true
+        }
+    }
+
+    when {
+        errore != null -> {
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                Text("Errore: $errore")
+            }
+        }
+
+        strutture.isEmpty() -> {
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                Text("Caricamento strutture...")
+            }
+        }
+
+        else -> {
+            GestionePrenotazioniAdminScreenContent(
+                strutture = strutture,
+                prenotazioni = prenotazioni,
+                prenotazioneViewModel = prenotazioneViewModel
+            )
+        }
+    }
+}
+
+
+@Composable
+fun GestionePrenotazioniAdminScreenContent(
     strutture: List<Struttura>,
     prenotazioni: List<Prenotazione>,
+    prenotazioneViewModel: PrenotazioneViewModel
 ) {
-    val prenotazioniViewModel: PrenotazioneViewModel = hiltViewModel()
-
     var filtroCitta by remember { mutableStateOf<String?>(null) }
     var filtroSport by remember { mutableStateOf<Sport?>(null) }
     var filtroStrutturaId by remember { mutableStateOf<String?>(null) }
@@ -183,7 +228,7 @@ fun GestionePrenotazioniAdminScreen(
                         struttura = struttura,
                         onDeletePrenotazione = {
                             scope.launch {
-                                prenotazioniViewModel.annullaPrenotazione(it.id)
+                                prenotazioneViewModel.annullaPrenotazione(it.id)
                                 prenotazioneSelezionata = null
                             }
                         },

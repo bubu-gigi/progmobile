@@ -45,11 +45,21 @@ import com.univpm.gameon.viewmodels.StruttureViewModel
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
+import android.Manifest
+import android.content.pm.PackageManager
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.ui.platform.LocalContext
+import androidx.core.content.ContextCompat
+import com.google.android.gms.maps.model.LatLng
+import com.univpm.gameon.core.getCurrentLocation
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun GiocatorePrenotazioniScreen(navController: NavController) {
+    val context = LocalContext.current
     val struttureViewModel: StruttureViewModel = hiltViewModel()
     val prenotazioniViewModel: PrenotazioneViewModel = hiltViewModel()
 
@@ -61,14 +71,20 @@ fun GiocatorePrenotazioniScreen(navController: NavController) {
     var expanded by remember { mutableStateOf(false) }
     var dialogPrenotazioneId by remember { mutableStateOf<String?>(null) }
 
-    val opzioniFiltro = listOf("Tutte", "Attive", "Passate")
+    var userPosition by remember { mutableStateOf<LatLng?>(null) }
+    var permissionGranted by remember { mutableStateOf(false) }
+
+    val locationPermissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission(),
+        onResult = { granted -> permissionGranted = granted }
+    )
+
     val oggi = LocalDate.now()
     val ora = LocalTime.now()
 
     val prenotazioniFiltrate = prenotazioni.filter { pren ->
         val data = LocalDate.parse(pren.data, formatter)
         val fine = LocalTime.parse(pren.orarioFine)
-
         when (filtroSelezionato) {
             "Attive" -> data.isAfter(oggi) || (data.isEqual(oggi) && fine.isAfter(ora))
             "Passate" -> data.isBefore(oggi) || (data.isEqual(oggi) && fine.isBefore(ora))
@@ -79,15 +95,32 @@ fun GiocatorePrenotazioniScreen(navController: NavController) {
     LaunchedEffect(Unit) {
         struttureViewModel.caricaStrutture()
         prenotazioniViewModel.caricaPrenotazioniUtente(UserSessionManager.userId.orEmpty())
+
+        val alreadyGranted = ContextCompat.checkSelfPermission(
+            context, Manifest.permission.ACCESS_FINE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED
+
+        if (alreadyGranted) {
+            permissionGranted = true
+        } else {
+            locationPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+        }
+    }
+
+    LaunchedEffect(permissionGranted) {
+        if (permissionGranted) {
+            userPosition = getCurrentLocation(context)
+        }
     }
 
     BackgroundScaffold {
-        Column(modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
             verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally) {
-
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             CustomText(
                 text = "Le tue prenotazioni",
                 fontSize = 20.sp,
@@ -96,7 +129,7 @@ fun GiocatorePrenotazioniScreen(navController: NavController) {
 
             Dropdown(
                 current = filtroSelezionato,
-                options = opzioniFiltro,
+                options = listOf("Tutte", "Attive", "Passate"),
                 getLabel = { it },
                 label = "Filtra per",
                 onSelected = { filtroSelezionato = it },
@@ -183,6 +216,7 @@ fun GiocatorePrenotazioniScreen(navController: NavController) {
                     onStrutturaSelezionata = {
                         navController.navigate(StrutturaDettaglioRoute(it.id))
                     },
+                    userPosition = userPosition,
                     height = 300.dp
                 )
             }
