@@ -37,8 +37,7 @@ fun SelezionaOrariDialog(
     onOrariConfermati: (List<Pair<String, String>>) -> Unit
 ) {
     val giornoSettimana = Calendar.getInstance().apply { time = data }.get(Calendar.DAY_OF_WEEK)
-    val giornoGameOn = if (giornoSettimana == Calendar.SUNDAY) 7 else giornoSettimana - 1 + 1
-    val agenda = campo.disponibilitaSettimanale.find { it.giornoSettimana == giornoGameOn }
+    val agenda = campo.disponibilitaSettimanale.find { it.giornoSettimana == giornoSettimana }
 
     val slotSelezionati = remember { mutableStateOf(setOf<Pair<String, String>>()) }
 

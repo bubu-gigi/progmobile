@@ -1,4 +1,4 @@
-package com.univpm.gameon.ui.struttura
+package com.univpm.gameon.ui.struttura.giocatore
 
 import android.app.DatePickerDialog
 import android.widget.Toast
@@ -13,7 +13,8 @@ import java.util.Date
 @Composable
 fun CampoDatePicker(
     campo: Campo,
-    onDateSelected: (Date) -> Unit
+    onDateSelected: (Date) -> Unit,
+    textButton: String? = "Scegli una data"
 ) {
     val context = LocalContext.current
     val today = Calendar.getInstance()
@@ -47,6 +48,6 @@ fun CampoDatePicker(
         datePicker.datePicker.minDate = System.currentTimeMillis()
         datePicker.show()
     }) {
-        Text("Scegli una data")
+        Text(text = textButton!!)
     }
 }

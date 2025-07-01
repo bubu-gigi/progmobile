@@ -6,6 +6,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,8 +15,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -41,7 +44,6 @@ import com.univpm.gameon.data.collections.Prenotazione
 import com.univpm.gameon.data.collections.Struttura
 import com.univpm.gameon.data.collections.TemplateGiornaliero
 import com.univpm.gameon.ui.components.BackgroundScaffold
-import com.univpm.gameon.ui.struttura.CampoDatePicker
 import com.univpm.gameon.viewmodels.PrenotazioneViewModel
 import com.univpm.gameon.viewmodels.StruttureViewModel
 import java.text.SimpleDateFormat
@@ -91,35 +93,43 @@ fun StrutturaDettaglioContent(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         item {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Text(
+                    text = struttura.nome,
+                    fontSize = 26.sp,
+                    fontFamily = lemonMilkFontFamily,
+                    color = Color(0xFFCFFF5E)
+                )
+                Spacer(Modifier.height(6.dp))
+                Text("Indirizzo: ${struttura.indirizzo}", color = Color.White, fontFamily = futuraBookFontFamily)
+                Text("Città: ${struttura.citta}", color = Color.White, fontFamily = futuraBookFontFamily)
+                Text(
+                    "Sport disponibili: ${struttura.sportPraticabili.joinToString { it.label }}",
+                    color = Color.White,
+                    fontFamily = futuraBookFontFamily
+                )
+            }
+
+            Spacer(Modifier.height(16.dp))
             Text(
-                text = struttura.nome,
-                fontSize = 24.sp,
-                color = Color.White,
-                fontFamily = lemonMilkFontFamily
+                "Campi Disponibili:",
+                fontSize = 22.sp,
+                fontFamily = lemonMilkFontFamily,
+                color = Color(0xFFCFFF5E)
             )
-            Spacer(Modifier.height(8.dp))
-            Text("Indirizzo: ${struttura.indirizzo}", color = Color.White, fontFamily = futuraBookFontFamily)
-            Text("Città: ${struttura.citta}", color = Color.White, fontFamily = futuraBookFontFamily)
-            Text(
-                "Sport disponibili: ${struttura.sportPraticabili.joinToString { it.label }}",
-                color = Color.White,
-                fontFamily = futuraBookFontFamily
-            )
-            Spacer(Modifier.height(20.dp))
-            Text("Campi Disponibili:", fontSize = 20.sp, color = Color.White, fontFamily = lemonMilkFontFamily)
-            Spacer(Modifier.height(15.dp))
+            Spacer(Modifier.height(14.dp))
         }
 
         items(campi) { campo ->
-            CampoCard(campo, struttura.id, navController)
+            CampoCard(campo, struttura.id, struttura.nome, navController)
         }
     }
-
 }
+
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun CampoCard(campo: Campo, strutturaId: String, navController: NavController) {
+fun CampoCard(campo: Campo, strutturaId: String, strutturaNome: String, navController: NavController) {
     val prenotazioniViewModel: PrenotazioneViewModel = hiltViewModel()
 
     var dataSelezionata by remember { mutableStateOf<Date?>(null) }
@@ -129,37 +139,32 @@ fun CampoCard(campo: Campo, strutturaId: String, navController: NavController) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         border = BorderStroke(1.dp, Color(0xFFE36BE0)),
-        colors = CardDefaults.cardColors(containerColor = Color(0xFF1E1E1E))
+        colors = CardDefaults.cardColors(containerColor = Color(0xFF2B2B2B)) // più contrasto sullo sfondo
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
-            Text("Nome: ${campo.nomeCampo}", color = Color.White)
-            Text("Sport: ${campo.sport.label}", color = Color.White)
-            Text("Terreno: ${campo.tipologiaTerreno.label}", color = Color.White)
-            Text("Prezzo orario: €${campo.prezzoOrario}", color = Color.White)
-            Text("N. giocatori: ${campo.numeroGiocatori}", color = Color.White)
-            Text("Spogliatoi: ${if (campo.spogliatoi) "Sì" else "No"}", color = Color.White)
+            Text("🏷️  ${campo.nomeCampo}", fontSize = 20.sp, color = Color(0xFFCFFF5E), fontFamily = lemonMilkFontFamily)
+            Spacer(Modifier.height(10.dp))
 
-            Spacer(Modifier.height(8.dp))
+            Text("Sport: ${campo.sport.label}", color = Color.White, fontFamily = futuraBookFontFamily)
+            Text("Terreno: ${campo.tipologiaTerreno.label}", color = Color.White, fontFamily = futuraBookFontFamily)
+            Text("Prezzo orario: €${campo.prezzoOrario}", color = Color.White, fontFamily = futuraBookFontFamily)
+            Text("N. giocatori: ${campo.numeroGiocatori}", color = Color.White, fontFamily = futuraBookFontFamily)
+            Text("Spogliatoi: ${if (campo.spogliatoi) "Sì" else "No"}", color = Color.White, fontFamily = futuraBookFontFamily)
 
-            Text("Orari disponibili:", color = Color.White)
+            Spacer(Modifier.height(15.dp))
+            Text("📆 Orari disponibili:", fontSize = 16.sp, color = Color(0xFFCFFF5E), fontFamily = futuraBookFontFamily)
+
+            Spacer(Modifier.height(4.dp))
             campo.disponibilitaSettimanale.forEach { giorno ->
                 GiornoDisponibilitaRow(giorno)
             }
 
-            Spacer(Modifier.height(8.dp))
-
-            CampoDatePicker(
-                campo = campo,
-                onDateSelected = { data ->
-                    dataSelezionata = data
-                    showOrariDialog = true
-                }
-            )
+            Spacer(Modifier.height(12.dp))
 
             dataSelezionata?.let {
                 val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
                 Spacer(Modifier.height(8.dp))
-                Text("Data selezionata: ${sdf.format(it)}", color = Color.White)
+                Text("📅 Data selezionata: ${sdf.format(it)}", color = Color.White, fontFamily = futuraBookFontFamily)
             }
 
             if (showOrariDialog && dataSelezionata != null) {
@@ -176,40 +181,68 @@ fun CampoCard(campo: Campo, strutturaId: String, navController: NavController) {
 
             if (orariSelezionati.isNotEmpty()) {
                 Spacer(Modifier.height(8.dp))
-                Text("Orari selezionati:", color = Color.White)
+                Text(
+                    "⏱️ Orari selezionati:",
+                    color = Color.White,
+                    fontFamily = futuraBookFontFamily
+                )
                 orariSelezionati.forEach { slot ->
-                    Text("${slot.first} - ${slot.second}", color = Color.White)
+                    Text("- ${slot.first} → ${slot.second}", color = Color.White)
                 }
-
-                if (dataSelezionata != null) {
-                    Spacer(Modifier.height(12.dp))
-                    Button(
-                        onClick = {
-                            val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-                            val dataString = sdf.format(dataSelezionata)
-
-                            val prenotazioniRaggruppate = raggruppaSlotConsecutivi(orariSelezionati)
-
-                            prenotazioniRaggruppate.forEach { slot ->
-                                val prenotazione = Prenotazione(
-                                    userId = UserSessionManager.userId ?: "",
-                                    strutturaId = strutturaId,
-                                    campoId = campo.id,
-                                    data = dataString,
-                                    orarioInizio = slot.first,
-                                    orarioFine = slot.second,
-                                )
-                                prenotazioniViewModel.creaPrenotazione(prenotazione)
-                                navController.navigate(GiocatorePrenotazioniRoute)
-                            }
-                        },
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Text("Prenota", color = Color.Black)
-                    }
-                }
+                Spacer(Modifier.height(12.dp))
             }
 
+
+                Divider(
+                    color = Color.Gray,
+                    thickness = 1.dp,
+                    modifier = Modifier.padding(vertical = 12.dp)
+                )
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    CampoDatePicker(
+                        campo = campo,
+                        onDateSelected = { data ->
+                            dataSelezionata = data
+                            showOrariDialog = true
+                        },
+                        textButton = if (dataSelezionata == null) "Scegli Data" else "Cambia Data"
+                    )
+
+                    if(dataSelezionata != null && orariSelezionati.isNotEmpty()) {
+                        Button(
+                            onClick = {
+                                val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                                val dataString = sdf.format(dataSelezionata)
+
+                                val prenotazioniRaggruppate =
+                                    raggruppaSlotConsecutivi(orariSelezionati)
+
+                                prenotazioniRaggruppate.forEach { slot ->
+                                    val prenotazione = Prenotazione(
+                                        userId = UserSessionManager.userId ?: "",
+                                        strutturaId = strutturaId,
+                                        campoId = campo.id,
+                                        strutturaNome = strutturaNome,
+                                        campoNome = campo.nomeCampo,
+                                        data = dataString,
+                                        orarioInizio = slot.first,
+                                        orarioFine = slot.second,
+                                    )
+                                    prenotazioniViewModel.creaPrenotazione(prenotazione)
+                                    navController.navigate(GiocatorePrenotazioniRoute)
+                                }
+                            },
+                            modifier = Modifier.weight(1f),
+                            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFCFFF5E))
+                        ) {
+                            Text("Prenota", color = Color.Black)
+                        }
+                    }
+            }
         }
     }
 }

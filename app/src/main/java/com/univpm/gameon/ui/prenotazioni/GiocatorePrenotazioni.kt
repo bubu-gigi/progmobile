@@ -124,7 +124,7 @@ fun GiocatorePrenotazioniScreen(navController: NavController) {
                             Column(Modifier.padding(16.dp)) {
                                 CustomText(text = struttura?.nome ?: "Struttura sconosciuta", fontSize = 18.sp)
                                 Spacer(Modifier.height(4.dp))
-                                CustomText(text = "Campo: ${pren.campoId}")
+                                CustomText(text = "Campo: ${pren.campoNome}")
                                 CustomText(text = "Data: ${pren.data}")
                                 CustomText(text = "Orario: ${pren.orarioInizio} - ${pren.orarioFine}")
                                 Spacer(Modifier.height(8.dp))
