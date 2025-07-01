@@ -20,7 +20,7 @@ import com.univpm.gameon.ui.GiocatoreHomeScreen
 import com.univpm.gameon.ui.carte.NuovaCartaScreen
 import com.univpm.gameon.ui.auth.LoginScreen
 import com.univpm.gameon.ui.auth.RegisterScreen
-import com.univpm.gameon.ui.struttura.StrutturaFormScreen
+import com.univpm.gameon.ui.struttura.admin.StrutturaFormScreen
 import com.univpm.gameon.ui.struttura.giocatore.StrutturaDettaglioScreen
 import kotlinx.serialization.Serializable
 
