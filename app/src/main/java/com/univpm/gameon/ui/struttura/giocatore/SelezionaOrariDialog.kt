@@ -26,6 +26,7 @@ import androidx.compose.ui.window.Dialog
 import com.univpm.gameon.core.generaSlotOrari
 import com.univpm.gameon.core.lemonMilkFontFamily
 import com.univpm.gameon.data.collections.Campo
+import com.univpm.gameon.data.collections.Prenotazione
 import java.util.Date
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -33,6 +34,7 @@ import java.util.Date
 fun SelezionaOrariDialog(
     campo: Campo,
     data: Date,
+    prenotazioniOccupate: List<Prenotazione>,
     onDismiss: () -> Unit,
     onOrariConfermati: (List<Pair<String, String>>) -> Unit
 ) {
@@ -44,6 +46,12 @@ fun SelezionaOrariDialog(
     if (agenda != null) {
         val slots = generaSlotOrari(agenda.orarioApertura, agenda.orarioChiusura)
 
+        val slotIsOccupied: (Pair<String, String>) -> Boolean = { slot ->
+            prenotazioniOccupate.any { pren ->
+                !(pren.orarioFine <= slot.first || pren.orarioInizio >= slot.second)
+            }
+        }
+
         Dialog(onDismissRequest = onDismiss) {
             Card(
                 modifier = Modifier
@@ -52,24 +60,43 @@ fun SelezionaOrariDialog(
                 colors = CardDefaults.cardColors(containerColor = Color(0xFF2B2B2B))
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
-                    Text("Seleziona orari disponibili:", color = Color.White, fontFamily = lemonMilkFontFamily)
+                    Text(
+                        "Seleziona orari disponibili:",
+                        color = Color.White,
+                        fontFamily = lemonMilkFontFamily
+                    )
                     Spacer(Modifier.height(8.dp))
 
                     LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                         items(slots) { slot ->
+                            val isOccupied = slotIsOccupied(slot)
                             val isSelected = slotSelezionati.value.contains(slot)
+
                             Button(
                                 onClick = {
-                                    slotSelezionati.value =
-                                        if (isSelected) slotSelezionati.value - slot else slotSelezionati.value + slot
+                                    if (!isOccupied) {
+                                        slotSelezionati.value = if (isSelected)
+                                            slotSelezionati.value - slot
+                                        else
+                                            slotSelezionati.value + slot
+                                    }
                                 },
+                                enabled = !isOccupied,
                                 colors = ButtonDefaults.buttonColors(
-                                    containerColor = if (isSelected) Color(0xFFCFFF5E) else Color(0xFF444444),
-                                    contentColor = if (isSelected) Color.Black else Color.White
+                                    containerColor = when {
+                                        isOccupied -> Color(0xFFFF6B6B)
+                                        isSelected -> Color(0xFFCFFF5E)
+                                        else -> Color(0xFF444444)
+                                    },
+                                    contentColor = when {
+                                        isOccupied -> Color.White
+                                        isSelected -> Color.Black
+                                        else -> Color.White
+                                    }
                                 ),
                                 modifier = Modifier.fillMaxWidth()
                             ) {
-                                Text("${slot.first} - ${slot.second}", color = if (isSelected) Color.Black else Color.White)
+                                Text("${slot.first} - ${slot.second}")
                             }
                         }
                     }
