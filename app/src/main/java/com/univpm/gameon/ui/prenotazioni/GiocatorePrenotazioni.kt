@@ -117,10 +117,11 @@ fun GiocatorePrenotazioniScreen(navController: NavController) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp),
+                .padding(26.dp),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            Spacer(Modifier.height(15.dp))
             CustomText(
                 text = "Le tue prenotazioni",
                 fontSize = 20.sp,
