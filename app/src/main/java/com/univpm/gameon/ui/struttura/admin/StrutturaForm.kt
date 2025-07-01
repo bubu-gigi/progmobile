@@ -1,4 +1,4 @@
-package com.univpm.gameon.ui.struttura
+package com.univpm.gameon.ui.struttura.admin
 
 import android.location.Geocoder
 import androidx.compose.foundation.layout.*

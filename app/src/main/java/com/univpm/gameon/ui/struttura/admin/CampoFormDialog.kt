@@ -1,4 +1,4 @@
-package com.univpm.gameon.ui.struttura
+package com.univpm.gameon.ui.struttura.admin
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
