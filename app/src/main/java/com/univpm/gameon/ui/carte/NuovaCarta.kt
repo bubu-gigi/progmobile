@@ -32,6 +32,12 @@ fun NuovaCartaScreen(navController: NavController) {
     var year by remember { mutableStateOf("") }
     var provider by remember { mutableStateOf(CardProvider.VISA) }
 
+    var holderNameError by remember { mutableStateOf<String?>(null) }
+    var cardNumberError by remember { mutableStateOf<String?>(null) }
+    var cvvError by remember { mutableStateOf<String?>(null) }
+    var monthError by remember { mutableStateOf<String?>(null) }
+    var yearError by remember { mutableStateOf<String?>(null) }
+
     Box(modifier = Modifier.fillMaxSize()) {
         Image(
             painter = painterResource(id = R.drawable.sfondocarta),
@@ -53,16 +59,51 @@ fun NuovaCartaScreen(navController: NavController) {
 
             Spacer(Modifier.height(16.dp))
 
-            OutlinedInputField(value = holderName, onValueChange = { holderName = it }, label = "Intestatario")
-            Spacer(Modifier.height(8.dp))
-            OutlinedInputField(value = cardNumber, onValueChange = { cardNumber = it }, label = "Numero carta")
-            Spacer(Modifier.height(8.dp))
-            OutlinedInputField(value = cvv, onValueChange = { cvv = it }, label = "CVV")
+            OutlinedInputField(
+                value = holderName,
+                onValueChange = { holderName = it },
+                label = "Intestatario",
+                errorText = holderNameError
+            )
+
             Spacer(Modifier.height(8.dp))
 
-            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                OutlinedInputField(value = month, onValueChange = { month = it }, label = "Mese")
-                OutlinedInputField(value = year, onValueChange = { year = it }, label = "Anno")
+            OutlinedInputField(
+                value = cardNumber,
+                onValueChange = { cardNumber = it },
+                label = "Numero carta",
+                errorText = cardNumberError
+            )
+
+            Spacer(Modifier.height(8.dp))
+
+            OutlinedInputField(
+                value = cvv,
+                onValueChange = { cvv = it },
+                label = "CVV",
+                errorText = cvvError
+            )
+
+            Spacer(Modifier.height(8.dp))
+
+            Row(
+                Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                OutlinedInputField(
+                    value = month,
+                    onValueChange = { month = it },
+                    label = "Mese",
+                    errorText = monthError,
+                    modifier = Modifier.weight(1f)
+                )
+                OutlinedInputField(
+                    value = year,
+                    onValueChange = { year = it },
+                    label = "Anno",
+                    errorText = yearError,
+                    modifier = Modifier.weight(1f)
+                )
             }
 
             Spacer(Modifier.height(8.dp))
@@ -80,18 +121,34 @@ fun NuovaCartaScreen(navController: NavController) {
             ButtonComponent(
                 text = "Salva carta",
                 onClick = {
-                    val carta = Carta(
-                        id = System.currentTimeMillis().toString(),
-                        userId = userId,
-                        cardHolderName = holderName,
-                        cardNumber = cardNumber,
-                        expirationMonth = month.toIntOrNull() ?: 1,
-                        expirationYear = year.toIntOrNull() ?: 2025,
-                        cvv = cvv,
-                        provider = provider
-                    )
-                    viewModel.salvaCarta(carta)
-                    navController.popBackStack()
+                    holderNameError = if (holderName.isBlank()) "Campo obbligatorio" else null
+                    cardNumberError = if (!cardNumber.matches(Regex("\\d{16}"))) "Numero non valido" else null
+                    cvvError = if (!cvv.matches(Regex("\\d{3}"))) "CVV non valido" else null
+                    monthError = month.toIntOrNull()?.let { if (it in 1..12) null else "Mese non valido" } ?: "Mese obbligatorio"
+                    yearError = year.toIntOrNull()?.let { if (it >= 2024) null else "Anno non valido" } ?: "Anno obbligatorio"
+
+                    val isValid = listOf(
+                        holderNameError,
+                        cardNumberError,
+                        cvvError,
+                        monthError,
+                        yearError
+                    ).all { it == null }
+
+                    if (isValid) {
+                        val carta = Carta(
+                            id = System.currentTimeMillis().toString(),
+                            userId = userId,
+                            cardHolderName = holderName,
+                            cardNumber = cardNumber,
+                            expirationMonth = month.toInt(),
+                            expirationYear = year.toInt(),
+                            cvv = cvv,
+                            provider = provider
+                        )
+                        viewModel.salvaCarta(carta)
+                        navController.popBackStack()
+                    }
                 },
                 modifier = Modifier.fillMaxWidth()
             )
