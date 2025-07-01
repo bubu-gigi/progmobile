@@ -56,13 +56,15 @@ fun StrutturaDettaglioScreen(
     navController: NavController,
     strutturaId: String,
 ) {
-    val viewModel: StruttureViewModel = hiltViewModel()
+    val strutturaviewModel: StruttureViewModel = hiltViewModel()
+    val prenotazioneViewModel: PrenotazioneViewModel = hiltViewModel()
 
-    val struttura by viewModel.strutturaSelezionata.collectAsState()
-    val campi by viewModel.campiStruttura.collectAsState()
+    val struttura by strutturaviewModel.strutturaSelezionata.collectAsState()
+    val campi by strutturaviewModel.campiStruttura.collectAsState()
 
     LaunchedEffect(strutturaId) {
-        viewModel.caricaStruttura(strutturaId)
+        strutturaviewModel.caricaStruttura(strutturaId)
+        prenotazioneViewModel.caricaTuttePrenotazioni()
     }
 
     struttura?.let {
@@ -70,7 +72,8 @@ fun StrutturaDettaglioScreen(
             StrutturaDettaglioContent(
                 navController = navController,
                 struttura = it,
-                campi = campi
+                campi = campi,
+                prenotazioneViewModel = prenotazioneViewModel,
             )
         }
     } ?: Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -83,7 +86,8 @@ fun StrutturaDettaglioScreen(
 fun StrutturaDettaglioContent(
     navController: NavController,
     struttura: Struttura,
-    campi: List<Campo>
+    campi: List<Campo>,
+    prenotazioneViewModel: PrenotazioneViewModel,
 ) {
     LazyColumn(
         modifier = Modifier
@@ -121,7 +125,7 @@ fun StrutturaDettaglioContent(
         }
 
         items(campi) { campo ->
-            CampoCard(campo, struttura.id, struttura.nome, navController)
+            CampoCard(campo, struttura.id, struttura.nome, navController, prenotazioneViewModel)
         }
     }
 }
@@ -129,9 +133,8 @@ fun StrutturaDettaglioContent(
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun CampoCard(campo: Campo, strutturaId: String, strutturaNome: String, navController: NavController) {
-    val prenotazioniViewModel: PrenotazioneViewModel = hiltViewModel()
-
+fun CampoCard(campo: Campo, strutturaId: String, strutturaNome: String, navController: NavController, prenotazioneViewModel: PrenotazioneViewModel) {
+    val prenotazioni by prenotazioneViewModel.prenotazioni.collectAsState()
     var dataSelezionata by remember { mutableStateOf<Date?>(null) }
     var showOrariDialog by remember { mutableStateOf(false) }
     var orariSelezionati by remember { mutableStateOf<List<Pair<String, String>>>(emptyList()) }
@@ -168,15 +171,24 @@ fun CampoCard(campo: Campo, strutturaId: String, strutturaNome: String, navContr
             }
 
             if (showOrariDialog && dataSelezionata != null) {
+                val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                val dataString = sdf.format(dataSelezionata)
+
+                val prenotazioniOccupate = prenotazioni.filter {
+                    it.campoId == campo.id && it.data == dataString
+                }
+
                 SelezionaOrariDialog(
                     campo = campo,
                     data = dataSelezionata!!,
+                    prenotazioniOccupate = prenotazioniOccupate,
                     onDismiss = { showOrariDialog = false },
                     onOrariConfermati = { selezionati ->
                         orariSelezionati = selezionati
                         showOrariDialog = false
                     }
                 )
+
             }
 
             if (orariSelezionati.isNotEmpty()) {
@@ -232,7 +244,7 @@ fun CampoCard(campo: Campo, strutturaId: String, strutturaNome: String, navContr
                                         orarioInizio = slot.first,
                                         orarioFine = slot.second,
                                     )
-                                    prenotazioniViewModel.creaPrenotazione(prenotazione)
+                                    prenotazioneViewModel.creaPrenotazione(prenotazione)
                                     navController.navigate(GiocatorePrenotazioniRoute)
                                 }
                             },
