@@ -1,9 +1,10 @@
-package com.univpm.gameon.ui.struttura
+package com.univpm.gameon.ui.struttura.giocatore
 
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,10 +18,13 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -36,7 +40,10 @@ import com.univpm.gameon.data.collections.Campo
 import com.univpm.gameon.data.collections.Prenotazione
 import com.univpm.gameon.data.collections.Struttura
 import com.univpm.gameon.data.collections.TemplateGiornaliero
+import com.univpm.gameon.ui.components.BackgroundScaffold
+import com.univpm.gameon.ui.struttura.CampoDatePicker
 import com.univpm.gameon.viewmodels.PrenotazioneViewModel
+import com.univpm.gameon.viewmodels.StruttureViewModel
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -45,43 +52,69 @@ import java.util.Locale
 @Composable
 fun StrutturaDettaglioScreen(
     navController: NavController,
+    strutturaId: String,
+) {
+    val viewModel: StruttureViewModel = hiltViewModel()
+
+    val struttura by viewModel.strutturaSelezionata.collectAsState()
+    val campi by viewModel.campiStruttura.collectAsState()
+
+    LaunchedEffect(strutturaId) {
+        viewModel.caricaStruttura(strutturaId)
+    }
+
+    struttura?.let {
+        BackgroundScaffold {
+            StrutturaDettaglioContent(
+                navController = navController,
+                struttura = it,
+                campi = campi
+            )
+        }
+    } ?: Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        Text("Caricamento struttura...")
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+fun StrutturaDettaglioContent(
+    navController: NavController,
     struttura: Struttura,
     campi: List<Campo>
 ) {
-
-    Column(
+    LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .padding(16.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(
-            text = struttura.nome,
-            fontSize = 24.sp,
-            color = Color.White,
-            fontFamily = lemonMilkFontFamily
-        )
-        Text("Indirizzo: ${struttura.indirizzo}", color = Color.White, fontFamily = futuraBookFontFamily)
-        Text("Città: ${struttura.citta}", color = Color.White, fontFamily = futuraBookFontFamily)
-        Text(
-            "Sport disponibili: ${struttura.sportPraticabili.joinToString { it.name }}",
-            color = Color.White,
-            fontFamily = futuraBookFontFamily
-        )
+        item {
+            Text(
+                text = struttura.nome,
+                fontSize = 24.sp,
+                color = Color.White,
+                fontFamily = lemonMilkFontFamily
+            )
+            Spacer(Modifier.height(8.dp))
+            Text("Indirizzo: ${struttura.indirizzo}", color = Color.White, fontFamily = futuraBookFontFamily)
+            Text("Città: ${struttura.citta}", color = Color.White, fontFamily = futuraBookFontFamily)
+            Text(
+                "Sport disponibili: ${struttura.sportPraticabili.joinToString { it.label }}",
+                color = Color.White,
+                fontFamily = futuraBookFontFamily
+            )
+            Spacer(Modifier.height(20.dp))
+            Text("Campi Disponibili:", fontSize = 20.sp, color = Color.White, fontFamily = lemonMilkFontFamily)
+            Spacer(Modifier.height(15.dp))
+        }
 
-        Spacer(modifier = Modifier.height(16.dp))
-        Text("Campi Disponibili:", fontSize = 20.sp, color = Color.White, fontFamily = lemonMilkFontFamily)
-
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(top = 8.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
-            items(campi) { campo ->
-                CampoCard(campo, struttura.id, navController)
-            }
+        items(campi) { campo ->
+            CampoCard(campo, struttura.id, navController)
         }
     }
+
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -100,8 +133,8 @@ fun CampoCard(campo: Campo, strutturaId: String, navController: NavController) {
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text("Nome: ${campo.nomeCampo}", color = Color.White)
-            Text("Sport: ${campo.sport}", color = Color.White)
-            Text("Terreno: ${campo.tipologiaTerreno}", color = Color.White)
+            Text("Sport: ${campo.sport.label}", color = Color.White)
+            Text("Terreno: ${campo.tipologiaTerreno.label}", color = Color.White)
             Text("Prezzo orario: €${campo.prezzoOrario}", color = Color.White)
             Text("N. giocatori: ${campo.numeroGiocatori}", color = Color.White)
             Text("Spogliatoi: ${if (campo.spogliatoi) "Sì" else "No"}", color = Color.White)

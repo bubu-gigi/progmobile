@@ -1,4 +1,4 @@
-package com.univpm.gameon.ui.struttura
+package com.univpm.gameon.ui.struttura.giocatore
 
 import android.icu.util.Calendar
 import android.os.Build
@@ -22,6 +22,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import com.univpm.gameon.core.generaSlotOrari
 import com.univpm.gameon.core.lemonMilkFontFamily
 import com.univpm.gameon.data.collections.Campo
@@ -44,7 +45,7 @@ fun SelezionaOrariDialog(
     if (agenda != null) {
         val slots = generaSlotOrari(agenda.orarioApertura, agenda.orarioChiusura)
 
-        androidx.compose.ui.window.Dialog(onDismissRequest = onDismiss) {
+        Dialog(onDismissRequest = onDismiss) {
             Card(
                 modifier = Modifier
                     .fillMaxWidth()

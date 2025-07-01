@@ -29,7 +29,7 @@ import com.univpm.gameon.ui.GiocatoreHomeScreen
 import com.univpm.gameon.ui.carte.NuovaCartaScreen
 import com.univpm.gameon.ui.auth.LoginScreen
 import com.univpm.gameon.ui.auth.RegisterScreen
-import com.univpm.gameon.ui.struttura.StrutturaDettaglioScreen
+import com.univpm.gameon.ui.struttura.giocatore.StrutturaDettaglioScreen
 import com.univpm.gameon.ui.struttura.StrutturaFormScreen
 import com.univpm.gameon.viewmodels.PrenotazioneViewModel
 import com.univpm.gameon.viewmodels.StruttureViewModel
@@ -175,37 +175,7 @@ fun AppNavHost() {
         }
         composable<StrutturaDettaglioRoute> { entry ->
             val args = entry.toRoute<StrutturaDettaglioRoute>()
-            val viewModel: StruttureViewModel = hiltViewModel()
-
-            val struttura by viewModel.strutturaSelezionata.collectAsState()
-            val campi by viewModel.campiStruttura.collectAsState()
-            val errore by viewModel.errore.collectAsState()
-
-            LaunchedEffect(args.strutturaId) {
-                viewModel.caricaStruttura(args.strutturaId)
-            }
-
-            when {
-                errore != null -> {
-                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                        Text("Errore: $errore")
-                    }
-                }
-
-                struttura != null -> {
-                    StrutturaDettaglioScreen(
-                        navController = navController,
-                        struttura = struttura!!,
-                        campi = campi
-                    )
-                }
-
-                else -> {
-                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                        Text("Caricamento struttura...")
-                    }
-                }
-            }
+            StrutturaDettaglioScreen(navController = navController, strutturaId = args.strutturaId)
         }
         composable<GestionePrenotazioniAdminRoute> {
             val struttureViewModel: StruttureViewModel = hiltViewModel()
