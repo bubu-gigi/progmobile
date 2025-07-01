@@ -27,6 +27,7 @@ import com.univpm.gameon.R
 import com.univpm.gameon.core.ChatListScreenRoute
 import com.univpm.gameon.core.GiocatorePrenotazioniRoute
 import androidx.compose.runtime.getValue
+import com.univpm.gameon.ui.components.ButtonComponent
 import com.univpm.gameon.ui.components.CustomText
 import com.univpm.gameon.ui.components.RoundedButtonComponent
 
@@ -94,45 +95,23 @@ fun GiocatoreHomeScreen(navController: NavController) {
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                Box(
+                ButtonComponent(
+                    text = "Elimina Account",
+                    onClick = { authViewModel.deleteAccount() },
                     modifier = Modifier
                         .weight(1f)
                         .padding(8.dp)
-                        .border(BorderStroke(2.dp, Color(0xFFCFFF5E)), RoundedCornerShape(12.dp))
-                        .background(Color(0xFF6136FF), RoundedCornerShape(12.dp))
-                        .clickable {
-                            authViewModel.deleteAccount()
-                        }
-                        .padding(vertical = 15.dp)
-                ) {
-                    CustomText(
-                        text = "Elimina Account",
-                        fontSize = 18.sp,
-                        color = Color(0xFFCFFF5E),
-                        modifier = Modifier.fillMaxWidth(),
-                    )
-                }
+                )
 
-                Box(
+                ButtonComponent(
+                    text = "Logout",
+                    onClick = { authViewModel.logout() },
                     modifier = Modifier
                         .weight(1f)
                         .padding(8.dp)
-                        .border(BorderStroke(2.dp, Color(0xFFCFFF5E)), RoundedCornerShape(12.dp))
-                        .background(Color(0xFF6136FF), RoundedCornerShape(12.dp))
-                        .clickable {
-                            authViewModel.logout()
-                        }
-                        .padding(vertical = 15.dp)
-                ) {
-                    CustomText(
-                        text = "Logout",
-                        fontSize = 18.sp,
-                        color = Color(0xFFCFFF5E),
-                        modifier = Modifier.fillMaxWidth(),
-                    )
-                }
+                )
             }
         }
     }
