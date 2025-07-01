@@ -1,5 +1,6 @@
 package com.univpm.gameon.core
 
+import com.google.firebase.auth.FirebaseAuth
 import com.univpm.gameon.data.dao.impl.*
 import com.univpm.gameon.data.dao.interfaces.*
 import com.univpm.gameon.repositories.*
@@ -74,4 +75,8 @@ object AppModule {
     @Singleton
     fun provideMessaggioRepository(messageDao: MessaggioDao): MessaggioRepository =
         MessaggioRepositoryImpl(messageDao)
+
+    @Provides
+    @Singleton
+    fun provideFirebaseAuth(): FirebaseAuth = FirebaseAuth.getInstance()
 }

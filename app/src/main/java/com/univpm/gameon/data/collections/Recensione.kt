@@ -5,6 +5,5 @@ data class Recensione(
     val strutturaId: String = "",
     val utenteId: String = "",
     val rating: Int = 0,
-    val commento: String = "",
-    val timestamp: Long = System.currentTimeMillis()
+    val commento: String = ""
 )

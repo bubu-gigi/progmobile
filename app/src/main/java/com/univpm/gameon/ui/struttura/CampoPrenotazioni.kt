@@ -244,7 +244,6 @@ fun CampoPrenotazioniPreview() {
             data = "2025-06-21",
             orarioInizio = "10:00",
             orarioFine = "11:00",
-            pubblica = false
         ),
         Prenotazione(
             id = "pren2",
@@ -254,7 +253,6 @@ fun CampoPrenotazioniPreview() {
             data = "2025-06-21",
             orarioInizio = "14:00",
             orarioFine = "16:00",
-            pubblica = true
         )
     )
 

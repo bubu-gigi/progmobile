@@ -19,10 +19,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AuthViewModel @Inject constructor(
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val auth: FirebaseAuth = FirebaseAuth.getInstance()
 ) : ViewModel() {
-
-    private val auth = FirebaseAuth.getInstance()
 
     private val _authState = MutableStateFlow<String?>(null)
     val authState: StateFlow<String?> = _authState.asStateFlow()

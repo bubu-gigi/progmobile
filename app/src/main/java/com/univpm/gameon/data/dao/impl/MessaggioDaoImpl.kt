@@ -10,7 +10,7 @@ class MessaggioDaoImpl : MessaggioDao {
 
     override suspend fun getMessaggi(giocatoreId: String, strutturaId: String): List<Messaggio> {
         val convId = "conversation_${giocatoreId}_$strutturaId"
-        val snapshot = db.collection("messages")
+        val snapshot = db.collection("conversazioni")
             .document(convId)
             .collection("messages")
             .orderBy("timestamp")
@@ -37,7 +37,7 @@ class MessaggioDaoImpl : MessaggioDao {
             val strutturaNome = strutturaDoc.getString("nome") ?: "Struttura"
             val giocatoreNome = (giocatoreDoc.getString("name") + " " + giocatoreDoc.getString("cognome"))
 
-            db.collection("messages")
+            db.collection("conversazioni")
                 .document(convId)
                 .collection("messages")
                 .add(messaggio)
@@ -68,7 +68,7 @@ class MessaggioDaoImpl : MessaggioDao {
     override suspend fun deleteMessaggio(giocatoreId: String, strutturaId: String, messaggioId: String): Boolean {
         val convoId = "conversation_${giocatoreId}_$strutturaId"
         return try {
-            db.collection("messages")
+            db.collection("conversazioni")
                 .document(convoId)
                 .collection("messages")
                 .document(messaggioId)

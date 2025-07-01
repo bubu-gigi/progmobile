@@ -165,7 +165,6 @@ fun CampoCard(campo: Campo, strutturaId: String, navController: NavController) {
                                     data = dataString,
                                     orarioInizio = slot.first,
                                     orarioFine = slot.second,
-                                    pubblica = false
                                 )
                                 prenotazioniViewModel.creaPrenotazione(prenotazione)
                                 navController.navigate(GiocatorePrenotazioniRoute)
