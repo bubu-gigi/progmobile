@@ -53,6 +53,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
 import com.google.android.gms.maps.model.LatLng
 import com.univpm.gameon.core.getCurrentLocation
+import com.univpm.gameon.ui.components.BackgroundScaffold2
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -113,15 +114,14 @@ fun GiocatorePrenotazioniScreen(navController: NavController) {
         }
     }
 
-    BackgroundScaffold {
+    BackgroundScaffold2 {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(26.dp),
+                .padding(16.dp),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Spacer(Modifier.height(15.dp))
             CustomText(
                 text = "Le tue prenotazioni",
                 fontSize = 20.sp,

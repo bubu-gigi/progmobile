@@ -44,7 +44,7 @@ fun GiocatoreHomeScreen(navController: NavController) {
         }
     }
 
-    val background = painterResource(id = R.drawable.sfondobase)
+    val background = painterResource(id = R.drawable.sfondocarta)
 
     Box(modifier = Modifier.fillMaxSize()) {
         Image(
@@ -61,7 +61,7 @@ fun GiocatoreHomeScreen(navController: NavController) {
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Spacer(modifier = Modifier.height(465.dp))
+            Spacer(modifier = Modifier.height(45.dp))
 
             CustomText(
                 text = "BENVENUTO!",
