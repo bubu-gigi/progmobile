@@ -60,8 +60,7 @@ fun GiocatoreHomeScreen(navController: NavController) {
                 Text(
                     text = "Sei sicuro di voler eliminare il tuo account? Questa azione è irreversibile.",
                     textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.bodyMedium
-                )
+                    style = MaterialTheme.typography.bodyMedium)
             },
             confirmButton = {
                 TextButton(
