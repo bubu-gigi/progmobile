@@ -22,6 +22,9 @@ class PrenotazioneViewModel @Inject constructor(
     private val _prenotazioni= MutableStateFlow<List<Prenotazione>>(emptyList())
     val prenotazioni: StateFlow<List<Prenotazione>> = _prenotazioni
 
+    private val _prenotazione = MutableStateFlow<Prenotazione?>(null)
+    val prenotazione: StateFlow<Prenotazione?> = _prenotazione
+
     private val _error = MutableStateFlow<String?>(null)
     val error: StateFlow<String?> = _error
 
@@ -91,6 +94,17 @@ class PrenotazioneViewModel @Inject constructor(
                 } else {
                     UserSessionManager.userId?.let { caricaPrenotazioniUtente(it) }
                 }
+            }
+        }
+    }
+
+    fun caricaPrenotazione(id: String) {
+        _error.value = null
+        viewModelScope.launch {
+            try {
+                _prenotazione.value = repository.getPrenotazione(id)
+            } catch (e: Exception) {
+                _error.value = "Errore durante il caricamento: ${e.message}"
             }
         }
     }

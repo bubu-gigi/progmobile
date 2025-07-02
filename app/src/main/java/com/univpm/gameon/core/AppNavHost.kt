@@ -77,7 +77,8 @@ data class EditStrutturaRoute(
 
 @Serializable
 data class StrutturaDettaglioRoute(
-    val strutturaId: String
+    val strutturaId: String,
+    val prenotazioneId: String?
 )
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -146,7 +147,7 @@ fun AppNavHost() {
 
         composable<StrutturaDettaglioRoute> { entry ->
             val args = entry.toRoute<StrutturaDettaglioRoute>()
-            StrutturaDettaglioScreen(navController = navController, strutturaId = args.strutturaId)
+            StrutturaDettaglioScreen(navController = navController, strutturaId = args.strutturaId, prenotazioneId = args.prenotazioneId)
         }
 
         composable<GestionePrenotazioniAdminRoute> {

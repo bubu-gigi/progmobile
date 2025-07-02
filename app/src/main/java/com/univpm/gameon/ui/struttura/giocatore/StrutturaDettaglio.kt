@@ -56,6 +56,7 @@ import java.util.Locale
 fun StrutturaDettaglioScreen(
     navController: NavController,
     strutturaId: String,
+    prenotazioneId: String? = null
 ) {
     val strutturaviewModel: StruttureViewModel = hiltViewModel()
     val prenotazioneViewModel: PrenotazioneViewModel = hiltViewModel()
@@ -66,6 +67,9 @@ fun StrutturaDettaglioScreen(
     LaunchedEffect(strutturaId) {
         strutturaviewModel.caricaStruttura(strutturaId)
         prenotazioneViewModel.caricaTuttePrenotazioni()
+        if (prenotazioneId != null) {
+            prenotazioneViewModel.caricaPrenotazione(prenotazioneId)
+        }
     }
 
     struttura?.let {
@@ -139,6 +143,17 @@ fun CampoCard(campo: Campo, strutturaId: String, strutturaNome: String, navContr
     var dataSelezionata by remember { mutableStateOf<Date?>(null) }
     var showOrariDialog by remember { mutableStateOf(false) }
     var orariSelezionati by remember { mutableStateOf<List<Pair<String, String>>>(emptyList()) }
+    val prenotazioneSelezionata by prenotazioneViewModel.prenotazione.collectAsState()
+
+    LaunchedEffect(prenotazioneSelezionata) {
+        prenotazioneSelezionata?.let { pren ->
+            if (pren.campoId == campo.id) {
+                val formatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                dataSelezionata = formatter.parse(pren.data)
+                orariSelezionati = listOf(pren.orarioInizio to pren.orarioFine)
+            }
+        }
+    }
 
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -199,8 +214,9 @@ fun CampoCard(campo: Campo, strutturaId: String, strutturaNome: String, navContr
                     color = Color.White,
                     fontFamily = futuraBookFontFamily
                 )
-                orariSelezionati.forEach { slot ->
-                    Text("- ${slot.first} → ${slot.second}", color = Color.White)
+                val raggruppati = raggruppaSlotConsecutivi(orariSelezionati)
+                raggruppati.forEach { (inizio, fine) ->
+                    Text("- $inizio → $fine", color = Color.White)
                 }
                 Spacer(Modifier.height(12.dp))
             }
@@ -226,33 +242,38 @@ fun CampoCard(campo: Campo, strutturaId: String, strutturaNome: String, navContr
                     )
 
                     if(dataSelezionata != null && orariSelezionati.isNotEmpty()) {
+                        val isModifica = prenotazioneSelezionata?.let { it.campoId == campo.id } ?: false
+
                         Button(
                             onClick = {
                                 val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
                                 val dataString = sdf.format(dataSelezionata)
+                                val slotRaggruppati = raggruppaSlotConsecutivi(orariSelezionati)
 
-                                val prenotazioniRaggruppate =
-                                    raggruppaSlotConsecutivi(orariSelezionati)
+                                if (isModifica && prenotazioneSelezionata != null) {
+                                    prenotazioneViewModel.annullaPrenotazione(prenotazioneSelezionata!!.id)
+                                }
 
-                                prenotazioniRaggruppate.forEach { slot ->
+                                slotRaggruppati.forEach { (inizio, fine) ->
                                     val prenotazione = Prenotazione(
+                                        id = "-1",
                                         userId = UserSessionManager.userId ?: "",
                                         strutturaId = strutturaId,
                                         campoId = campo.id,
                                         strutturaNome = strutturaNome,
                                         campoNome = campo.nomeCampo,
                                         data = dataString,
-                                        orarioInizio = slot.first,
-                                        orarioFine = slot.second,
+                                        orarioInizio = inizio,
+                                        orarioFine = fine
                                     )
                                     prenotazioneViewModel.creaPrenotazione(prenotazione)
-                                    navController.navigate(GiocatorePrenotazioniRoute)
                                 }
+
+                                navController.navigate(GiocatorePrenotazioniRoute)
                             },
-                            modifier = Modifier.weight(1f),
                             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFCFFF5E))
                         ) {
-                            Text("Prenota", color = Color.Black)
+                            Text(if (isModifica) "Salva modifiche" else "Prenota", color = Color.Black)
                         }
                     }
             }

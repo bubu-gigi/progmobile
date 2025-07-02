@@ -171,10 +171,13 @@ fun GiocatorePrenotazioniScreen(navController: NavController) {
                                     modifier = Modifier.fillMaxWidth()
                                 ) {
                                     CustomText(
-                                        text = "Dettagli",
+                                        text = "Modifica",
                                         color = Color(0xFF69C9FF),
                                         modifier = Modifier.clickable {
-                                            navController.navigate(StrutturaDettaglioRoute(struttura?.id ?: ""))
+                                            navController.navigate(StrutturaDettaglioRoute(
+                                                strutturaId = struttura?.id ?: "",
+                                                prenotazioneId = pren.id,
+                                            ))
                                         }
                                     )
                                     CustomText(
@@ -218,7 +221,7 @@ fun GiocatorePrenotazioniScreen(navController: NavController) {
                 MappaStruttureConFiltri(
                     strutture = strutture,
                     onStrutturaSelezionata = {
-                        navController.navigate(StrutturaDettaglioRoute(it.id))
+                        navController.navigate(StrutturaDettaglioRoute(it.id, null))
                     },
                     userPosition = userPosition,
                     cameraPositionState = cameraPositionState,
