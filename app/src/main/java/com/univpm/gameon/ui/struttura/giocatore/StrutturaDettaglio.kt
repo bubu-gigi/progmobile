@@ -34,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.univpm.gameon.R
 import com.univpm.gameon.core.GiocatorePrenotazioniRoute
 import com.univpm.gameon.core.UserSessionManager
 import com.univpm.gameon.core.futuraBookFontFamily
@@ -68,7 +69,7 @@ fun StrutturaDettaglioScreen(
     }
 
     struttura?.let {
-        BackgroundScaffold {
+        BackgroundScaffold(backgroundResId = R.drawable.sfondocarta) {
             StrutturaDettaglioContent(
                 navController = navController,
                 struttura = it,

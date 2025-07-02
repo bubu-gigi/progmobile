@@ -41,6 +41,7 @@ import com.univpm.gameon.ui.components.CustomText
 import com.univpm.gameon.ui.components.Dropdown
 import androidx.compose.ui.graphics.Color
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.univpm.gameon.R
 import com.univpm.gameon.viewmodels.PrenotazioneViewModel
 import com.univpm.gameon.viewmodels.StruttureViewModel
 import kotlinx.coroutines.launch
@@ -114,7 +115,7 @@ fun GestionePrenotazioniAdminScreenContent(
         }
     }
 
-    BackgroundScaffold {
+    BackgroundScaffold(backgroundResId = R.drawable.sfondogrigio) {
         Column(modifier = Modifier
             .fillMaxSize()
             .padding(16.dp),

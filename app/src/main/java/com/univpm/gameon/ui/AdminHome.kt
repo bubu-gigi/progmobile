@@ -1,7 +1,6 @@
 package com.univpm.gameon.ui
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -17,8 +16,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -29,6 +26,7 @@ import com.univpm.gameon.core.EditProfileScreenRoute
 import com.univpm.gameon.core.GestionePrenotazioniAdminRoute
 import com.univpm.gameon.core.LoginScreenRoute
 import com.univpm.gameon.core.StruttureListRoute
+import com.univpm.gameon.ui.components.BackgroundScaffold
 import com.univpm.gameon.ui.components.CustomText
 import com.univpm.gameon.ui.components.RoundedButtonComponent
 import com.univpm.gameon.viewmodels.AuthViewModel
@@ -38,16 +36,7 @@ fun AdminHomeScreen(navController: NavController) {
 
     val authViewModel: AuthViewModel = hiltViewModel()
 
-    Box(
-        modifier = Modifier.fillMaxSize()
-    ) {
-        Image(
-            painter = painterResource(id = R.drawable.sfondobase),
-            contentDescription = "Sfondo",
-            modifier = Modifier.fillMaxSize(),
-            contentScale = ContentScale.Crop
-        )
-
+    BackgroundScaffold(backgroundResId = R.drawable.sfondobase) {
         Column(
             modifier = Modifier
                 .fillMaxSize()

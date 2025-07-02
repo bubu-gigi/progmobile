@@ -52,9 +52,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
 import com.google.android.gms.maps.model.LatLng
+import com.univpm.gameon.R
 import com.univpm.gameon.core.getCurrentLocation
-import com.univpm.gameon.ui.components.BackgroundScaffold2
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @RequiresApi(Build.VERSION_CODES.O)
@@ -114,7 +113,7 @@ fun GiocatorePrenotazioniScreen(navController: NavController) {
         }
     }
 
-    BackgroundScaffold2 {
+    BackgroundScaffold(backgroundResId = R.drawable.sfondogrigio) {
         Column(
             modifier = Modifier
                 .fillMaxSize()

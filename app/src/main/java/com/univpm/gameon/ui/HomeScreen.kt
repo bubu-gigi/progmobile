@@ -1,7 +1,6 @@
 package com.univpm.gameon.ui
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Arrangement
@@ -11,30 +10,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.univpm.gameon.R
 import com.univpm.gameon.core.futuraBookFontFamily
+import com.univpm.gameon.ui.components.BackgroundScaffold
 
 @Composable
 fun HomeScreen(
     onAccediClick: () -> Unit,
     onRegistratiClick: () -> Unit
 ) {
-    Box(
-        modifier = Modifier.fillMaxSize()
-    ) {
-        Image(
-            painter = painterResource(id = R.drawable.sfondointro),
-            contentDescription = "Sfondo",
-            modifier = Modifier.fillMaxSize(),
-            contentScale = ContentScale.Crop
-        )
-
+    BackgroundScaffold(backgroundResId = R.drawable.sfondointro) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -51,7 +40,10 @@ fun HomeScreen(
                 modifier = Modifier
                     .padding(20.dp)
                     .size(width = 190.dp, height = 50.dp)
-                    .border(BorderStroke(2.dp, Color(0xFFE36BE0)), shape = RoundedCornerShape(120.dp)),
+                    .border(
+                        BorderStroke(2.dp, Color(0xFFE36BE0)),
+                        shape = RoundedCornerShape(120.dp)
+                    ),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFF232323),
                     contentColor = Color.White
@@ -71,7 +63,10 @@ fun HomeScreen(
                 modifier = Modifier
                     .padding(8.dp)
                     .size(width = 190.dp, height = 50.dp)
-                    .border(BorderStroke(2.dp, Color(0xFFE36BE0)), shape = RoundedCornerShape(120.dp)),
+                    .border(
+                        BorderStroke(2.dp, Color(0xFFE36BE0)),
+                        shape = RoundedCornerShape(120.dp)
+                    ),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFF232323),
                     contentColor = Color.White

@@ -18,6 +18,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.univpm.gameon.R
 import com.univpm.gameon.core.lemonMilkFontFamily
 
 @Composable
@@ -43,7 +44,7 @@ fun LoginScreen(navController: NavController) {
     val errorMessage = listOfNotNull(emailError, passwordError)
         .firstOrNull() ?: authState?.takeIf { it.startsWith("FAILED") }
 
-    BackgroundScaffold {
+    BackgroundScaffold(backgroundResId = R.drawable.sfondocarta) {
         Column(
             modifier = Modifier
                 .fillMaxSize()

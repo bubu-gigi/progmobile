@@ -29,6 +29,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
 import com.google.android.gms.maps.model.LatLng
+import com.univpm.gameon.R
 import com.univpm.gameon.core.getCurrentLocation
 
 @Composable
@@ -68,7 +69,7 @@ fun StruttureListScreen(
         }
     }
 
-    BackgroundScaffold {
+    BackgroundScaffold(backgroundResId = R.drawable.sfondocarta) {
         Column(
             modifier = Modifier
                 .fillMaxSize()

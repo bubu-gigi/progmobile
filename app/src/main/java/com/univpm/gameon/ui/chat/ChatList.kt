@@ -4,7 +4,6 @@ import android.Manifest
 import android.content.pm.PackageManager
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -13,9 +12,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -28,6 +25,7 @@ import com.univpm.gameon.core.ChatScreenRoute
 import com.univpm.gameon.core.UserSessionManager
 import com.univpm.gameon.core.getCurrentLocation
 import com.univpm.gameon.core.lemonMilkFontFamily
+import com.univpm.gameon.ui.components.BackgroundScaffold
 import com.univpm.gameon.ui.components.ConversazioneCard
 import com.univpm.gameon.ui.components.MappaStruttureConFiltri
 import com.univpm.gameon.viewmodels.ChatViewModel
@@ -78,14 +76,7 @@ fun ChatListScreen(
         }
     }
 
-    Box(modifier = Modifier.fillMaxSize()) {
-        Image(
-            painter = painterResource(id = R.drawable.sfondocarta),
-            contentDescription = "Sfondo",
-            modifier = Modifier.fillMaxSize(),
-            contentScale = ContentScale.Crop
-        )
-
+    BackgroundScaffold(backgroundResId = R.drawable.sfondocarta) {
         Column(
             modifier = Modifier
                 .fillMaxSize()

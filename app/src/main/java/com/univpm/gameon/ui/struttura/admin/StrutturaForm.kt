@@ -16,6 +16,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.google.android.gms.maps.model.LatLng
+import com.univpm.gameon.R
 import com.univpm.gameon.core.StruttureListRoute
 import com.univpm.gameon.data.collections.Campo
 import com.univpm.gameon.data.collections.Struttura
@@ -70,7 +71,7 @@ fun StrutturaFormScreen(
         }
     }
 
-    BackgroundScaffold {
+    BackgroundScaffold(backgroundResId = R.drawable.sfondocarta) {
         Column(
             modifier = Modifier
                 .fillMaxSize()

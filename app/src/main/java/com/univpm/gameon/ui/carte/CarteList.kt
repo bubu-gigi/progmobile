@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.univpm.gameon.R
 import com.univpm.gameon.core.UserSessionManager
 import com.univpm.gameon.core.NuovaCartaScreenRoute
 import com.univpm.gameon.data.collections.Carta
@@ -35,7 +36,7 @@ fun CarteListScreen(navController: NavController) {
             carteViewModel.caricaCartePerUtente(it)
         }
     }
-    BackgroundScaffold {
+    BackgroundScaffold(backgroundResId = R.drawable.sfondocarta) {
         Column(
             modifier = Modifier
                 .fillMaxSize()

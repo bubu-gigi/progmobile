@@ -1,10 +1,5 @@
 package com.univpm.gameon.ui
 
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -13,9 +8,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -28,6 +20,7 @@ import com.univpm.gameon.core.ChatListScreenRoute
 import com.univpm.gameon.core.GiocatorePrenotazioniRoute
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.draw.clip
+import com.univpm.gameon.ui.components.BackgroundScaffold
 import com.univpm.gameon.ui.components.ButtonComponent
 import com.univpm.gameon.ui.components.CustomText
 import com.univpm.gameon.ui.components.RoundedButtonComponent
@@ -45,16 +38,7 @@ fun GiocatoreHomeScreen(navController: NavController) {
         }
     }
 
-    val background = painterResource(id = R.drawable.sfondobase)
-
-    Box(modifier = Modifier.fillMaxSize()) {
-        Image(
-            painter = background,
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier.matchParentSize()
-        )
-
+    BackgroundScaffold(backgroundResId = R.drawable.sfondobase) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -75,42 +59,44 @@ fun GiocatoreHomeScreen(navController: NavController) {
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp),
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
-            ){
-            RoundedButtonComponent(
-                text = "Gestione Prenotazioni",
-                onClick = { navController.navigate(GiocatorePrenotazioniRoute) },
-                modifier = Modifier
-                    .weight(1f)
-                    .height(60.dp)
-            )
-            RoundedButtonComponent(
-                text = "Modifica Profilo",
-                onClick = { navController.navigate(EditProfileScreenRoute) },
-                modifier = Modifier
-                    .weight(1f)
-                    .height(60.dp)
-            )}
+            ) {
+                RoundedButtonComponent(
+                    text = "Gestione Prenotazioni",
+                    onClick = { navController.navigate(GiocatorePrenotazioniRoute) },
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(60.dp)
+                )
+                RoundedButtonComponent(
+                    text = "Modifica Profilo",
+                    onClick = { navController.navigate(EditProfileScreenRoute) },
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(60.dp)
+                )
+            }
             Spacer(modifier = Modifier.height(5.dp))
             Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp),
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
-            ){
-            RoundedButtonComponent(
-                text = "Gestione Carte",
-                onClick = { navController.navigate(CarteListScreenRoute) },
                 modifier = Modifier
-                    .weight(1f)
-                    .height(60.dp)
-            )
-            RoundedButtonComponent(
-                text = "Contatta Strutture",
-                onClick = { navController.navigate(ChatListScreenRoute) },
-                modifier = Modifier
-                    .weight(1f)
-                    .height(60.dp)
-            )}
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp),
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                RoundedButtonComponent(
+                    text = "Gestione Carte",
+                    onClick = { navController.navigate(CarteListScreenRoute) },
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(60.dp)
+                )
+                RoundedButtonComponent(
+                    text = "Contatta Strutture",
+                    onClick = { navController.navigate(ChatListScreenRoute) },
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(60.dp)
+                )
+            }
 
             Spacer(modifier = Modifier.height(25.dp))
 
@@ -138,7 +124,6 @@ fun GiocatoreHomeScreen(navController: NavController) {
                         .clip(RoundedCornerShape(16.dp))
                 )
             }
-
         }
     }
 }

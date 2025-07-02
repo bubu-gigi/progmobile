@@ -1,11 +1,7 @@
 package com.univpm.gameon.ui.carte
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -14,11 +10,13 @@ import com.univpm.gameon.R
 import com.univpm.gameon.core.UserSessionManager
 import com.univpm.gameon.data.collections.Carta
 import com.univpm.gameon.data.collections.enums.CardProvider
+import com.univpm.gameon.ui.components.BackgroundScaffold
 import com.univpm.gameon.ui.components.ButtonComponent
 import com.univpm.gameon.ui.components.CustomText
 import com.univpm.gameon.ui.components.Dropdown
 import com.univpm.gameon.ui.components.OutlinedInputField
 import com.univpm.gameon.viewmodels.CarteViewModel
+import androidx.compose.ui.Modifier
 
 @Composable
 fun NuovaCartaScreen(navController: NavController) {
@@ -38,14 +36,7 @@ fun NuovaCartaScreen(navController: NavController) {
     var monthError by remember { mutableStateOf<String?>(null) }
     var yearError by remember { mutableStateOf<String?>(null) }
 
-    Box(modifier = Modifier.fillMaxSize()) {
-        Image(
-            painter = painterResource(id = R.drawable.sfondocarta),
-            contentDescription = "Sfondo",
-            modifier = Modifier.fillMaxSize(),
-            contentScale = ContentScale.Crop
-        )
-
+    BackgroundScaffold(backgroundResId = R.drawable.sfondocarta) {
         Column(modifier = Modifier
             .fillMaxSize()
             .padding(18.dp)) {

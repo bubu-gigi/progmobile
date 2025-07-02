@@ -1,7 +1,5 @@
 package com.univpm.gameon.ui.chat
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,14 +15,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.univpm.gameon.R
 import com.univpm.gameon.core.ChatScreenRoute
+import com.univpm.gameon.ui.components.BackgroundScaffold
 import com.univpm.gameon.ui.components.ConversazioneCard
 import com.univpm.gameon.ui.components.CustomText
 import com.univpm.gameon.ui.components.SearchBar
@@ -47,14 +44,7 @@ fun ChatListAdminScreen(
         it.strutturaNome.contains(searchQuery, ignoreCase = true)
     }
 
-    Box(modifier = Modifier.fillMaxSize()) {
-        Image(
-            painter = painterResource(id = R.drawable.sfondocarta),
-            contentDescription = "Sfondo",
-            modifier = Modifier.fillMaxSize(),
-            contentScale = ContentScale.Crop
-        )
-
+    BackgroundScaffold(backgroundResId = R.drawable.sfondocarta) {
         Column(modifier = Modifier
             .fillMaxSize()
             .padding(18.dp)) {
