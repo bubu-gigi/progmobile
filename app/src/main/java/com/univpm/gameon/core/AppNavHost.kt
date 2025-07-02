@@ -22,7 +22,11 @@ import com.univpm.gameon.ui.prenotazioni.GiocatorePrenotazioniScreen
 import com.univpm.gameon.ui.struttura.admin.StrutturaFormScreen
 import com.univpm.gameon.ui.struttura.admin.StruttureListScreen
 import com.univpm.gameon.ui.struttura.giocatore.StrutturaDettaglioScreen
+import com.univpm.gameon.ui.HomeScreen
 import kotlinx.serialization.Serializable
+
+@Serializable
+object HomeScreenRoute
 
 @Serializable
 object LoginScreenRoute
@@ -85,7 +89,14 @@ data class StrutturaDettaglioRoute(
 @Composable
 fun AppNavHost() {
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = LoginScreenRoute) {
+    NavHost(navController = navController, startDestination = HomeScreenRoute) {
+
+        composable<HomeScreenRoute> {
+            HomeScreen(
+                onAccediClick = { navController.navigate(LoginScreenRoute) },
+                onRegistratiClick = { navController.navigate(RegisterScreenRoute) }
+            )
+        }
 
         composable<LoginScreenRoute> {
             LoginScreen(navController)

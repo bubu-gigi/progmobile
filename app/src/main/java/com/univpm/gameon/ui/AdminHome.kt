@@ -35,6 +35,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.*
+import androidx.compose.ui.draw.clip
 
 import androidx.compose.ui.text.style.TextAlign
 
@@ -129,14 +130,13 @@ fun AdminHomeScreen(navController: NavController) {
             // Pulsante Logout
             Box(
                 modifier = Modifier
-                    .padding(8.dp)
-                    .border(BorderStroke(2.dp, Color(0xFFE36BE0)), shape = RoundedCornerShape(12.dp))
-                    .background(color = Color(0xFF232323), shape = RoundedCornerShape(12.dp))
-                    .clickable {
-                        authViewModel.logout()
-                        navController.navigate(LoginScreenRoute)
-                    }
-                    .padding(vertical = 15.dp, horizontal = 32.dp)
+                    .weight(1f)
+                    .height(70.dp)
+                    .clip(RoundedCornerShape(16.dp))
+                    .border(BorderStroke(2.dp, Color.White), shape = RoundedCornerShape(16.dp))
+                    .background(color = Color(0xFF440000))
+                    .clickable(onClick = { showDeleteDialog.value = true }),
+                contentAlignment = Alignment.Center
             ) {
                 CustomText(text = "Logout", fontSize = 18.sp, color = Color.White)
             }
