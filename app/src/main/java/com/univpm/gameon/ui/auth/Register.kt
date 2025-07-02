@@ -1,5 +1,6 @@
 package com.univpm.gameon.ui.auth
 
+import android.annotation.SuppressLint
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -18,6 +19,7 @@ import com.univpm.gameon.data.collections.User
 import com.univpm.gameon.ui.components.UserForm
 import com.univpm.gameon.viewmodels.AuthViewModel
 
+@SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 fun RegisterScreen(navController: NavController) {
     val authViewModel: AuthViewModel = hiltViewModel()

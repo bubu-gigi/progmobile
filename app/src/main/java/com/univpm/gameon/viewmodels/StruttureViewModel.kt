@@ -2,9 +2,11 @@ package com.univpm.gameon.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.univpm.gameon.core.UserSessionManager
 import com.univpm.gameon.data.collections.Campo
 import com.univpm.gameon.data.collections.Struttura
 import com.univpm.gameon.repositories.StrutturaRepository
+import com.univpm.gameon.repositories.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -14,7 +16,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class StruttureViewModel @Inject constructor(
-    private val repository: StrutturaRepository
+    private val repository: StrutturaRepository,
+    private val userRepository: UserRepository,
 ) : ViewModel() {
 
 
@@ -101,4 +104,25 @@ class StruttureViewModel @Inject constructor(
             }
         }
     }
+
+    fun modificaPreferiti(strutturaId: String) {
+        viewModelScope.launch {
+            val user = UserSessionManager.getCurrentUser() ?: return@launch
+            val nuoviPreferiti = if (strutturaId in user.preferiti) {
+                user.preferiti - strutturaId
+            } else {
+                user.preferiti + strutturaId
+            }
+
+            val utenteAggiornato = user.copy(preferiti = nuoviPreferiti)
+            val successo = userRepository.updateUser(user.id, utenteAggiornato)
+
+            if (successo) {
+                UserSessionManager.setCurrentUser(utenteAggiornato)
+            } else {
+                _errore.value = "Errore aggiornamento preferiti"
+            }
+        }
+    }
+
 }

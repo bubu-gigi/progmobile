@@ -12,13 +12,19 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -58,14 +64,14 @@ fun StrutturaDettaglioScreen(
     strutturaId: String,
     prenotazioneId: String? = null
 ) {
-    val strutturaviewModel: StruttureViewModel = hiltViewModel()
+    val strutturaViewModel: StruttureViewModel = hiltViewModel()
     val prenotazioneViewModel: PrenotazioneViewModel = hiltViewModel()
 
-    val struttura by strutturaviewModel.strutturaSelezionata.collectAsState()
-    val campi by strutturaviewModel.campiStruttura.collectAsState()
+    val struttura by strutturaViewModel.strutturaSelezionata.collectAsState()
+    val campi by strutturaViewModel.campiStruttura.collectAsState()
 
     LaunchedEffect(strutturaId) {
-        strutturaviewModel.caricaStruttura(strutturaId)
+        strutturaViewModel.caricaStruttura(strutturaId)
         prenotazioneViewModel.caricaTuttePrenotazioni()
         if (prenotazioneId != null) {
             prenotazioneViewModel.caricaPrenotazione(prenotazioneId)
@@ -79,6 +85,7 @@ fun StrutturaDettaglioScreen(
                 struttura = it,
                 campi = campi,
                 prenotazioneViewModel = prenotazioneViewModel,
+                strutturaViewModel = strutturaViewModel,
             )
         }
     } ?: Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -93,7 +100,10 @@ fun StrutturaDettaglioContent(
     struttura: Struttura,
     campi: List<Campo>,
     prenotazioneViewModel: PrenotazioneViewModel,
+    strutturaViewModel: StruttureViewModel,
 ) {
+    var isPreferito by remember { mutableStateOf(UserSessionManager.getCurrentUser()?.preferiti?.contains(struttura.id) == true) }
+
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -103,12 +113,30 @@ fun StrutturaDettaglioContent(
     ) {
         item {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(
-                    text = struttura.nome,
-                    fontSize = 26.sp,
-                    fontFamily = lemonMilkFontFamily,
-                    color = Color(0xFFCFFF5E)
-                )
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text(
+                        text = struttura.nome,
+                        fontSize = 26.sp,
+                        fontFamily = lemonMilkFontFamily,
+                        color = Color(0xFFCFFF5E)
+                    )
+
+                    Spacer(modifier = Modifier.width(8.dp))
+
+                    IconButton(
+                        onClick = {
+                            strutturaViewModel.modificaPreferiti(struttura.id)
+                            isPreferito = !isPreferito
+                        }
+                    ) {
+                        Icon(
+                            imageVector = if (isPreferito) Icons.Filled.Star else Icons.Outlined.Star,
+                            contentDescription = "Preferito",
+                            tint = if (isPreferito) Color.Yellow else Color.White
+                        )
+                    }
+                }
+
                 Spacer(Modifier.height(6.dp))
                 Text("Indirizzo: ${struttura.indirizzo}", color = Color.White, fontFamily = futuraBookFontFamily)
                 Text("Città: ${struttura.citta}", color = Color.White, fontFamily = futuraBookFontFamily)
@@ -120,6 +148,7 @@ fun StrutturaDettaglioContent(
             }
 
             Spacer(Modifier.height(16.dp))
+
             Text(
                 "Campi Disponibili:",
                 fontSize = 22.sp,
@@ -130,7 +159,13 @@ fun StrutturaDettaglioContent(
         }
 
         items(campi) { campo ->
-            CampoCard(campo, struttura.id, struttura.nome, navController, prenotazioneViewModel)
+            CampoCard(
+                campo = campo,
+                strutturaId = struttura.id,
+                strutturaNome = struttura.nome,
+                navController = navController,
+                prenotazioneViewModel = prenotazioneViewModel
+            )
         }
     }
 }

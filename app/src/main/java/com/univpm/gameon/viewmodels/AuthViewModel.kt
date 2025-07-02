@@ -45,11 +45,7 @@ class AuthViewModel @Inject constructor(
             try {
                 auth.signInWithEmailAndPassword(email, password).await()
                 val user = userRepository.getUserByEmail(email)
-                UserSessionManager.isLoggedIn = true
-                UserSessionManager.userRole = user?.ruolo
-                UserSessionManager.userId = user?.id
-                UserSessionManager.userNome = user?.name
-                UserSessionManager.userCognome = user?.cognome
+                user?.let { UserSessionManager.setCurrentUser(it) }
 
                 _destination.value = when (user?.ruolo) {
                     "Admin" -> AdminHomeScreenRoute
@@ -102,8 +98,7 @@ class AuthViewModel @Inject constructor(
 
                 userRepository.updateUser(id, updatedUser)
 
-                UserSessionManager.userRole = updatedUser.ruolo
-                UserSessionManager.userId = updatedUser.id
+                UserSessionManager.setCurrentUser(updatedUser)
 
                 _authState.value = "UPDATED"
                 _currentUser.value = updatedUser
