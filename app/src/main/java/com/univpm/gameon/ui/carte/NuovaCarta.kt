@@ -1,6 +1,7 @@
 package com.univpm.gameon.ui.carte
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.*
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -17,13 +18,20 @@ import com.univpm.gameon.ui.components.Dropdown
 import com.univpm.gameon.ui.components.OutlinedInputField
 import com.univpm.gameon.viewmodels.CarteViewModel
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 
 @Composable
 fun NuovaCartaScreen(navController: NavController) {
     val viewModel: CarteViewModel = hiltViewModel()
     val userId = UserSessionManager.userId ?: return
 
-    var holderName by remember { mutableStateOf("") }
+    var holderName by remember {
+        mutableStateOf(
+            listOfNotNull(UserSessionManager.userCognome, UserSessionManager.userNome)
+                .joinToString(" ")
+        )
+    }
     var cardNumber by remember { mutableStateOf("") }
     var cvv by remember { mutableStateOf("") }
     var month by remember { mutableStateOf("") }
@@ -63,7 +71,11 @@ fun NuovaCartaScreen(navController: NavController) {
                 value = cardNumber,
                 onValueChange = { cardNumber = it },
                 label = "Numero carta",
-                errorText = cardNumberError
+                errorText = cardNumberError,
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Number,
+                    imeAction = ImeAction.Done
+                )
             )
 
             Spacer(Modifier.height(8.dp))
@@ -72,10 +84,15 @@ fun NuovaCartaScreen(navController: NavController) {
                 value = cvv,
                 onValueChange = { cvv = it },
                 label = "CVV",
-                errorText = cvvError
+                errorText = cvvError,
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Number,
+                    imeAction = ImeAction.Done
+                )
             )
 
             Spacer(Modifier.height(8.dp))
+
 
             Row(
                 Modifier.fillMaxWidth(),
@@ -86,16 +103,25 @@ fun NuovaCartaScreen(navController: NavController) {
                     onValueChange = { month = it },
                     label = "Mese",
                     errorText = monthError,
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.weight(1f),
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Number,
+                        imeAction = ImeAction.Next
+                    )
                 )
                 OutlinedInputField(
                     value = year,
                     onValueChange = { year = it },
                     label = "Anno",
                     errorText = yearError,
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.weight(1f),
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Number,
+                        imeAction = ImeAction.Done
+                    )
                 )
             }
+
 
             Spacer(Modifier.height(8.dp))
 
@@ -115,8 +141,22 @@ fun NuovaCartaScreen(navController: NavController) {
                     holderNameError = if (holderName.isBlank()) "Campo obbligatorio" else null
                     cardNumberError = if (!cardNumber.matches(Regex("\\d{16}"))) "Numero non valido" else null
                     cvvError = if (!cvv.matches(Regex("\\d{3}"))) "CVV non valido" else null
-                    monthError = month.toIntOrNull()?.let { if (it in 1..12) null else "Mese non valido" } ?: "Mese obbligatorio"
-                    yearError = year.toIntOrNull()?.let { if (it >= 2024) null else "Anno non valido" } ?: "Anno obbligatorio"
+                    monthError = if (month.trim().isEmpty()) {
+                        "Mese obbligatorio"
+                    } else {
+                        month.trim().toIntOrNull()?.let {
+                            if (it in 1..12) null else "Mese non valido"
+                        }
+                    }
+
+                    yearError = if (year.trim().isEmpty()) {
+                        "Anno obbligatorio"
+                    } else {
+                        year.trim().toIntOrNull()?.let {
+                            if (it >= 2024) null else "Anno non valido"
+                        }
+                    }
+
 
                     val isValid = listOf(
                         holderNameError,

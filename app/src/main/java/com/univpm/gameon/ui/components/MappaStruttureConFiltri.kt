@@ -5,12 +5,12 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.LatLng
+import com.google.maps.android.compose.CameraPositionState
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
-import com.google.maps.android.compose.rememberCameraPositionState
 import com.univpm.gameon.data.collections.Struttura
 import com.univpm.gameon.data.collections.enums.Sport
 
@@ -19,6 +19,7 @@ fun MappaStruttureConFiltri(
     strutture: List<Struttura>,
     onStrutturaSelezionata: (Struttura) -> Unit,
     userPosition: LatLng? = null,
+    cameraPositionState: CameraPositionState,
     width: Dp = Dp.Unspecified,
     height: Dp = Dp.Unspecified
 ) {
@@ -35,14 +36,12 @@ fun MappaStruttureConFiltri(
                 (cittaFiltrata == null || it.citta.equals(cittaFiltrata, ignoreCase = true))
     }
 
-    val cameraPositionState = rememberCameraPositionState {
-        val fallback = strutture.firstOrNull()?.let {
-            LatLng(it.latitudine, it.longitudine)
-        }
-
-        val startPosition = userPosition ?: fallback
-        if (startPosition != null) {
-            position = CameraPosition.fromLatLngZoom(startPosition, 12f)
+    LaunchedEffect(userPosition) {
+        userPosition?.let {
+            cameraPositionState.animate(
+                update = CameraUpdateFactory.newLatLngZoom(it, 12f),
+                durationMs = 1000
+            )
         }
     }
 

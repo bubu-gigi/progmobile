@@ -1,36 +1,28 @@
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
-import com.univpm.gameon.core.EditStrutturaRoute
-import com.univpm.gameon.core.NuovaStrutturaRoute
-import com.univpm.gameon.ui.components.BackgroundScaffold
-import com.univpm.gameon.ui.components.ButtonComponent
-import com.univpm.gameon.ui.components.MappaStruttureConFiltri
-import com.univpm.gameon.viewmodels.StruttureViewModel
+package com.univpm.gameon.ui.struttura.admin
+
 import android.Manifest
 import android.content.pm.PackageManager
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.foundation.layout.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.google.android.gms.maps.model.LatLng
+import com.google.maps.android.compose.rememberCameraPositionState
 import com.univpm.gameon.R
+import com.univpm.gameon.core.EditStrutturaRoute
+import com.univpm.gameon.core.NuovaStrutturaRoute
 import com.univpm.gameon.core.getCurrentLocation
+import com.univpm.gameon.ui.components.BackgroundScaffold
+import com.univpm.gameon.ui.components.ButtonComponent
+import com.univpm.gameon.ui.components.MappaStruttureConFiltri
+import com.univpm.gameon.viewmodels.StruttureViewModel
 
 @Composable
 fun StruttureListScreen(
@@ -43,6 +35,8 @@ fun StruttureListScreen(
 
     var userPosition by remember { mutableStateOf<LatLng?>(null) }
     var permissionGranted by remember { mutableStateOf(false) }
+
+    val cameraPositionState = rememberCameraPositionState()
 
     val locationPermissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission(),
@@ -83,6 +77,7 @@ fun StruttureListScreen(
                     navController.navigate(EditStrutturaRoute(struttura.id))
                 },
                 userPosition = userPosition,
+                cameraPositionState = cameraPositionState,
                 height = 400.dp
             )
 

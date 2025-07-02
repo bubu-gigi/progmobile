@@ -19,7 +19,9 @@ import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.LatLng
+import com.google.maps.android.compose.rememberCameraPositionState
 import com.univpm.gameon.R
 import com.univpm.gameon.core.ChatScreenRoute
 import com.univpm.gameon.core.UserSessionManager
@@ -36,20 +38,20 @@ fun ChatListScreen(
     navController: NavController
 ) {
     val context = LocalContext.current
-    val viewModel: ChatViewModel = hiltViewModel()
+    val chatViewModel: ChatViewModel = hiltViewModel()
     val struttureViewModel: StruttureViewModel = hiltViewModel()
 
-    val conversazioni by viewModel.conversazioni.collectAsState()
+    val conversazioni by chatViewModel.conversazioni.collectAsState()
     val strutture by struttureViewModel.strutture.collectAsState()
 
     var userPosition by remember { mutableStateOf<LatLng?>(null) }
     var permissionGranted by remember { mutableStateOf(false) }
 
+    val cameraPositionState = rememberCameraPositionState()
+
     val locationPermissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission(),
-        onResult = { granted ->
-            permissionGranted = granted
-        }
+        onResult = { granted -> permissionGranted = granted }
     )
 
     LaunchedEffect(Unit) {
@@ -65,14 +67,21 @@ fun ChatListScreen(
 
         val userId = UserSessionManager.userId
         if (!userId.isNullOrBlank()) {
-            viewModel.loadConversazioniForUser(userId)
+            chatViewModel.loadConversazioniForUser(userId)
         }
         struttureViewModel.caricaStrutture()
     }
 
     LaunchedEffect(permissionGranted) {
         if (permissionGranted) {
-            userPosition = getCurrentLocation(context)
+            val location = getCurrentLocation(context)
+            if (location != null) {
+                userPosition = location
+                cameraPositionState.animate(
+                    update = CameraUpdateFactory.newLatLngZoom(location, 12f),
+                    durationMs = 1000
+                )
+            }
         }
     }
 
@@ -98,7 +107,6 @@ fun ChatListScreen(
             LazyColumn(modifier = Modifier.weight(1f)) {
                 items(conversazioni) { conv ->
                     val strutturaNome = strutture.find { it.id == conv.strutturaId }?.nome ?: conv.strutturaId
-
                     ConversazioneCard(
                         strutturaNome = strutturaNome,
                         ultimoMessaggio = conv.ultimoMessaggio,
@@ -125,10 +133,10 @@ fun ChatListScreen(
                     )
                 },
                 userPosition = userPosition,
+                cameraPositionState = cameraPositionState,
                 height = 300.dp,
                 width = Dp.Unspecified
             )
         }
     }
 }
-

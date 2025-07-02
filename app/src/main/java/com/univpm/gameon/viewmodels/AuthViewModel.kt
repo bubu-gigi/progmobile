@@ -48,6 +48,8 @@ class AuthViewModel @Inject constructor(
                 UserSessionManager.isLoggedIn = true
                 UserSessionManager.userRole = user?.ruolo
                 UserSessionManager.userId = user?.id
+                UserSessionManager.userNome = user?.name
+                UserSessionManager.userCognome = user?.cognome
 
                 _destination.value = when (user?.ruolo) {
                     "Admin" -> AdminHomeScreenRoute

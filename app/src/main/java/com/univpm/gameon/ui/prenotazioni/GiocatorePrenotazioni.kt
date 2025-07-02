@@ -1,3 +1,4 @@
+package com.univpm.gameon.ui.prenotazioni
 
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -52,6 +53,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
 import com.google.android.gms.maps.model.LatLng
+import com.google.maps.android.compose.rememberCameraPositionState
 import com.univpm.gameon.R
 import com.univpm.gameon.core.getCurrentLocation
 
@@ -74,10 +76,7 @@ fun GiocatorePrenotazioniScreen(navController: NavController) {
     var userPosition by remember { mutableStateOf<LatLng?>(null) }
     var permissionGranted by remember { mutableStateOf(false) }
 
-    val locationPermissionLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.RequestPermission(),
-        onResult = { granted -> permissionGranted = granted }
-    )
+    val cameraPositionState = rememberCameraPositionState()
 
     val oggi = LocalDate.now()
     val ora = LocalTime.now()
@@ -91,6 +90,10 @@ fun GiocatorePrenotazioniScreen(navController: NavController) {
             else -> true
         }
     }
+    val locationPermissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission(),
+        onResult = { granted -> permissionGranted = granted }
+    )
 
     LaunchedEffect(Unit) {
         struttureViewModel.caricaStrutture()
@@ -106,6 +109,7 @@ fun GiocatorePrenotazioniScreen(navController: NavController) {
             locationPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
         }
     }
+
 
     LaunchedEffect(permissionGranted) {
         if (permissionGranted) {
@@ -217,6 +221,7 @@ fun GiocatorePrenotazioniScreen(navController: NavController) {
                         navController.navigate(StrutturaDettaglioRoute(it.id))
                     },
                     userPosition = userPosition,
+                    cameraPositionState = cameraPositionState,
                     height = 300.dp
                 )
             }

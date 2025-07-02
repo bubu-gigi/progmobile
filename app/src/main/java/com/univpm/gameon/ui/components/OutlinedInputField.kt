@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -22,6 +23,7 @@ fun OutlinedInputField(
     label: String,
     isPassword: Boolean = false,
     errorText: String? = null,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     @SuppressLint("ModifierParameter") modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier) {
@@ -30,6 +32,7 @@ fun OutlinedInputField(
             onValueChange = onValueChange,
             label = { Text(label) },
             visualTransformation = if (isPassword) PasswordVisualTransformation() else VisualTransformation.None,
+            keyboardOptions = keyboardOptions,
             shape = RoundedCornerShape(12.dp),
             colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = Color(0xFFE36BE0),

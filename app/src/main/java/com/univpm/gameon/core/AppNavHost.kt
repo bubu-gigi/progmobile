@@ -1,7 +1,5 @@
 package com.univpm.gameon.core
 
-import GiocatorePrenotazioniScreen
-import StruttureListScreen
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
@@ -20,7 +18,9 @@ import com.univpm.gameon.ui.GiocatoreHomeScreen
 import com.univpm.gameon.ui.carte.NuovaCartaScreen
 import com.univpm.gameon.ui.auth.LoginScreen
 import com.univpm.gameon.ui.auth.RegisterScreen
+import com.univpm.gameon.ui.prenotazioni.GiocatorePrenotazioniScreen
 import com.univpm.gameon.ui.struttura.admin.StrutturaFormScreen
+import com.univpm.gameon.ui.struttura.admin.StruttureListScreen
 import com.univpm.gameon.ui.struttura.giocatore.StrutturaDettaglioScreen
 import kotlinx.serialization.Serializable
 
