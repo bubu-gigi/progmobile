@@ -113,7 +113,6 @@ fun AdminHomeScreen(navController: NavController) {
             )
             Spacer(modifier = Modifier.height(10.dp))
 
-            // Pulsante Elimina Account
             Box(
                 modifier = Modifier
                     .padding(8.dp)
@@ -127,7 +126,6 @@ fun AdminHomeScreen(navController: NavController) {
 
             Spacer(modifier = Modifier.height(4.dp))
 
-            // Pulsante Logout
             Box(
                 modifier = Modifier
                     .weight(1f)
@@ -135,7 +133,7 @@ fun AdminHomeScreen(navController: NavController) {
                     .clip(RoundedCornerShape(16.dp))
                     .border(BorderStroke(2.dp, Color.White), shape = RoundedCornerShape(16.dp))
                     .background(color = Color(0xFF440000))
-                    .clickable(onClick = { showDeleteDialog.value = true }),
+                    .clickable(onClick = { authViewModel.logout() }),
                 contentAlignment = Alignment.Center
             ) {
                 CustomText(text = "Logout", fontSize = 18.sp, color = Color.White)
