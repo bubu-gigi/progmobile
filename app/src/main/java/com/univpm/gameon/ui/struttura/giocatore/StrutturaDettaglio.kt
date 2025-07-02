@@ -73,7 +73,7 @@ fun StrutturaDettaglioScreen(
     }
 
     struttura?.let {
-        BackgroundScaffold(backgroundResId = R.drawable.sfondocarta) {
+        BackgroundScaffold(backgroundResId = R.drawable.sfondogrigio) {
             StrutturaDettaglioContent(
                 navController = navController,
                 struttura = it,

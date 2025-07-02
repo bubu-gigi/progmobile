@@ -38,7 +38,7 @@ fun EditProfileScreen(navController: NavController) {
             password = it.password
         }
     }
-
+    
     UserForm(
         title = "Modifica Profilo",
         name = name,

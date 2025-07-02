@@ -24,18 +24,58 @@ import com.univpm.gameon.ui.components.BackgroundScaffold
 import com.univpm.gameon.ui.components.ButtonComponent
 import com.univpm.gameon.ui.components.CustomText
 import com.univpm.gameon.ui.components.RoundedButtonComponent
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Text
+import androidx.compose.material3.Button
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.text.style.TextAlign
+// Aggiungi questi se non già presenti
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.TextButton
 
 @Composable
 fun GiocatoreHomeScreen(navController: NavController) {
     val authViewModel: AuthViewModel = hiltViewModel()
-
     val destination by authViewModel.destination.collectAsState()
+    val showDeleteDialog = remember { mutableStateOf(false) }
 
     LaunchedEffect(destination) {
         destination?.let {
             navController.navigate(it)
             authViewModel.clearDestination()
         }
+    }
+
+    if (showDeleteDialog.value) {
+        AlertDialog(
+            onDismissRequest = { showDeleteDialog.value = false },
+            title = { Text(text = "Conferma Eliminazione") },
+            text = {
+                Text(
+                    text = "Sei sicuro di voler eliminare il tuo account? Questa azione è irreversibile.",
+                    textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.bodyMedium
+                )
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        showDeleteDialog.value = false
+                        authViewModel.deleteAccount()
+                    }
+                ) {
+                    Text("Conferma")
+                }
+            },
+            dismissButton = {
+                TextButton(
+                    onClick = { showDeleteDialog.value = false }
+                ) {
+                    Text("Annulla")
+                }
+            }
+        )
     }
 
     BackgroundScaffold(backgroundResId = R.drawable.sfondobase) {
@@ -75,6 +115,7 @@ fun GiocatoreHomeScreen(navController: NavController) {
                         .height(60.dp)
                 )
             }
+
             Spacer(modifier = Modifier.height(5.dp))
             Row(
                 modifier = Modifier
@@ -108,7 +149,7 @@ fun GiocatoreHomeScreen(navController: NavController) {
             ) {
                 ButtonComponent(
                     text = "Elimina Account",
-                    onClick = { authViewModel.deleteAccount() },
+                    onClick = { showDeleteDialog.value = true },
                     modifier = Modifier
                         .weight(1f)
                         .height(70.dp)
@@ -127,3 +168,4 @@ fun GiocatoreHomeScreen(navController: NavController) {
         }
     }
 }
+

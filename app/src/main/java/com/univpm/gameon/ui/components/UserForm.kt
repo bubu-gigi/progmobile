@@ -39,6 +39,7 @@ fun UserForm(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
+            Spacer(modifier = Modifier.height(26.dp))
             Text(
                 text = title,
                 style = MaterialTheme.typography.headlineMedium,
