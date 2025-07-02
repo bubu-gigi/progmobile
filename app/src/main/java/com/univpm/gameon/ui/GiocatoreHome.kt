@@ -1,5 +1,9 @@
 package com.univpm.gameon.ui
 
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -33,6 +37,7 @@ import androidx.compose.ui.text.style.TextAlign
 // Aggiungi questi se non già presenti
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.TextButton
+import androidx.compose.ui.graphics.Color
 
 @Composable
 fun GiocatoreHomeScreen(navController: NavController) {
@@ -147,14 +152,19 @@ fun GiocatoreHomeScreen(navController: NavController) {
                     .padding(horizontal = 16.dp),
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                ButtonComponent(
-                    text = "Elimina Account",
-                    onClick = { showDeleteDialog.value = true },
+                Box(
                     modifier = Modifier
                         .weight(1f)
                         .height(70.dp)
                         .clip(RoundedCornerShape(16.dp))
-                )
+                        .border(BorderStroke(2.dp, Color.White), shape = RoundedCornerShape(16.dp))
+                        .background(color = Color(0xFF440000))
+                        .clickable(onClick = { showDeleteDialog.value = true }),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CustomText(text = "Elimina Account", fontSize = 16.sp, color = Color.White)
+                }
+
 
                 ButtonComponent(
                     text = "Logout",
@@ -165,6 +175,7 @@ fun GiocatoreHomeScreen(navController: NavController) {
                         .clip(RoundedCornerShape(16.dp))
                 )
             }
+
         }
     }
 }

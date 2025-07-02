@@ -30,11 +30,50 @@ import com.univpm.gameon.ui.components.BackgroundScaffold
 import com.univpm.gameon.ui.components.CustomText
 import com.univpm.gameon.ui.components.RoundedButtonComponent
 import com.univpm.gameon.viewmodels.AuthViewModel
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.*
+
+import androidx.compose.ui.text.style.TextAlign
+
 
 @Composable
 fun AdminHomeScreen(navController: NavController) {
-
     val authViewModel: AuthViewModel = hiltViewModel()
+    val showDeleteDialog = remember { mutableStateOf(false) }
+
+    if (showDeleteDialog.value) {
+        AlertDialog(
+            onDismissRequest = { showDeleteDialog.value = false },
+            title = { Text(text = "Conferma Eliminazione") },
+            text = {
+                Text(
+                    text = "Sei sicuro di voler eliminare il tuo account? Questa azione è irreversibile.",
+                    textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.bodyMedium
+                )
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        showDeleteDialog.value = false
+                        authViewModel.deleteAccount()
+                    }
+                ) {
+                    Text("Conferma")
+                }
+            },
+            dismissButton = {
+                TextButton(
+                    onClick = { showDeleteDialog.value = false }
+                ) {
+                    Text("Annulla")
+                }
+            }
+        )
+    }
 
     BackgroundScaffold(backgroundResId = R.drawable.sfondobase) {
         Column(
@@ -45,42 +84,61 @@ fun AdminHomeScreen(navController: NavController) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            Spacer(modifier = Modifier.height(470.dp))
+            Spacer(modifier = Modifier.height(170.dp))
             CustomText(text = "BENVENUTO!", fontSize = 28.sp)
             Spacer(modifier = Modifier.height(20.dp))
+
             RoundedButtonComponent(
                 text = "Gestione Account",
                 onClick = { navController.navigate(EditProfileScreenRoute) }
             )
             Spacer(modifier = Modifier.height(4.dp))
+
             RoundedButtonComponent(
                 text = "Gestione Prenotazioni",
                 onClick = { navController.navigate(GestionePrenotazioniAdminRoute) }
             )
             Spacer(modifier = Modifier.height(4.dp))
+
             RoundedButtonComponent(
                 text = "Gestione Strutture",
                 onClick = { navController.navigate(StruttureListRoute) }
             )
             Spacer(modifier = Modifier.height(4.dp))
+
             RoundedButtonComponent(
                 text = "Visualizza Messaggi",
                 onClick = { navController.navigate(ChatListAdminScreenRoute) }
             )
             Spacer(modifier = Modifier.height(10.dp))
+
+            // Pulsante Elimina Account
             Box(
                 modifier = Modifier
-                    .padding(16.dp)
-                    .border(BorderStroke(2.dp, Color(0xFFE36BE0)), shape = RoundedCornerShape(12.dp)) // Aggiunto il bordo con angoli arrotondati
-                    .background(
-                        color = Color(232323),
-                        shape = RoundedCornerShape(12.dp)
-                    )
-                    .clickable(onClick = {authViewModel.logout(); navController.navigate(
-                        LoginScreenRoute)})
+                    .padding(8.dp)
+                    .border(BorderStroke(2.dp, Color.Red), shape = RoundedCornerShape(12.dp))
+                    .background(color = Color(0xFF440000), shape = RoundedCornerShape(12.dp))
+                    .clickable(onClick = { showDeleteDialog.value = true })
                     .padding(vertical = 15.dp, horizontal = 32.dp)
             ) {
-                CustomText(text = "Logout", fontSize = 18.sp)
+                CustomText(text = "Elimina Account", fontSize = 18.sp, color = Color.White)
+            }
+
+            Spacer(modifier = Modifier.height(4.dp))
+
+            // Pulsante Logout
+            Box(
+                modifier = Modifier
+                    .padding(8.dp)
+                    .border(BorderStroke(2.dp, Color(0xFFE36BE0)), shape = RoundedCornerShape(12.dp))
+                    .background(color = Color(0xFF232323), shape = RoundedCornerShape(12.dp))
+                    .clickable {
+                        authViewModel.logout()
+                        navController.navigate(LoginScreenRoute)
+                    }
+                    .padding(vertical = 15.dp, horizontal = 32.dp)
+            ) {
+                CustomText(text = "Logout", fontSize = 18.sp, color = Color.White)
             }
         }
     }
