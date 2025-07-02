@@ -166,20 +166,25 @@ fun GiocatorePrenotazioniScreen(navController: NavController) {
                                 CustomText(text = "Orario: ${pren.orarioInizio} - ${pren.orarioFine}")
                                 Spacer(Modifier.height(8.dp))
 
+                                val data = LocalDate.parse(pren.data, formatter)
+                                val isModificabile = data.isAfter(oggi)
+
                                 Row(
                                     horizontalArrangement = Arrangement.SpaceBetween,
                                     modifier = Modifier.fillMaxWidth()
                                 ) {
-                                    CustomText(
-                                        text = "Modifica",
-                                        color = Color(0xFF69C9FF),
-                                        modifier = Modifier.clickable {
-                                            navController.navigate(StrutturaDettaglioRoute(
-                                                strutturaId = struttura?.id ?: "",
-                                                prenotazioneId = pren.id,
-                                            ))
-                                        }
-                                    )
+                                    if (isModificabile) {
+                                        CustomText(
+                                            text = "Modifica",
+                                            color = Color(0xFF69C9FF),
+                                            modifier = Modifier.clickable {
+                                                navController.navigate(StrutturaDettaglioRoute(
+                                                    strutturaId = struttura?.id ?: "",
+                                                    prenotazioneId = pren.id,
+                                                ))
+                                            }
+                                        )
+                                    }
                                     CustomText(
                                         text = "Elimina",
                                         color = Color.Red,
