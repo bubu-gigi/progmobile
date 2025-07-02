@@ -117,7 +117,7 @@ fun GiocatorePrenotazioniScreen(navController: NavController) {
         }
     }
 
-    BackgroundScaffold(backgroundResId = R.drawable.sfondogrigio) {
+    BackgroundScaffold(backgroundResId = R.drawable.sfondocarta) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
