@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -30,6 +31,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.univpm.gameon.R
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import com.univpm.gameon.core.futuraBookFontFamily
 import com.univpm.gameon.core.giornoLabel
 import com.univpm.gameon.core.lemonMilkFontFamily
@@ -69,12 +72,16 @@ fun CampoFormDialog(
 
             Surface(
                 shape = RoundedCornerShape(16.dp),
-                color = Color.Transparent
+                color = Color.Transparent,
+                modifier = Modifier.heightIn(max = 600.dp) // imposta un'altezza max per attivare lo scroll
             ) {
+                val scrollState = rememberScrollState()
+
                 Column(
                     modifier = Modifier
                         .padding(16.dp)
-                        .fillMaxWidth(),
+                        .fillMaxWidth()
+                        .verticalScroll(scrollState),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     CustomText(
