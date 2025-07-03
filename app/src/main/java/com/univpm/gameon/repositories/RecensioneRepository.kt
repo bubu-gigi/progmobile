@@ -8,4 +8,5 @@ interface RecensioneRepository {
     suspend fun saveRecensione(recensione: Recensione): Boolean
     suspend fun updateRecensione(id: String, recensione: Recensione): Boolean
     suspend fun deleteRecensione(strutturaId: String, utenteId: String): Boolean
+    suspend fun deleteRecensioniByUserId(userId: String): Boolean
 }

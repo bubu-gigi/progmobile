@@ -59,4 +59,18 @@ class CartaDaoImpl : CartaDao {
             false
         }
     }
+
+    override suspend fun deleteCarteByUserId(userId: String): Boolean {
+        return try {
+            carteCollection
+                .whereEqualTo("userId", userId)
+                .get()
+                .await()
+                .documents
+                .forEach { it.reference.delete() }
+            true
+        } catch (e: Exception) {
+            false
+        }
+    }
 }

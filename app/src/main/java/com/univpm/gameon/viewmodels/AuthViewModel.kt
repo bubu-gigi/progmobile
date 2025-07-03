@@ -8,6 +8,10 @@ import com.univpm.gameon.core.GiocatoreHomeScreenRoute
 import com.univpm.gameon.core.LoginScreenRoute
 import com.univpm.gameon.core.UserSessionManager
 import com.univpm.gameon.data.collections.User
+import com.univpm.gameon.repositories.CartaRepository
+import com.univpm.gameon.repositories.ConversazioneRepository
+import com.univpm.gameon.repositories.PrenotazioneRepository
+import com.univpm.gameon.repositories.RecensioneRepository
 import com.univpm.gameon.repositories.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,6 +24,10 @@ import javax.inject.Inject
 @HiltViewModel
 class AuthViewModel @Inject constructor(
     private val userRepository: UserRepository,
+    private val conversazioneRepository: ConversazioneRepository,
+    private val cartaRepository: CartaRepository,
+    private val prenotazioneRepository: PrenotazioneRepository,
+    private val recensioneRepository: RecensioneRepository,
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
 ) : ViewModel() {
 
@@ -111,7 +119,11 @@ class AuthViewModel @Inject constructor(
     fun deleteAccount() {
         viewModelScope.launch {
             try {
-                userRepository.removeUser(UserSessionManager.userId ?: "")
+                conversazioneRepository.deleteConversazioniByGiocatoreId(UserSessionManager.userId!!)
+                cartaRepository.deleteCarteByUserId(UserSessionManager.userId!!)
+                recensioneRepository.deleteRecensioniByUserId(UserSessionManager.userId!!)
+                prenotazioneRepository.deletePrenotazioniByUserId(UserSessionManager.userId!!)
+                userRepository.removeUser(UserSessionManager.userId!!)
                 auth.currentUser?.delete()?.await()
                 logout()
             } catch (e: Exception) {

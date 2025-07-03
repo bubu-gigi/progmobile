@@ -25,4 +25,9 @@ class CartaRepositoryImpl(private val cartaDao: CartaDao) : CartaRepository {
     override suspend fun deleteCarta(id: String): Boolean {
         return cartaDao.deleteCarta(id)
     }
+
+    suspend fun deleteCarteByUserId(userId: String): Boolean {
+        return cartaDao.deleteCarteByUserId(userId)
+    }
+
 }

@@ -10,4 +10,5 @@ interface ConversazioneDao {
     suspend fun getConversazione(giocatoreId: String, strutturaId: String): Conversazione?
     suspend fun addOrUpdateConversazione(conversazioneId: Conversazione): Boolean
     suspend fun deleteConversazione(giocatoreId: String, strutturaId: String): Boolean
+    suspend fun deleteConversazioniByGiocatoreId(giocatoreId: String): Boolean
 }

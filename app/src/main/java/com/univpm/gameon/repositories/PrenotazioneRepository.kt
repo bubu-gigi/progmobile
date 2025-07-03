@@ -9,4 +9,5 @@ interface PrenotazioneRepository {
     suspend fun savePrenotazione(prenotazione: Prenotazione): Boolean
     suspend fun updatePrenotazione(id: String, prenotazione: Prenotazione): Boolean
     suspend fun deletePrenotazione(id: String): Boolean
+    suspend fun deletePrenotazioniByUserId(userId: String): Boolean
 }

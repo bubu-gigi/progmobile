@@ -29,4 +29,8 @@ class PrenotazioneRepositoryImpl(private val dao: PrenotazioneDao) : Prenotazion
     override suspend fun deletePrenotazione(id: String): Boolean {
         return dao.deletePrenotazione(id)
     }
+
+    override suspend fun deletePrenotazioniByUserId(userId: String): Boolean {
+        return dao.deletePrenotazioniByUserId(userId)
+    }
 }

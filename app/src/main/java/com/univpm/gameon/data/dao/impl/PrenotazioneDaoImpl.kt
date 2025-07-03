@@ -70,4 +70,18 @@ class PrenotazioneDaoImpl : PrenotazioneDao {
             false
         }
     }
+
+    override suspend fun deletePrenotazioniByUserId(userId: String): Boolean {
+        return try {
+            prenotazioniCollection
+                .whereEqualTo("userId", userId)
+                .get()
+                .await()
+                .documents
+                .forEach { it.reference.delete() }
+            true
+        } catch (e: Exception) {
+            false
+        }
+    }
 }

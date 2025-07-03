@@ -78,4 +78,19 @@ class RecensioneDaoImpl : RecensioneDao {
             false
         }
     }
+
+    override suspend fun deleteRecensioniByUserId(userId: String): Boolean {
+        return try {
+            recensioniCollection
+                .whereEqualTo("utenteId", userId)
+                .get()
+                .await()
+                .documents
+                .forEach { it.reference.delete() }
+            true
+        } catch (e: Exception) {
+            e.printStackTrace()
+            false
+        }
+    }
 }

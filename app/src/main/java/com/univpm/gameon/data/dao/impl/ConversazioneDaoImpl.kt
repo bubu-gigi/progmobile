@@ -55,4 +55,18 @@ class ConversazioneDaoImpl : ConversazioneDao {
             false
         }
     }
+
+    override suspend fun deleteConversazioniByGiocatoreId(giocatoreId: String): Boolean {
+        return try {
+            conversationsCollection
+                .whereEqualTo("giocatoreId", giocatoreId)
+                .get()
+                .await()
+                .documents
+                .forEach { it.reference.delete() }
+            true
+        } catch (e: Exception) {
+            false
+        }
+    }
 }

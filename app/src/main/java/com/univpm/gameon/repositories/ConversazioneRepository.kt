@@ -9,4 +9,5 @@ interface ConversazioneRepository {
     suspend fun getConversazione(giocatoreId: String, strutturaId: String): Conversazione?
     suspend fun saveConversazione(conversazione: Conversazione): Boolean
     suspend fun deleteConversazione(giocatoreId: String, strutturaId: String): Boolean
+    suspend fun deleteConversazioniByGiocatoreId(giocatoreId: String): Boolean
 }

@@ -8,4 +8,5 @@ interface CartaDao {
     suspend fun addCarta(carta: Carta): Boolean
     suspend fun updateCarta(id: String, carta: Carta): Boolean
     suspend fun deleteCarta(id: String): Boolean
+    suspend fun deleteCarteByUserId(userId: String): Boolean
 }
