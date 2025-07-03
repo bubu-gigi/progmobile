@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,6 +28,7 @@ import com.univpm.gameon.core.getCurrentLocation
 import com.univpm.gameon.core.lemonMilkFontFamily
 import com.univpm.gameon.ui.components.BackgroundScaffold
 import com.univpm.gameon.ui.components.ConversazioneCard
+import com.univpm.gameon.ui.components.CustomText
 import com.univpm.gameon.ui.components.MappaStruttureConFiltri
 import com.univpm.gameon.viewmodels.ChatViewModel
 import com.univpm.gameon.viewmodels.StruttureViewModel
@@ -93,7 +93,7 @@ fun ChatListScreen(
         ) {
             Spacer(modifier = Modifier.height(210.dp))
 
-            Text(
+            CustomText(
                 text = "Le tue conversazioni:",
                 style = MaterialTheme.typography.headlineSmall.copy(
                     color = Color.White,

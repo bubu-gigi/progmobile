@@ -29,7 +29,7 @@ class ConversazioneRepositoryImpl(private val dao: ConversazioneDao) : Conversaz
         return dao.deleteConversazione(giocatoreId, strutturaId)
     }
 
-    suspend fun deleteConversazioniByGiocatoreId(giocatoreId: String): Boolean {
+    override suspend fun deleteConversazioniByGiocatoreId(giocatoreId: String): Boolean {
         return dao.deleteConversazioniByGiocatoreId(giocatoreId)
     }
 

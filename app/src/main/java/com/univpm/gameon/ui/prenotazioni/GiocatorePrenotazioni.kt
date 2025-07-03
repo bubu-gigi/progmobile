@@ -70,7 +70,6 @@ fun GiocatorePrenotazioniScreen(navController: NavController) {
     val prenotazioni by prenotazioniViewModel.prenotazioniUtente.collectAsState()
 
     var filtroSelezionato by remember { mutableStateOf("Tutte") }
-    var expanded by remember { mutableStateOf(false) }
     var dialogPrenotazioneId by remember { mutableStateOf<String?>(null) }
 
     var userPosition by remember { mutableStateOf<LatLng?>(null) }

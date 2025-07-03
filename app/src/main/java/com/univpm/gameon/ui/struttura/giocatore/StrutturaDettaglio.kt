@@ -51,6 +51,7 @@ import com.univpm.gameon.data.collections.Prenotazione
 import com.univpm.gameon.data.collections.Struttura
 import com.univpm.gameon.data.collections.TemplateGiornaliero
 import com.univpm.gameon.ui.components.BackgroundScaffold
+import com.univpm.gameon.ui.components.CustomText
 import com.univpm.gameon.viewmodels.PrenotazioneViewModel
 import com.univpm.gameon.viewmodels.StruttureViewModel
 import java.text.SimpleDateFormat
@@ -89,7 +90,7 @@ fun StrutturaDettaglioScreen(
             )
         }
     } ?: Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        Text("Caricamento struttura...")
+        CustomText(text = "Caricamento struttura...")
     }
 }
 
@@ -114,7 +115,7 @@ fun StrutturaDettaglioContent(
         item {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text(
+                    CustomText(
                         text = struttura.nome,
                         fontSize = 26.sp,
                         fontFamily = lemonMilkFontFamily,
@@ -138,10 +139,10 @@ fun StrutturaDettaglioContent(
                 }
 
                 Spacer(Modifier.height(6.dp))
-                Text("Indirizzo: ${struttura.indirizzo}", color = Color.White, fontFamily = futuraBookFontFamily)
-                Text("Città: ${struttura.citta}", color = Color.White, fontFamily = futuraBookFontFamily)
-                Text(
-                    "Sport disponibili: ${struttura.sportPraticabili.joinToString { it.label }}",
+                CustomText(text = "Indirizzo: ${struttura.indirizzo}", color = Color.White, fontFamily = futuraBookFontFamily)
+                CustomText(text = "Città: ${struttura.citta}", color = Color.White, fontFamily = futuraBookFontFamily)
+                CustomText(
+                    text = "Sport disponibili: ${struttura.sportPraticabili.joinToString { it.label }}",
                     color = Color.White,
                     fontFamily = futuraBookFontFamily
                 )
@@ -149,8 +150,8 @@ fun StrutturaDettaglioContent(
 
             Spacer(Modifier.height(16.dp))
 
-            Text(
-                "Campi Disponibili:",
+            CustomText(
+                text = "Campi Disponibili:",
                 fontSize = 22.sp,
                 fontFamily = lemonMilkFontFamily,
                 color = Color(0xFFCFFF5E)
@@ -196,17 +197,17 @@ fun CampoCard(campo: Campo, strutturaId: String, strutturaNome: String, navContr
         colors = CardDefaults.cardColors(containerColor = Color(0xFF2B2B2B)) // più contrasto sullo sfondo
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
-            Text("🏷️  ${campo.nomeCampo}", fontSize = 20.sp, color = Color(0xFFCFFF5E), fontFamily = lemonMilkFontFamily)
+            CustomText(text = "🏷️  ${campo.nomeCampo}", fontSize = 20.sp, color = Color(0xFFCFFF5E), fontFamily = lemonMilkFontFamily)
             Spacer(Modifier.height(10.dp))
 
-            Text("Sport: ${campo.sport.label}", color = Color.White, fontFamily = futuraBookFontFamily)
-            Text("Terreno: ${campo.tipologiaTerreno.label}", color = Color.White, fontFamily = futuraBookFontFamily)
-            Text("Prezzo orario: €${campo.prezzoOrario}", color = Color.White, fontFamily = futuraBookFontFamily)
-            Text("N. giocatori: ${campo.numeroGiocatori}", color = Color.White, fontFamily = futuraBookFontFamily)
-            Text("Spogliatoi: ${if (campo.spogliatoi) "Sì" else "No"}", color = Color.White, fontFamily = futuraBookFontFamily)
+            CustomText(text = "Sport: ${campo.sport.label}", color = Color.White, fontFamily = futuraBookFontFamily)
+            CustomText(text = "Terreno: ${campo.tipologiaTerreno.label}", color = Color.White, fontFamily = futuraBookFontFamily)
+            CustomText(text = "Prezzo orario: €${campo.prezzoOrario}", color = Color.White, fontFamily = futuraBookFontFamily)
+            CustomText(text = "N. giocatori: ${campo.numeroGiocatori}", color = Color.White, fontFamily = futuraBookFontFamily)
+            CustomText(text = "Spogliatoi: ${if (campo.spogliatoi) "Sì" else "No"}", color = Color.White, fontFamily = futuraBookFontFamily)
 
             Spacer(Modifier.height(15.dp))
-            Text("📆 Orari disponibili:", fontSize = 16.sp, color = Color(0xFFCFFF5E), fontFamily = futuraBookFontFamily)
+            Text(text = "📆 Orari disponibili:", fontSize = 16.sp, color = Color(0xFFCFFF5E), fontFamily = futuraBookFontFamily)
 
             Spacer(Modifier.height(4.dp))
             campo.disponibilitaSettimanale.forEach { giorno ->
@@ -218,7 +219,7 @@ fun CampoCard(campo: Campo, strutturaId: String, strutturaNome: String, navContr
             dataSelezionata?.let {
                 val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
                 Spacer(Modifier.height(8.dp))
-                Text("📅 Data selezionata: ${sdf.format(it)}", color = Color.White, fontFamily = futuraBookFontFamily)
+                CustomText(text = "📅 Data selezionata: ${sdf.format(it)}", color = Color.White, fontFamily = futuraBookFontFamily)
             }
 
             if (showOrariDialog && dataSelezionata != null) {
@@ -244,14 +245,14 @@ fun CampoCard(campo: Campo, strutturaId: String, strutturaNome: String, navContr
 
             if (orariSelezionati.isNotEmpty()) {
                 Spacer(Modifier.height(8.dp))
-                Text(
-                    "⏱️ Orari selezionati:",
+                CustomText(
+                    text = "⏱️ Orari selezionati:",
                     color = Color.White,
                     fontFamily = futuraBookFontFamily
                 )
                 val raggruppati = raggruppaSlotConsecutivi(orariSelezionati)
                 raggruppati.forEach { (inizio, fine) ->
-                    Text("- $inizio → $fine", color = Color.White)
+                    CustomText(text = "- $inizio → $fine", color = Color.White)
                 }
                 Spacer(Modifier.height(12.dp))
             }
@@ -322,5 +323,5 @@ fun GiornoDisponibilitaRow(giorno: TemplateGiornaliero) {
     val giorniSettimana = listOf("Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato", "Domenica")
     val nomeGiorno = giorniSettimana.getOrNull(giorno.giornoSettimana - 1) ?: "?"
 
-    Text("$nomeGiorno: ${giorno.orarioApertura} - ${giorno.orarioChiusura}", color = Color.White)
+    CustomText(text = "$nomeGiorno: ${giorno.orarioApertura} - ${giorno.orarioChiusura}", color = Color.White)
 }

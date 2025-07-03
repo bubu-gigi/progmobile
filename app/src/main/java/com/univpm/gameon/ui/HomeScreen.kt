@@ -1,22 +1,14 @@
 package com.univpm.gameon.ui
 
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.univpm.gameon.R
-import com.univpm.gameon.core.futuraBookFontFamily
 import com.univpm.gameon.ui.components.BackgroundScaffold
+import com.univpm.gameon.ui.components.RoundedButtonComponent
 
 @Composable
 fun HomeScreen(
@@ -31,65 +23,21 @@ fun HomeScreen(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-
-
             Spacer(modifier = Modifier.height(470.dp))
 
-            Button(
+            RoundedButtonComponent(
+                text = "Accedi",
                 onClick = onAccediClick,
                 modifier = Modifier
                     .padding(20.dp)
-                    .size(width = 190.dp, height = 50.dp)
-                    .border(
-                        BorderStroke(2.dp, Color(0xFFE36BE0)),
-                        shape = RoundedCornerShape(120.dp)
-                    ),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFF232323),
-                    contentColor = Color.White
-                )
-            ) {
-                Text(
-                    text = "Accedi",
-                    color = Color.White,
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Bold,
-                    fontFamily = futuraBookFontFamily
-                )
-            }
+            )
 
-            Button(
+            RoundedButtonComponent(
+                text = "Registrati",
                 onClick = onRegistratiClick,
                 modifier = Modifier
                     .padding(8.dp)
-                    .size(width = 190.dp, height = 50.dp)
-                    .border(
-                        BorderStroke(2.dp, Color(0xFFE36BE0)),
-                        shape = RoundedCornerShape(120.dp)
-                    ),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFF232323),
-                    contentColor = Color.White
-                )
-            ) {
-                Text(
-                    text = "Registrati",
-                    color = Color.White,
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Bold,
-                    fontFamily = futuraBookFontFamily
-                )
-            }
+            )
         }
     }
 }
-
-@Preview(showBackground = true)
-@Composable
-fun HomeScreenPreview() {
-    HomeScreen(
-        onAccediClick = {},
-        onRegistratiClick = {}
-    )
-}
-

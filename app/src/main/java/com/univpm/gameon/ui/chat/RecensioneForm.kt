@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
-import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconToggleButton
 import androidx.compose.material3.MaterialTheme
@@ -26,6 +25,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.univpm.gameon.data.collections.Recensione
+import com.univpm.gameon.ui.components.ButtonComponent
+import com.univpm.gameon.ui.components.CustomText
 import com.univpm.gameon.viewmodels.RecensioneViewModel
 
 @Composable
@@ -41,7 +42,7 @@ fun RecensioneForm(
     var recensioneInviata by remember { mutableStateOf(false) }
 
     Column(modifier = Modifier.padding(16.dp)) {
-        Text("Lascia una recensione", style = MaterialTheme.typography.titleMedium)
+        CustomText("Lascia una recensione", style = MaterialTheme.typography.titleMedium)
 
         Spacer(modifier = Modifier.height(8.dp))
 
@@ -69,7 +70,7 @@ fun RecensioneForm(
             modifier = Modifier.fillMaxWidth()
         )
 
-        Button(
+        ButtonComponent(
             onClick = {
                 if (rating > 0) {
                     val nuovaRecensione = Recensione(
@@ -91,9 +92,8 @@ fun RecensioneForm(
                     Toast.makeText(context, "Dai almeno 1 stella", Toast.LENGTH_SHORT).show()
                 }
             },
+            text = "Invia Recensione",
             modifier = Modifier.padding(top = 8.dp)
-        ) {
-            Text("Invia Recensione")
-        }
+        )
     }
 }

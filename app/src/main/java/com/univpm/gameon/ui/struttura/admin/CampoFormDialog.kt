@@ -37,6 +37,7 @@ import com.univpm.gameon.data.collections.Campo
 import com.univpm.gameon.data.collections.enums.Sport
 import com.univpm.gameon.data.collections.enums.TipologiaTerreno
 import com.univpm.gameon.ui.components.ButtonComponent
+import com.univpm.gameon.ui.components.CustomText
 import com.univpm.gameon.ui.components.Dropdown
 import com.univpm.gameon.ui.components.OutlinedInputField
 
@@ -76,7 +77,7 @@ fun CampoFormDialog(
                         .fillMaxWidth(),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    Text(
+                    CustomText(
                         text = if (campoDaModificare != null) "Modifica campo:" else "Aggiungi un nuovo campo:",
                         style = MaterialTheme.typography.titleLarge.copy(
                             color = Color.White,
@@ -124,7 +125,7 @@ fun CampoFormDialog(
                                 checkmarkColor = Color.Black
                             )
                         )
-                        Text(
+                        CustomText(
                             text = "Spogliatoi disponibili",
                             color = Color.White,
                             fontFamily = futuraBookFontFamily,
@@ -139,14 +140,14 @@ fun CampoFormDialog(
                                 .background(Color(0xFF1C1C1C), RoundedCornerShape(8.dp))
                                 .padding(8.dp)
                         ) {
-                            Text("Orari settimanali:", color = Color.White, fontFamily = futuraBookFontFamily)
+                            CustomText(text = "Orari settimanali:", color = Color.White, fontFamily = futuraBookFontFamily)
                             disponibilita.value.forEach { orario ->
                                 Row(
                                     modifier = Modifier.fillMaxWidth(),
                                     horizontalArrangement = Arrangement.SpaceBetween,
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
-                                    Text(
+                                    CustomText(
                                         text = "${giornoLabel(orario.giornoSettimana)} ${orario.orarioApertura} - ${orario.orarioChiusura}",
                                         color = Color.White,
                                         fontFamily = futuraBookFontFamily

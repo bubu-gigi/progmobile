@@ -51,11 +51,11 @@ fun CarteListScreen(navController: NavController) {
             )
             Spacer(modifier = Modifier.height(8.dp))
 
-            Text(
+            CustomText(
                 text = "Tocca una carta per selezionarla come metodo di pagamento predefinito",
                 color = Color.DarkGray,
-                fontSize = 14.sp
             )
+
             Spacer(modifier = Modifier.height(16.dp))
 
             errore?.let {

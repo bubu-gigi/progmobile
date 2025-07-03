@@ -2,11 +2,10 @@ package com.univpm.gameon.ui.struttura.giocatore
 
 import android.app.DatePickerDialog
 import android.widget.Toast
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import com.univpm.gameon.data.collections.Campo
+import com.univpm.gameon.ui.components.ButtonComponent
 import java.util.Calendar
 import java.util.Date
 
@@ -20,7 +19,7 @@ fun CampoDatePicker(
     val today = Calendar.getInstance()
     val giorniDisponibili = campo.disponibilitaSettimanale.map { it.giornoSettimana }
 
-    Button(onClick = {
+    ButtonComponent(text = textButton!!, onClick = {
         val datePicker = DatePickerDialog(
             context,
             { _, year, month, dayOfMonth ->
@@ -47,7 +46,5 @@ fun CampoDatePicker(
 
         datePicker.datePicker.minDate = System.currentTimeMillis()
         datePicker.show()
-    }) {
-        Text(text = textButton!!)
-    }
+    })
 }

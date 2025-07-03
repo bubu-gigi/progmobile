@@ -41,6 +41,8 @@ import androidx.compose.material.icons.outlined.Star
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
+import com.univpm.gameon.ui.components.ButtonComponent
+import com.univpm.gameon.ui.components.CustomText
 
 @Composable
 fun ChatScreen(
@@ -104,7 +106,7 @@ fun ChatScreen(
                 .padding(16.dp),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Text(
+            CustomText(
                 text = "Chat con $strutturaNome",
                 style = MaterialTheme.typography.titleMedium
             )
@@ -132,21 +134,17 @@ fun ChatScreen(
                             title = { Text("Elimina recensione") },
                             text = { Text("Vuoi davvero eliminare la tua recensione?") },
                             confirmButton = {
-                                Button(onClick = {
+                                ButtonComponent(text = "Sì", onClick = {
                                     recensioneViewModel.eliminaRecensione(strutturaId, giocatoreId) { success ->
                                         if (success) {
                                             recensioneViewModel.getRecensioneUtente(strutturaId, giocatoreId)
                                             showDeleteDialog = false
                                         }
                                     }
-                                }) {
-                                    Text("Sì")
-                                }
+                                })
                             },
                             dismissButton = {
-                                Button(onClick = { showDeleteDialog = false }) {
-                                    Text("Chiudi")
-                                }
+                                ButtonComponent(text = "Chiudi", onClick = { showDeleteDialog = false })
                             }
                         )
                     }

@@ -9,7 +9,6 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -51,7 +50,7 @@ fun GooglePlacesAutocomplete(onPlaceSelected: (String, LatLng) -> Unit, modifier
             containerColor = Color(0xFF6136FF)
         )
     ) {
-        Text(
+        CustomText(
             text = "Cerca indirizzo",
             fontSize = 18.sp,
             fontFamily = futuraBookFontFamily,

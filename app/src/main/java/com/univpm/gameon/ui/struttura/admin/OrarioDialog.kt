@@ -10,6 +10,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.univpm.gameon.data.collections.TemplateGiornaliero
 import com.univpm.gameon.ui.components.ButtonComponent
+import com.univpm.gameon.ui.components.CustomText
 import com.univpm.gameon.ui.components.Dropdown
 import com.univpm.gameon.ui.components.TimeInput
 
@@ -36,7 +37,7 @@ fun OrarioDialog(
                 modifier = Modifier.padding(16.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                Text(
+                CustomText(
                     text = "Seleziona giorno e orari",
                     color = Color.White,
                     style = MaterialTheme.typography.titleMedium

@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.univpm.gameon.R
 import com.univpm.gameon.core.lemonMilkFontFamily
+import com.univpm.gameon.ui.components.CustomText
 
 @Composable
 fun LoginScreen(navController: NavController) {
@@ -52,7 +53,7 @@ fun LoginScreen(navController: NavController) {
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(
+            CustomText(
                 text = "Login",
                 color = Color.White,
                 fontSize = 23.sp,

@@ -5,6 +5,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
@@ -18,14 +19,18 @@ fun CustomText(
     fontWeight: FontWeight = FontWeight.Bold,
     fontFamily: FontFamily = futuraBookFontFamily,
     modifier: Modifier = Modifier,
+    style: TextStyle? = null,
 ) {
     Text(
         text = text,
         color = color,
-        fontSize = fontSize,
-        fontWeight = fontWeight,
-        fontFamily = fontFamily,
-        letterSpacing = 2.sp,
-        modifier = modifier
+        modifier = modifier,
+        style = style ?: TextStyle(
+            fontSize = fontSize,
+            fontWeight = fontWeight,
+            fontFamily = fontFamily,
+            letterSpacing = 2.sp,
+        )
     )
 }
+

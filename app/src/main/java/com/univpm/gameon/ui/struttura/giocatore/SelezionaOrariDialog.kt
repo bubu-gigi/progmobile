@@ -27,6 +27,7 @@ import com.univpm.gameon.core.generaSlotOrari
 import com.univpm.gameon.core.lemonMilkFontFamily
 import com.univpm.gameon.data.collections.Campo
 import com.univpm.gameon.data.collections.Prenotazione
+import com.univpm.gameon.ui.components.CustomText
 import java.util.Date
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -60,8 +61,8 @@ fun SelezionaOrariDialog(
                 colors = CardDefaults.cardColors(containerColor = Color(0xFF2B2B2B))
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
-                    Text(
-                        "Seleziona orari disponibili:",
+                    CustomText(
+                        text = "Seleziona orari disponibili:",
                         color = Color.White,
                         fontFamily = lemonMilkFontFamily
                     )
