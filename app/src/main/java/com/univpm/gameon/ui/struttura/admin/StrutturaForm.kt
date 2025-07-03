@@ -24,10 +24,12 @@ import com.univpm.gameon.ui.components.*
 import com.univpm.gameon.viewmodels.StruttureViewModel
 
 @Composable
+
 fun StrutturaFormScreen(
     navController: NavController,
     strutturaId: String? = null
 ) {
+
     val struttureViewModel: StruttureViewModel = hiltViewModel()
     val context = LocalContext.current
     val isEdit = strutturaId != null
@@ -71,7 +73,7 @@ fun StrutturaFormScreen(
         }
     }
 
-    BackgroundScaffold(backgroundResId = R.drawable.sfondocarta) {
+    BackgroundScaffold(backgroundResId = R.drawable.sfondogrigio) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -84,7 +86,7 @@ fun StrutturaFormScreen(
                 contentPadding = PaddingValues(bottom = 16.dp)
             ) {
                 item {
-                    Spacer(modifier = Modifier.height(210.dp))
+                    Spacer(modifier = Modifier.height(190.dp))
                     CustomText(
                         text = if (isEdit) "Modifica Struttura:" else "Dettagli Struttura:",
                         fontSize = 23.sp
@@ -145,6 +147,7 @@ fun StrutturaFormScreen(
                                     },
                                     colors = ButtonDefaults.buttonColors(containerColor = Color.Gray),
                                     modifier = Modifier.weight(1f)
+                                        .height(48.dp)
                                 ) {
                                     Text("Modifica", color = Color.White)
                                 }
@@ -155,6 +158,7 @@ fun StrutturaFormScreen(
                                     },
                                     colors = ButtonDefaults.buttonColors(containerColor = Color.Red),
                                     modifier = Modifier.weight(1f)
+                                        .height(48.dp)
                                 ) {
                                     Text("Elimina", color = Color.White)
                                 }
@@ -164,22 +168,50 @@ fun StrutturaFormScreen(
                 }
             }
 
-            Column(
-                modifier = Modifier.fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
+            if (isEdit && struttura != null) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    ButtonComponent(
+                        text = "Aggiorna struttura",
+                        onClick = {
+                            latLng?.let {
+                                val nuovaStruttura = struttura!!.copy(
+                                    nome = nome,
+                                    indirizzo = indirizzo,
+                                    citta = citta,
+                                    latitudine = it.latitude,
+                                    longitudine = it.longitude,
+                                    sportPraticabili = campi.map { campo -> campo.sport }.distinct()
+                                )
+                                struttureViewModel.aggiornaStruttura(strutturaId, nuovaStruttura, campi)
+                                navController.navigate(StruttureListRoute)
+                            }
+                        },
+                        modifier = Modifier.weight(1f)
+                            .height(68.dp)
+                    )
+
+                    ButtonComponentElimina(
+                        text = "Elimina struttura",
+                        onClick = {
+                            struttureViewModel.eliminaStruttura(strutturaId)
+                            navController.navigate(StruttureListRoute)
+                        },
+                        modifier = Modifier.weight(1f)
+                            .height(68.dp)
+
+                    )
+                }
+            } else {
                 ButtonComponent(
-                    text = if (isEdit) "Aggiorna struttura" else "Salva struttura",
+                    text = "Salva struttura",
                     onClick = {
                         latLng?.let {
-                            val nuovaStruttura = struttura?.copy(
-                                nome = nome,
-                                indirizzo = indirizzo,
-                                citta = citta,
-                                latitudine = it.latitude,
-                                longitudine = it.longitude,
-                                sportPraticabili = campi.map { campo -> campo.sport }.distinct()
-                            ) ?: Struttura(
+                            val nuovaStruttura = Struttura(
                                 nome = nome,
                                 indirizzo = indirizzo,
                                 citta = citta,
@@ -187,30 +219,16 @@ fun StrutturaFormScreen(
                                 longitudine = it.longitude,
                                 sportPraticabili = campi.map { campo -> campo.sport }.distinct()
                             )
-
-                            if (isEdit) {
-                                struttureViewModel.aggiornaStruttura(strutturaId!!, nuovaStruttura, campi)
-                            } else {
-                                struttureViewModel.salvaStruttura(nuovaStruttura, campi)
-                            }
-
+                            struttureViewModel.salvaStruttura(nuovaStruttura, campi)
                             navController.navigate(StruttureListRoute)
                         }
                     },
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 8.dp)
                 )
-
-                if (isEdit && struttura != null) {
-                    ButtonComponent(
-                        text = "Elimina struttura",
-                        onClick = {
-                            struttureViewModel.eliminaStruttura(strutturaId!!)
-                            navController.navigate(StruttureListRoute)
-                        },
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                }
             }
+
         }
 
         if (showCampoDialog) {
