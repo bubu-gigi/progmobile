@@ -101,7 +101,38 @@ fun CartaItem(
     onClick: () -> Unit,
     onDelete: () -> Unit
 ) {
+    var showDialog by remember { mutableStateOf(false) }
+
     val bgColor = if (isSelected) Color(0xFFB2FFB2) else Color(0xFFD3D3D3)
+
+    if (showDialog) {
+        AlertDialog(
+            onDismissRequest = { showDialog = false },
+            title = {
+                Text("Conferma eliminazione")
+            },
+            text = {
+                Text("Sei sicuro di voler eliminare questa carta?")
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        onDelete()
+                        showDialog = false
+                    }
+                ) {
+                    Text("Conferma")
+                }
+            },
+            dismissButton = {
+                TextButton(
+                    onClick = { showDialog = false }
+                ) {
+                    Text("Annulla")
+                }
+            }
+        )
+    }
 
     Card(
         modifier = Modifier
@@ -126,7 +157,7 @@ fun CartaItem(
 
             ButtonComponent(
                 text = "Elimina",
-                onClick = onDelete,
+                onClick = { showDialog = true },
                 modifier = Modifier
                     .padding(start = 12.dp)
                     .widthIn(min = 100.dp)
