@@ -158,16 +158,28 @@ fun StrutturaDettaglioContent(
             )
             Spacer(Modifier.height(14.dp))
         }
-
-        items(campi) { campo ->
-            CampoCard(
-                campo = campo,
-                strutturaId = struttura.id,
-                strutturaNome = struttura.nome,
-                navController = navController,
-                prenotazioneViewModel = prenotazioneViewModel
-            )
+        if (campi.isEmpty()) {
+            item {
+                Spacer(modifier = Modifier.height(12.dp))
+                CustomText(
+                    text = "Nessun campo disponibile per questa struttura.",
+                    color = Color.White,
+                    fontSize = 16.sp,
+                    fontFamily = futuraBookFontFamily
+                )
+            }
+        } else {
+            items(campi) { campo ->
+                CampoCard(
+                    campo = campo,
+                    strutturaId = struttura.id,
+                    strutturaNome = struttura.nome,
+                    navController = navController,
+                    prenotazioneViewModel = prenotazioneViewModel
+                )
+            }
         }
+
     }
 }
 
