@@ -170,10 +170,14 @@ fun StrutturaFormScreen(
                     ButtonComponent(
                         text = "Elimina struttura",
                         onClick = { showDeleteDialog = true },
-                        modifier = Modifier.weight(1f).height(68.dp)
-                            .border(BorderStroke(3.dp, Color.Red), RoundedCornerShape(12.dp))
-                            .background(Color.Transparent, RoundedCornerShape(12.dp))
+                        modifier = Modifier
+                            .weight(1f)
+                            .height(68.dp),
+                        backgroundColor = Color.Red,
+                        textColor = Color.White,
+                        borderColor = Color.Red
                     )
+
                 }
 
                 if (showDeleteDialog) {

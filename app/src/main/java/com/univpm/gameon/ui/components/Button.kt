@@ -13,21 +13,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-
 @Composable
 fun ButtonComponent(
     text: String,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    backgroundColor: Color = Color(0xFF6136FF),
+    textColor: Color = Color(0xFFCFFF5E),
+    borderColor: Color = Color(0xFFCFFF5E)
 ) {
     Button(
         onClick = onClick,
         modifier = modifier
-            .border(BorderStroke(3.dp, Color(0xFFCFFF5E)), RoundedCornerShape(12.dp))
-            .background(Color(0xFF6136FF), RoundedCornerShape(12.dp))
+            .border(BorderStroke(3.dp, borderColor), RoundedCornerShape(12.dp))
+            .background(backgroundColor, RoundedCornerShape(12.dp))
             .padding(horizontal = 16.dp, vertical = 6.dp),
         colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
     ) {
-        Text(text = text, color = Color(0xFFCFFF5E), fontSize = 18.sp)
+        Text(text = text, color = textColor, fontSize = 18.sp)
     }
 }
