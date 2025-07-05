@@ -1,14 +1,18 @@
 package com.univpm.gameon.ui.struttura.admin
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -33,6 +37,8 @@ import androidx.compose.ui.window.Dialog
 import com.univpm.gameon.R
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.unit.sp
 import com.univpm.gameon.core.futuraBookFontFamily
 import com.univpm.gameon.core.giornoLabel
 import com.univpm.gameon.core.lemonMilkFontFamily
@@ -47,7 +53,8 @@ import com.univpm.gameon.ui.components.OutlinedInputField
 @Composable
 fun CampoFormDialog(
     campoDaModificare: Campo? = null,
-    onCampoAdded: (Campo) -> Unit
+    onCampoAdded: (Campo) -> Unit,
+    onDismiss: () -> Unit
 ) {
     var nome by remember { mutableStateOf(campoDaModificare?.nomeCampo ?: "") }
     var sport by remember { mutableStateOf(campoDaModificare?.sport ?: Sport.CALCIO5) }
@@ -61,7 +68,7 @@ fun CampoFormDialog(
 
     var showOrarioDialog by remember { mutableStateOf(false) }
 
-    Dialog(onDismissRequest = { }) {
+    Dialog(onDismissRequest = onDismiss) {
         Box(modifier = Modifier.fillMaxWidth()) {
             Image(
                 painter = painterResource(id = R.drawable.sfondogrigio),
@@ -73,7 +80,7 @@ fun CampoFormDialog(
             Surface(
                 shape = RoundedCornerShape(16.dp),
                 color = Color.Transparent,
-                modifier = Modifier.heightIn(max = 600.dp) // imposta un'altezza max per attivare lo scroll
+                modifier = Modifier.heightIn(max = 600.dp)
             ) {
                 val scrollState = rememberScrollState()
 
@@ -84,13 +91,39 @@ fun CampoFormDialog(
                         .verticalScroll(scrollState),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    CustomText(
-                        text = if (campoDaModificare != null) "Modifica campo:" else "Aggiungi un nuovo campo:",
-                        style = MaterialTheme.typography.titleLarge.copy(
-                            color = Color.White,
-                            fontFamily = lemonMilkFontFamily
+                    // Header con titolo e pulsante X
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        CustomText(
+                            text = if (campoDaModificare != null) "Modifica campo:" else "Aggiungi un nuovo campo:",
+                            style = MaterialTheme.typography.titleLarge.copy(
+                                color = Color.White,
+                                fontFamily = lemonMilkFontFamily
+                            )
                         )
-                    )
+
+                        // Pulsante X per chiudere
+                        Button(
+                            onClick = onDismiss,
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = Color.Black.copy(alpha = 0.7f)
+                            ),
+                            modifier = Modifier
+                                .size(40.dp)
+                                .clip(RoundedCornerShape(20.dp)),
+                            contentPadding = PaddingValues(0.dp)
+                        ) {
+                            Text(
+                                text = "✕",
+                                color = Color.White,
+                                fontSize = 24.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
+                    }
 
                     if (showOrarioDialog) {
                         OrarioDialog(
@@ -180,8 +213,9 @@ fun CampoFormDialog(
                         modifier = Modifier.fillMaxWidth()
                     )
 
+                    // Solo il pulsante Salva, centrato
                     ButtonComponent(
-                        text = if (campoDaModificare != null) "Modifica campo" else "Aggiungi campo",
+                        text = if (campoDaModificare != null) "Modifica campo" else "+ Salva",
                         onClick = {
                             onCampoAdded(
                                 Campo(

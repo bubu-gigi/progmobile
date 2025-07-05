@@ -224,23 +224,25 @@ fun StrutturaFormScreen(
         }
 
         if (showCampoDialog) {
-            Dialog(onDismissRequest = { showCampoDialog = false }) {
-                CampoFormDialog(
-                    campoDaModificare = campoInModifica,
-                    onCampoAdded = { nuovo ->
-                        campi = if (campoInModifica != null) {
-                            campi.map {
-                                if (it == campoInModifica) nuovo.copy(id = campoInModifica!!.id)
-                                else it
-                            }.toMutableList()
-                        } else {
-                            (campi + nuovo).toMutableList()
-                        }
-                        campoInModifica = null
-                        showCampoDialog = false
+            CampoFormDialog(
+                campoDaModificare = campoInModifica,
+                onCampoAdded = { nuovo ->
+                    campi = if (campoInModifica != null) {
+                        campi.map {
+                            if (it == campoInModifica) nuovo.copy(id = campoInModifica!!.id)
+                            else it
+                        }.toMutableList()
+                    } else {
+                        (campi + nuovo).toMutableList()
                     }
-                )
-            }
+                    campoInModifica = null
+                    showCampoDialog = false
+                },
+                onDismiss = {
+                    showCampoDialog = false
+                    campoInModifica = null
+                }
+            )
         }
     }
 }

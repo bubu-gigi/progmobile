@@ -44,7 +44,15 @@ import com.univpm.gameon.ui.components.ButtonComponent
 @Composable
 fun AdminHomeScreen(navController: NavController) {
     val authViewModel: AuthViewModel = hiltViewModel()
+    val destination by authViewModel.destination.collectAsState()
     val showDeleteDialog = remember { mutableStateOf(false) }
+
+    LaunchedEffect(destination) {
+        destination?.let {
+            navController.navigate(it)
+            authViewModel.clearDestination()
+        }
+    }
 
     if (showDeleteDialog.value) {
         AlertDialog(

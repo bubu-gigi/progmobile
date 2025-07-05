@@ -63,7 +63,7 @@ fun StruttureListScreen(
         }
     }
 
-    BackgroundScaffold(backgroundResId = R.drawable.sfondocarta) {
+    BackgroundScaffold(backgroundResId = R.drawable.sfondogrigio) {
         Column(
             modifier = Modifier
                 .fillMaxSize()

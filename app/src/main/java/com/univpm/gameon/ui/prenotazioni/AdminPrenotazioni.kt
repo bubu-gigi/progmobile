@@ -115,7 +115,7 @@ fun GestionePrenotazioniAdminScreenContent(
         }
     }
 
-    BackgroundScaffold(backgroundResId = R.drawable.sfondogrigio) {
+    BackgroundScaffold(backgroundResId = R.drawable.sfondocarta) {
         Column(modifier = Modifier
             .fillMaxSize()
             .padding(16.dp),
