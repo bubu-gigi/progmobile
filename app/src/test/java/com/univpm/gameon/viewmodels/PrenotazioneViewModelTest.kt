@@ -2,6 +2,7 @@ package com.univpm.gameon.viewmodels
 
 import com.univpm.gameon.core.UserSessionManager
 import com.univpm.gameon.data.collections.Prenotazione
+import com.univpm.gameon.data.collections.User
 import com.univpm.gameon.repositories.PrenotazioneRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -96,7 +97,14 @@ class PrenotazioneViewModelTest {
     fun annullaPrenotazioneDaAdminTest() = runTest {
         val prenotazioni = listOf(Prenotazione(id = "p3", userId = "u3"))
 
-        UserSessionManager.userRole = "Admin"
+        val mockUser = User(
+            id = "user-123",
+            name = "Mario Rossi",
+            email = "mario.rossi@example.com",
+            ruolo = "Admin"
+        )
+
+        UserSessionManager.setCurrentUser(mockUser)
         whenever(mockRepository.deletePrenotazione("p3")).thenReturn(true)
         whenever(mockRepository.getPrenotazioni()).thenReturn(prenotazioni)
 
@@ -112,8 +120,15 @@ class PrenotazioneViewModelTest {
         val userId = "utente"
         val prenotazioni = listOf(Prenotazione(id = "p4", userId = userId))
 
-        UserSessionManager.userRole = "Giocatore"
-        UserSessionManager.userId = userId
+        val mockUser = User(
+            id = "utente",
+            name = "Mario Rossi",
+            email = "mario.rossi@example.com",
+            ruolo = "Giocatore"
+        )
+
+        UserSessionManager.setCurrentUser(mockUser)
+
         whenever(mockRepository.deletePrenotazione("p4")).thenReturn(true)
         whenever(mockRepository.getPrenotazioniByUser(userId)).thenReturn(prenotazioni)
 

@@ -6,6 +6,10 @@ import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.univpm.gameon.core.AdminHomeScreenRoute
 import com.univpm.gameon.data.collections.User
+import com.univpm.gameon.repositories.CartaRepository
+import com.univpm.gameon.repositories.ConversazioneRepository
+import com.univpm.gameon.repositories.PrenotazioneRepository
+import com.univpm.gameon.repositories.RecensioneRepository
 import com.univpm.gameon.repositories.UserRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -32,6 +36,18 @@ class AuthViewModelTest {
     private lateinit var mockUserRepository: UserRepository
 
     @Mock
+    private lateinit var mockConversazioneRepository: ConversazioneRepository
+
+    @Mock
+    private lateinit var mockCartaRepository: CartaRepository
+
+    @Mock
+    private lateinit var mockPrenotazioneRepository: PrenotazioneRepository
+
+    @Mock
+    private lateinit var mockRecensioneRepository: RecensioneRepository
+
+    @Mock
     private lateinit var mockFirebaseAuth: FirebaseAuth
 
     private val fakeTask: Task<AuthResult> = Tasks.forResult(mock())
@@ -40,7 +56,7 @@ class AuthViewModelTest {
     fun setUp() {
         MockitoAnnotations.openMocks(this)
         Dispatchers.setMain(StandardTestDispatcher())
-        authViewModel = AuthViewModel(mockUserRepository, mockFirebaseAuth)
+        authViewModel = AuthViewModel(mockUserRepository, mockConversazioneRepository, mockCartaRepository, mockPrenotazioneRepository, mockRecensioneRepository, mockFirebaseAuth)
     }
 
     @After

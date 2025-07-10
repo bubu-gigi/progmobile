@@ -3,6 +3,7 @@ package com.univpm.gameon.viewmodels
 import com.univpm.gameon.data.collections.Campo
 import com.univpm.gameon.data.collections.Struttura
 import com.univpm.gameon.repositories.StrutturaRepository
+import com.univpm.gameon.repositories.UserRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.*
@@ -18,12 +19,13 @@ class StruttureViewModelTest {
 
     private lateinit var viewModel: StruttureViewModel
     private val mockRepository: StrutturaRepository = mock()
+    private val mockUserRepository: UserRepository = mock()
     private val dispatcher = StandardTestDispatcher()
 
     @Before
     fun setup() {
         Dispatchers.setMain(dispatcher)
-        viewModel = StruttureViewModel(mockRepository)
+        viewModel = StruttureViewModel(mockRepository, mockUserRepository)
     }
 
     @After
